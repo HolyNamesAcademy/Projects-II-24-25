@@ -24,7 +24,7 @@ export class MainMenu extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        this.authors = this.add.text(512, 600, 'A game by:\nFake Person', {
+        this.authors = this.add.text(512, 600, 'A game by:\nLucy Martenstein', {
             fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
