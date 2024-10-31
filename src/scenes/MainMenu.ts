@@ -41,7 +41,7 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
         this.restart.setInteractive();
 
-        this.continue = this.add.text(512, 450, 'Continue Previous', {
+        this.continue = this.add.text(512, 450, 'Continue', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff', 
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -61,6 +61,9 @@ export class MainMenu extends Scene
         this.restart.on('pointerout', () => {
             this.restart.setScale(1);
         });
+        this.restart.on('pointerdown', () =>{
+            this.scene.start('Game');
+        });
         
         //enlarges the "continue previous" button when the user hovers over it
         this.continue.on('pointerover', () =>{
@@ -68,6 +71,9 @@ export class MainMenu extends Scene
         });
         this.continue.on('pointerout', () =>{
             this.continue.setScale(1);
+        });
+        this.continue.on('pointerdown', () =>{
+            this.scene.start('GameOver');
         });
     }
 }
