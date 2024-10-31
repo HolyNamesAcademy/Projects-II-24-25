@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 
-export class StageTwo extends Scene
+export class StageThree extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
@@ -8,7 +8,7 @@ export class StageTwo extends Scene
 
     constructor ()
     {
-        super('StageTwo');
+        super('StageThree');
     }
 
     create ()
@@ -19,7 +19,7 @@ export class StageTwo extends Scene
         this.background = this.add.image(512, 384, 'background');
         this.background.setAlpha(0.5);
 
-        this.msg_text = this.add.text(512, 384, 'StageTwo', {
+        this.msg_text = this.add.text(512, 384, 'StageThree', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -28,7 +28,7 @@ export class StageTwo extends Scene
 
         this.input.once('pointerdown', () => {
 
-            this.scene.start('StageThree');
+            this.scene.start('GameOver');
 
         });
     }
