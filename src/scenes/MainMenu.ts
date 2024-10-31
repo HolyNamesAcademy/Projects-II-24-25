@@ -35,17 +35,18 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
 */
         this.restart = this.add.text(512, 400, 'Restart', {
-            fontFamily: 'MedievalSharp', fontSize: 30, color: '#ffffff', 
+            fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff', 
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5);
+        this.restart.setInteractive();
 
         this.continue = this.add.text(512, 450, 'Continue Previous', {
-            fontFamily: 'MedievalSharp', fontSize: 30, color: '#ffffff', 
+            fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff', 
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5);
-
+        this.continue.setInteractive();
 
         this.authors = this.add.text(512, 700, '\nAllie Staiger       Addison Theis       Clare Kanazawa        Finley McMurtrie       Lucy Martenstein', {
             fontFamily: 'MedievalSharp', fontSize: 20, color: '#ffffff',
@@ -53,10 +54,20 @@ export class MainMenu extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('Game');
-
+        //enlarges the "start" button when the user hovers over it
+        this.restart.on('pointerover', () =>{
+            this.restart.setScale(1.5);
+        });
+        this.restart.on('pointerout', () => {
+            this.restart.setScale(1);
+        });
+        
+        //enlarges the "continue previous" button when the user hovers over it
+        this.continue.on('pointerover', () =>{
+            this.continue.setScale(1.5);
+        });
+        this.continue.on('pointerout', () =>{
+            this.continue.setScale(1);
         });
     }
 }
