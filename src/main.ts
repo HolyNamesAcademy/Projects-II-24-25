@@ -5,6 +5,7 @@ import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { StageOne } from './scenes/StageOne';
 import { StageTwo } from './scenes/StageTwo';
+import { StageThree } from './scenes/StageThree';
 
 import { Game, Types } from "phaser";
 
@@ -28,7 +29,8 @@ const config: Types.Core.GameConfig = {
         MainGame,
         GameOver,
         StageOne,
-        StageTwo
+        StageTwo,
+        StageThree
     ]
 };
 
