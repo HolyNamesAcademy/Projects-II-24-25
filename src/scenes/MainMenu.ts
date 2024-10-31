@@ -62,7 +62,7 @@ export class MainMenu extends Scene
             this.restart.setScale(1);
         });
         this.restart.on('pointerdown', () =>{
-            this.scene.start('Game');
+            this.scene.start('StageOne');
         });
         
         //enlarges the "continue previous" button when the user hovers over it
