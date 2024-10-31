@@ -17,7 +17,7 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.background = this.add.image(512, 300, 'background');
+        this.background = this.add.image(512, 300, 'titleBackground');
         this.background.scale = 3;
 
         //this.logo = this.add.image(512, 300, 'logo');
@@ -34,7 +34,7 @@ export class MainMenu extends Scene
             align: 'center'
         }).setOrigin(0.5);
 */
-        this.restart = this.add.text(512, 400, 'Restart', {
+        this.restart = this.add.text(512, 400, 'Start', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff', 
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -73,7 +73,7 @@ export class MainMenu extends Scene
             this.continue.setScale(1);
         });
         this.continue.on('pointerdown', () =>{
-            this.scene.start('GameOver');
+            this.scene.start('StageTwo');
         });
     }
 }
