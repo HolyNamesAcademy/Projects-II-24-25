@@ -41,7 +41,7 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
         this.restart.setInteractive();
 
-        this.continue = this.add.text(512, 450, 'Continue', {
+        this.continue = this.add.text(512, 450, 'Resume', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff', 
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -57,9 +57,11 @@ export class MainMenu extends Scene
         //enlarges the "start" button when the user hovers over it
         this.restart.on('pointerover', () =>{
             this.restart.setScale(1.5);
+            this.restart.setColor('#34eb40');
         });
         this.restart.on('pointerout', () => {
             this.restart.setScale(1);
+            this.restart.setColor('#ffffff');
         });
         this.restart.on('pointerdown', () =>{
             this.scene.start('StageOne');
@@ -68,9 +70,11 @@ export class MainMenu extends Scene
         //enlarges the "continue previous" button when the user hovers over it
         this.continue.on('pointerover', () =>{
             this.continue.setScale(1.5);
+            this.continue.setColor('#34eb40');
         });
         this.continue.on('pointerout', () =>{
             this.continue.setScale(1);
+            this.continue.setColor('#ffffff');
         });
         this.continue.on('pointerdown', () =>{
             this.scene.start('StageTwo');
