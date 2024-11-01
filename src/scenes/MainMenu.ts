@@ -20,20 +20,12 @@ export class MainMenu extends Scene
         this.background = this.add.image(512, 300, 'titleBackground');
         this.background.scale = 3;
 
-        //this.logo = this.add.image(512, 300, 'logo');
-
         this.gameTitle = this.add.text(512, 160, 'Tall Boulder Dungeon',{
             fontFamily:'MedievalSharp', fontSize: 70, color: '#ffffff',
             stroke: '#000000', strokeThickness: 10,
             align: 'center'
         }).setOrigin(0.5);
-/*
-        this.title = this.add.text(512, 400, 'Main Menu', {
-            fontFamily: 'MedievalSharp', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
-*/
+
         this.restart = this.add.text(512, 400, 'Start', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff', 
             stroke: '#000000', strokeThickness: 8,
@@ -64,7 +56,10 @@ export class MainMenu extends Scene
             this.restart.setColor('#ffffff');
         });
         this.restart.on('pointerdown', () =>{
-            this.scene.start('StageOne');
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.start('StageOne');
+            });
         });
         
         //enlarges the "continue previous" button when the user hovers over it
@@ -77,7 +72,10 @@ export class MainMenu extends Scene
             this.continue.setColor('#ffffff');
         });
         this.continue.on('pointerdown', () =>{
-            this.scene.start('StageTwo');
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.start('StageTwo');
+            })
         });
     }
 }
