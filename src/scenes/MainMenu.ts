@@ -62,8 +62,8 @@ export class MainMenu extends Scene
 
         //enlarges the "start" button when the user hovers over it
         this.restart.on('pointerover', () =>{
-            this.restart.setScale(1.5);
-            this.restart.setColor('#34eb40');
+            this.restart.setScale(1.15);
+            this.restart.setColor('#edd35f');
         });
         //Reverts the color and size of start button back to normal if pointer moves away
         this.restart.on('pointerout', () => {
@@ -80,8 +80,8 @@ export class MainMenu extends Scene
         
         //enlarges the "resume" button when the user hovers over it
         this.continue.on('pointerover', () =>{
-            this.continue.setScale(1.5);
-            this.continue.setColor('#34eb40');
+            this.continue.setScale(1.15);
+            this.continue.setColor('#edd35f');
         });
         //Reverts the color and size of the resume button back to normal if pointer moves away
         this.continue.on('pointerout', () =>{
@@ -98,8 +98,8 @@ export class MainMenu extends Scene
 
         //enlarges the "character" button when the user hovers over it
         this.characters.on('pointerover', () =>{
-            this.characters.setScale(1.5);
-            this.characters.setColor('#34eb40');
+            this.characters.setScale(1.15);
+            this.characters.setColor('#edd35f');
         });
         //Reverts the color and size of the character button back to normal if pointer moves away
         this.characters.on('pointerout', () =>{
