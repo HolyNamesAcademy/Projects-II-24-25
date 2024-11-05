@@ -13,6 +13,7 @@ export class StageTwo extends Scene
 
     create ()
     {
+        window.localStorage.setItem('stage', '2');
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x00ff00);
 

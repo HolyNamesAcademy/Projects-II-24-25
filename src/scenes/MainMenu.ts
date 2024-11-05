@@ -74,6 +74,7 @@ export class MainMenu extends Scene
         this.restart.on('pointerdown', () =>{
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                window.localStorage.setItem('stage', '1');
                 this.scene.start('StageOne');
             });
         });
@@ -92,8 +93,20 @@ export class MainMenu extends Scene
         this.continue.on('pointerdown', () =>{
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('StageTwo');
-            })
+                const stage = window.localStorage.getItem('stage');
+                if(stage === '1')
+                {
+                    this.scene.start('StageOne');
+                }
+                else if(stage === '2')
+                {
+                    this.scene.start('StageTwo');
+                }
+                else if(stage === '3')
+                {
+                    this.scene.start('StageThree');
+                }
+            });
         });
 
         //enlarges the "character" button when the user hovers over it
