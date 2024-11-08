@@ -6,6 +6,9 @@ export class Game extends Scene
     background: Phaser.GameObjects.Image;
     msg_text : Phaser.GameObjects.Text;
     platforms: Phaser.Physics.Arcade.StaticGroup;
+    player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    cursors: Phaser.Input.Keyboard.KeyboardPlugin;
+    
 
     constructor ()
     {
@@ -26,10 +29,42 @@ export class Game extends Scene
         this.platforms.create(50, 250, 'platform');
         this.platforms.create(750, 220, 'platform');
 
+        this.player = this.physics.add.sprite(100, 450, 'addison');
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.player.setBounce(0.2);
+        this.player.setCollideWorldBounds(true);
+        this.player.setScale(5);
+
+        this.physics.add.collider(this.player, this.platforms);
+
         this.input.once('pointerdown', () => {
 
             this.scene.start('GameOver');
 
         });
+        if (this.cursors.left.isDown)
+            {
+                this.player.setVelocityX(-160);
+            
+                this.player.anims.play('left', true);
+            }
+            else if (this.cursors.right.isDown)
+            {
+                this.player.setVelocityX(160);
+            
+                this.player.anims.play('right', true);
+            }
+            else
+            {
+                this.player.setVelocityX(0);
+            
+                this.player.anims.play('turn');
+            }
+            
+            if (this.cursors.up.isDown && this.player.body.touching.down)
+            {
+                this.player.setVelocityY(-330);
+            }
     }
 }
