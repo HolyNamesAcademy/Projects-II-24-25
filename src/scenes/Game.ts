@@ -4,10 +4,10 @@ export class Game extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
-    msg_text : Phaser.GameObjects.Text;
+    msg_text: Phaser.GameObjects.Text;
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
 
     constructor ()
     {
@@ -29,29 +29,24 @@ export class Game extends Scene
         this.platforms.create(750, 220, 'platform');
 
         this.player = this.physics.add.sprite(100, 450, 'addison');
-        
+
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
 
         this.physics.add.collider(this.player, this.platforms);
 
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('GameOver');
-
-        });
+        this.cursors = this.input?.keyboard?.createCursorKeys();
         
     }
     update () {
-    this.cursors = this.input.keyboard?.createCursorKeys();
-        if (this.cursors.left.isDown)
+        if (this.cursors?.left.isDown)
             {
                 this.player.setVelocityX(-160);
             
                 this.player.anims.play('left', true);
             }
-            else if (this.cursors.right.isDown)
+            else if (this.cursors?.right.isDown)
             {
                 this.player.setVelocityX(160);
             
@@ -64,7 +59,7 @@ export class Game extends Scene
                 this.player.anims.play('turn');
             }
             
-            if (this.cursors.up.isDown && this.player.body.touching.down)
+            if (this.cursors?.up.isDown && this.player.body.touching.down)
             {
                 this.player.anims.play('crouch');//find way to delay jump until crouch frame remains for 1 sec
                 this.player.setVelocityY(-330);
