@@ -48,8 +48,8 @@ export class Preloader extends Scene
         //  For example, you can define global animations here, so we can use them in other scenes.
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('addison', { start: 2, end: 3 }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('addison', { frames: [2, 12] }),
+            frameRate: 5,
             repeat: -1
         });
 
@@ -61,9 +61,20 @@ export class Preloader extends Scene
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [1, 4] }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('addison', { frames: [1, 11] }),
+            frameRate: 5,
             repeat: -1
+        });
+
+        this.anims.create({
+            key: 'jump',
+            frames: [{ key: 'addison', frame: 7 }],
+            frameRate: 5
+        });
+        this.anims.create({
+            key: 'crouch',
+            frames: [{ key: 'addison', frame: 6 }],
+            frameRate: 30
         });
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
