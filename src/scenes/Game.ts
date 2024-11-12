@@ -28,7 +28,7 @@ export class Game extends Scene
 
         this.input.once('pointerdown', () => {
 
-            this.scene.start('GameOver');
+            this.scene.start('DeathScreen');
 
         });
     }

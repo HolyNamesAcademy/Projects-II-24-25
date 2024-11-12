@@ -4,7 +4,7 @@ import { GameOver } from './scenes/GameOver';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { CharacterSelection } from './scenes/CharacterSelection';
-import { StageOne } from './scenes/StageOne';
+import { DeathScreen } from './scenes/DeathScreen';
 import { StageTwo } from './scenes/StageTwo';
 import { StageThree } from './scenes/StageThree';
 
@@ -37,7 +37,7 @@ const config: Types.Core.GameConfig = {
         MainGame,
         GameOver,
         CharacterSelection,
-        StageOne,
+        DeathScreen,
         StageTwo,
         StageThree
     ]

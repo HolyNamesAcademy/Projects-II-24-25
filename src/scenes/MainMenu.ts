@@ -75,7 +75,7 @@ export class MainMenu extends Scene
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 window.localStorage.removeItem('stage');
-                this.scene.start('StageOne');
+                this.scene.start('StageTwo');
             });
         });
         
@@ -94,11 +94,7 @@ export class MainMenu extends Scene
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 const stage = window.localStorage.getItem('stage');
-                if(stage === '1')
-                {
-                    this.scene.start('StageOne');
-                }
-                else if(stage === '2')
+                if(stage === '2')
                 {
                     this.scene.start('StageTwo');
                 }
