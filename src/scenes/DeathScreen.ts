@@ -27,12 +27,6 @@ export class DeathScreen extends Scene
         });
         this.msg_text.setOrigin(0.5);
 
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('MainMenu');
-
-        });
-
         this.MenuButton = this.add.text(150, 700, 'Main Menu', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
