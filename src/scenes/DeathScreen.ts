@@ -15,12 +15,10 @@ export class DeathScreen extends Scene
     create ()
     {
         window.localStorage.setItem('stage', '1');
-        window.localStorage.setItem('deathCount', '1');
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+        //this.camera.setBackgroundColor(0x00ff00);
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
+        //this.background = this.add.image(512, 384, 'background');
 
         this.msg_text = this.add.text(512, 384, 'You Died!', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
@@ -50,10 +48,9 @@ export class DeathScreen extends Scene
             this.MenuButton.setColor('#ffffff');
         });
         this.MenuButton.on('pointerdown', () =>{
-            window.localStorage.removeItem('stage');
-            //window.localStorage.setItem('deathCount');
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                window.localStorage.removeItem('stage');
                 this.scene.start('MainMenu');
             });
         });
