@@ -21,6 +21,7 @@ export class Game extends Scene
         this.camera = this.cameras.main;
 
         this.background = this.add.image(512, 384, 'background');
+        this.background.scale = 2;
 
         this.platforms = this.physics.add.staticGroup();
 
