@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 
-export class DeathScreen extends Scene
+export class WinScene extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
@@ -9,7 +9,7 @@ export class DeathScreen extends Scene
 
     constructor ()
     {
-        super('DeathScreen');
+        super('WinScene');
     }
 
     create ()
@@ -20,7 +20,7 @@ export class DeathScreen extends Scene
 
         //this.background = this.add.image(512, 384, 'background');
 
-        this.msg_text = this.add.text(512, 384, 'You Died!', {
+        this.msg_text = this.add.text(512, 384, 'You Won!', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
