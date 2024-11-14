@@ -7,6 +7,7 @@ import { CharacterSelection } from './scenes/CharacterSelection';
 import { DeathScreen } from './scenes/DeathScreen';
 import { StageTwo } from './scenes/StageTwo';
 import { StageThree } from './scenes/StageThree';
+import {WinScene} from './scenes/WinScene';
 
 import { Game, Types } from "phaser";
 
@@ -39,7 +40,8 @@ const config: Types.Core.GameConfig = {
         CharacterSelection,
         DeathScreen,
         StageTwo,
-        StageThree
+        StageThree,
+        WinScene
     ]
 };
 
