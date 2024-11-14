@@ -110,7 +110,7 @@ export class Game extends Scene
             if (this.cursors?.up.isDown && this.player.body.touching.down)
             {
                 this.player.anims.play('crouch');//find way to delay jump until crouch frame remains for 1 sec
-                this.player.setVelocityY(-330);
+                this.player.setVelocityY(-430);
             }
             else if (!this.player.body.touching.down){
                 this.player.anims.play('jump');//find way to stop if after bounce? //no bounce?
