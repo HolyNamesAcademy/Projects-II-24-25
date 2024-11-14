@@ -9,6 +9,7 @@ export class Game extends Scene
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     dieButton: Phaser.GameObjects.Text;
+    winButton: Phaser.GameObjects.Text;
 
     constructor ()
     {
@@ -59,6 +60,29 @@ export class Game extends Scene
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('DeathScreen');
+            });
+        });
+
+        this.winButton = this.add.text(150, 600, 'Win Addison', {
+            fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setOrigin(0.5);
+        this.winButton.setInteractive();
+        this.winButton.on('pointerover', () =>{
+            this.winButton.setScale(1.15);
+            this.winButton.setColor('#edd35f');
+        });
+        this.winButton.on('pointerout', () => {
+            this.winButton.setScale(1);
+            this.winButton.setColor('#ffffff');
+        });
+        this.winButton.on('pointerdown', () =>{
+            window.localStorage.removeItem('stage');
+            //window.localStorage.setItem('deathCount');
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.start('WinScene');
             });
         });
         
