@@ -3,13 +3,16 @@ import { Scene } from 'phaser';
 export class Game extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
-    background: Phaser.GameObjects.Image;
+    background: Phaser.GameObjects.TileSprite;
     msg_text: Phaser.GameObjects.Text;
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     dieButton: Phaser.GameObjects.Text;
     winButton: Phaser.GameObjects.Text;
+
+    backgroundX: number = 512;
+    backgroundY: number = 384;
 
     constructor ()
     {
@@ -20,7 +23,8 @@ export class Game extends Scene
     {
         this.camera = this.cameras.main;
 
-        this.background = this.add.image(512, 384, 'background');
+        this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
+        this.background.scale = 2;
 
         this.platforms = this.physics.add.staticGroup();
 
@@ -115,5 +119,10 @@ export class Game extends Scene
             else if (!this.player.body.touching.down){
                 this.player.anims.play('jump');//find way to stop if after bounce? //no bounce?
             }
+
+        this.backgroundY += 0.5;
+        this.background.tilePositionY = this.backgroundY;
+        this.platforms.incY(-1);
+        this.platforms.refresh();
     }
 }

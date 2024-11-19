@@ -75,7 +75,7 @@ export class MainMenu extends Scene
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 window.localStorage.removeItem('stage');
-                this.scene.start('StageTwo');
+                this.scene.start('Game');
             });
         });
         
