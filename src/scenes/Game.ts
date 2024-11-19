@@ -7,6 +7,7 @@ export class Game extends Scene
     msg_text: Phaser.GameObjects.Text;
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     dieButton: Phaser.GameObjects.Text;
     winButton: Phaser.GameObjects.Text;
@@ -28,13 +29,14 @@ export class Game extends Scene
 
         this.platforms = this.physics.add.staticGroup();
 
-        this.platforms.create(400, 810, 'platform').setScale(4).refreshBody();
+        this.platforms.create(200, 300, 'platform');
+        this.platforms.create(600, 300, 'platform');
+        this.platforms.create(1150, 300, 'platform');
 
-        this.platforms.create(600, 400, 'platform');
-        this.platforms.create(50, 250, 'platform');
-        this.platforms.create(750, 220, 'platform');
+        this.platforms.create(900, 600, 'platform');
 
-        this.player = this.physics.add.sprite(100, 450, 'addison');
+        this.player = this.physics.add.sprite(500, 100, 'addison');
+        this.door = this.physics.add.staticSprite(200, 175, 'door', 0).setScale(0.65);
 
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
@@ -120,9 +122,9 @@ export class Game extends Scene
                 this.player.anims.play('jump');//find way to stop if after bounce? //no bounce?
             }
 
-        this.backgroundY += 0.5;
-        this.background.tilePositionY = this.backgroundY;
-        this.platforms.incY(-1);
-        this.platforms.refresh();
+        //this.backgroundY += 0.5;
+        //this.background.tilePositionY = this.backgroundY;
+        //this.platforms.incY(-1);
+        //this.platforms.refresh();
     }
 }
