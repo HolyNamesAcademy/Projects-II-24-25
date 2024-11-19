@@ -41,6 +41,7 @@ export class Game extends Scene
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
+        this.player.setSize(16, 32);
 
         this.physics.add.collider(this.player, this.platforms);
 
@@ -91,28 +92,28 @@ export class Game extends Scene
                 this.scene.start('WinScene');
             });
         });
-        
     }
+
     update () {
         if (this.cursors?.left.isDown)
             {
                 this.player.setVelocityX(-160);
-            
+
                 this.player.anims.play('left', true);
             }
             else if (this.cursors?.right.isDown)
             {
                 this.player.setVelocityX(160);
-            
+
                 this.player.anims.play('right', true);
             }
             else
             {
                 this.player.setVelocityX(0);
-            
+
                 this.player.anims.play('turn');
             }
-            
+
             if (this.cursors?.up.isDown && this.player.body.touching.down)
             {
                 this.player.anims.play('crouch');//find way to delay jump until crouch frame remains for 1 sec
