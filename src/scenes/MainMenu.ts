@@ -19,11 +19,11 @@ export class MainMenu extends Scene
     create ()
     {
         //Loads the dungeon background
-        this.background = this.add.image(512, 300, 'titleBackground');
-        this.background.scale = 3;
+        this.background = this.add.image(512, 384, 'titleBackground');
+        this.background.scale = 2;
 
         //Loads the title with the medieval font
-        this.gameTitle = this.add.text(512, 160, 'Tall Boulder Dungeon',{
+        this.gameTitle = this.add.text(512, 160, 'Tall Boulder\nDungeon',{
             fontFamily:'MedievalSharp', fontSize: 70, color: '#ffffff',
             stroke: '#000000', strokeThickness: 10,
             align: 'center'
