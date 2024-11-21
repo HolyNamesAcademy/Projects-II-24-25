@@ -11,9 +11,11 @@ export class Game extends Scene
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     dieButton: Phaser.GameObjects.Text;
     winButton: Phaser.GameObjects.Text;
+    nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
     backgroundX: number = 512;
     backgroundY: number = 384;
+    scrollSpeed: number = 2;
 
     constructor ()
     {
@@ -27,6 +29,8 @@ export class Game extends Scene
         this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
         this.background.scale = 2;
 
+        this.nonCollisionItems = this.physics.add.staticGroup();
+
         this.platforms = this.physics.add.staticGroup();
 
         this.platforms.create(200, 300, 'platform');
@@ -34,9 +38,11 @@ export class Game extends Scene
         this.platforms.create(1150, 300, 'platform');
 
         this.platforms.create(900, 600, 'platform');
+        this.platforms.create(350, 600, 'platform');
 
         this.player = this.physics.add.sprite(500, 100, 'addison');
-        this.door = this.physics.add.staticSprite(200, 175, 'door', 0).setScale(0.65);
+        this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
+        this.nonCollisionItems.add(this.door);
 
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
@@ -123,9 +129,25 @@ export class Game extends Scene
                 this.player.anims.play('jump');//find way to stop if after bounce? //no bounce?
             }
 
-        //this.backgroundY += 0.5;
-        //this.background.tilePositionY = this.backgroundY;
-        //this.platforms.incY(-1);
-        //this.platforms.refresh();
+            console.log(this.player.getBottomCenter());
+            const {y: playerY} = this.player.getBottomCenter();
+            if(playerY > 550)
+            {
+                this.backgroundY += 0.5 * this.scrollSpeed;
+                this.background.tilePositionY = this.backgroundY;
+                this.platforms.incY(-1 * this.scrollSpeed);
+                this.nonCollisionItems.incY(-1 * this.scrollSpeed);
+                this.nonCollisionItems.refresh();
+                this.platforms.refresh();
+            }
+            if(playerY < 200 && this.backgroundY > 384)
+            {
+                this.backgroundY -= 0.5 * this.scrollSpeed;
+                this.background.tilePositionY = this.backgroundY;
+                this.platforms.incY(1 * this.scrollSpeed);
+                this.nonCollisionItems.incY(1 * this.scrollSpeed);
+                this.nonCollisionItems.refresh();
+                this.platforms.refresh();
+            }
     }
 }
