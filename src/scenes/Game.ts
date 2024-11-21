@@ -13,6 +13,8 @@ export class Game extends Scene
     winButton: Phaser.GameObjects.Text;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
+    crouching: boolean = false;
+
     backgroundX: number = 512;
     backgroundY: number = 384;
     scrollSpeed: number = 2;
@@ -26,7 +28,6 @@ export class Game extends Scene
     create ()
     {
         this.camera = this.cameras.main;
-        this.physics.world.TILE_BIAS = 8;
 
         this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
         this.background.scale = 2;
@@ -38,10 +39,8 @@ export class Game extends Scene
         this.platforms.create(200, 300, 'platform');
         this.platforms.create(600, 300, 'platform');
         this.platforms.create(1150, 300, 'platform');
-
         this.platforms.create(900, 600, 'platform');
         this.platforms.create(350, 600, 'platform');
-        
         this.platforms.create(550, 900, 'platform');
 
         this.player = this.physics.add.sprite(500, 100, 'addison');
@@ -54,6 +53,9 @@ export class Game extends Scene
         this.player.setSize(16, 32);
 
         this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.overlap(this.player, this.platforms, () => {
+            this.player.y -= this.scrollSpeed * 2;
+        });
 
         this.cursors = this.input?.keyboard?.createCursorKeys();
 
@@ -127,31 +129,43 @@ export class Game extends Scene
             if (this.cursors?.up.isDown && this.player.body.touching.down)
             {
                 this.player.anims.play('crouch');//find way to delay jump until crouch frame remains for 1 sec
-                this.player.setVelocityY(-430);
+                this.crouching = true;
             }
-            else if (!this.player.body.touching.down){
+            else if (this.cursors?.up.isUp && this.crouching){
                 this.player.anims.play('jump');//find way to stop if after bounce? //no bounce?
+                this.player.setVelocityY(-430);
+                this.crouching = false;
+            } else if (!this.player.body.touching.down) {
+                this.player.anims.play('jump');
             }
 
-            console.log(this.player.getBottomCenter());
-            const {y: playerY} = this.player.getBottomCenter();
+            const { y: playerY } = this.player.getBottomCenter();
             if(playerY > 550)
             {
-                this.backgroundY += 0.5 * this.scrollSpeed;
-                this.background.tilePositionY = this.backgroundY;
-                this.platforms.incY(-1 * this.scrollSpeed);
-                this.nonCollisionItems.incY(-1 * this.scrollSpeed);
-                this.nonCollisionItems.refresh();
-                this.platforms.refresh();
+                this.scroll(-1 * this.scrollSpeed);
             }
             if(playerY < 200 && this.backgroundY > 384)
             {
-                this.backgroundY -= 0.5 * this.scrollSpeed;
-                this.background.tilePositionY = this.backgroundY;
-                this.platforms.incY(1 * this.scrollSpeed);
-                this.nonCollisionItems.incY(1 * this.scrollSpeed);
-                this.nonCollisionItems.refresh();
-                this.platforms.refresh();
+                this.scroll(this.scrollSpeed);
             }
+    }
+
+    /**
+     * @param y the amount to scroll the background and all other objects in positive Y (down) direction
+     */
+    scroll(y: number) {
+        // The background scrolls at half the speed of the player and platforms (It is scaled to 2x).
+        // It also scrolls in the opposite direction because it us using a tileSprite.
+        this.backgroundY += 0.5 * y * -1;
+        this.background.tilePositionY = this.backgroundY;
+
+        // Move all platforms and the player in the same direction.
+        this.platforms.incY(y);
+        this.nonCollisionItems.incY(y);
+        this.player.y += y;
+
+        // Refresh the physics bodies to reflect the changes.
+        this.platforms.refresh();
+        this.nonCollisionItems.refresh();
     }
 }
