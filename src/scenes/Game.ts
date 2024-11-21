@@ -16,6 +16,7 @@ export class Game extends Scene
     backgroundX: number = 512;
     backgroundY: number = 384;
     scrollSpeed: number = 2;
+    doubleJump: boolean = false;
 
     constructor ()
     {
@@ -25,6 +26,7 @@ export class Game extends Scene
     create ()
     {
         this.camera = this.cameras.main;
+        this.physics.world.TILE_BIAS = 8;
 
         this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
         this.background.scale = 2;
@@ -39,6 +41,8 @@ export class Game extends Scene
 
         this.platforms.create(900, 600, 'platform');
         this.platforms.create(350, 600, 'platform');
+        
+        this.platforms.create(550, 900, 'platform');
 
         this.player = this.physics.add.sprite(500, 100, 'addison');
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
