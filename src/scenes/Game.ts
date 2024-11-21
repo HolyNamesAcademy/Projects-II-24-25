@@ -1,4 +1,4 @@
-import { Scene } from 'phaser';
+import { Scene, Utils } from 'phaser';
 
 export class Game extends Scene
 {
@@ -80,7 +80,8 @@ export class Game extends Scene
             });
         });
 
-        this.winButton = this.add.text(150, 600, 'Win Addison', {
+        this.winButton = makeButton(Game, 'Win Addison', 35, 150, 600, 'WinScene')
+        /*this.winButton = this.add.text(150, 600, 'Win Addison', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -101,7 +102,7 @@ export class Game extends Scene
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('WinScene');
             });
-        });
+        });*/
     }
 
     update () {
