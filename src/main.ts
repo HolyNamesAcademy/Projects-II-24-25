@@ -8,6 +8,7 @@ import { DeathScreen } from './scenes/DeathScreen';
 import { StageTwo } from './scenes/StageTwo';
 import { StageThree } from './scenes/StageThree';
 import {WinScene} from './scenes/WinScene';
+import {VideoIntro} from './scenes/VideoIntro';
 
 import { Game, Types } from "phaser";
 
@@ -35,6 +36,7 @@ const config: Types.Core.GameConfig = {
         Boot,
         Preloader,
         MainMenu,
+        VideoIntro,
         MainGame,
         GameOver,
         CharacterSelection,
