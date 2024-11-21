@@ -17,7 +17,7 @@ export class Game extends Scene
 
     backgroundX: number = 512;
     backgroundY: number = 384;
-    scrollSpeed: number = 2;
+    scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
     constructor ()
@@ -39,6 +39,7 @@ export class Game extends Scene
         this.platforms.create(200, 300, 'platform');
         this.platforms.create(600, 300, 'platform');
         this.platforms.create(1150, 300, 'platform');
+        this.platforms.create(900, 1800, 'platform');
         this.platforms.create(900, 600, 'platform');
         this.platforms.create(350, 600, 'platform');
         this.platforms.create(550, 900, 'platform');
@@ -76,8 +77,8 @@ export class Game extends Scene
         this.dieButton.on('pointerdown', () =>{
             window.localStorage.removeItem('stage');
             //window.localStorage.setItem('deathCount');
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.camera.fadeOut(1000, 0, 0, 0);
+            this.camera.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('DeathScreen');
             });
         });
@@ -99,8 +100,8 @@ export class Game extends Scene
         this.winButton.on('pointerdown', () =>{
             window.localStorage.removeItem('stage');
             //window.localStorage.setItem('deathCount');
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.camera.fadeOut(1000, 0, 0, 0);
+            this.camera.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('WinScene');
             });
         });
@@ -140,12 +141,17 @@ export class Game extends Scene
             }
 
             const { y: playerY } = this.player.getBottomCenter();
-            if(playerY > 550)
-            {
-                this.scroll(-1 * this.scrollSpeed);
+
+            if (playerY > 2000) {
+                this.scene.start('DeathScreen');
             }
-            if(playerY < 200 && this.backgroundY > 384)
-            {
+            if (playerY > 750) {
+                this.player.setCollideWorldBounds(false);
+            }
+
+            if (playerY > 550) {
+                this.scroll(-1 * this.scrollSpeed);
+            } else if (playerY < 200 && this.backgroundY > 384)  {
                 this.scroll(this.scrollSpeed);
             }
     }
