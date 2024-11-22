@@ -6,6 +6,7 @@ export class CharacterSelection extends Scene
     background: Phaser.GameObjects.Image;
     msg_text : Phaser.GameObjects.Text;
     backButton: Phaser.GameObjects.Text;
+    player: Phaser.GameObjects.Image ;
 
     constructor ()
     {
@@ -15,12 +16,12 @@ export class CharacterSelection extends Scene
     create ()
     {
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+        
+        //Loads the dungeon background
+        this.background = this.add.image(512, 384, 'titleBackground');
+        this.background.scale = 2;
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
-
-        this.msg_text = this.add.text(512, 384, 'CharacterSelection', {
+        this.msg_text = this.add.text(512, 160, 'Choose Your\nCharacter', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
@@ -48,5 +49,17 @@ export class CharacterSelection extends Scene
                 this.scene.start('MainMenu');
             });
         }); //End of BackButton code
+
+
+        this.player = this.add.sprite(500, 400, 'addison');
+        this.player.setScale(5);
+        this.player.setSize(16, 32);
+
+        this.msg_text = this.add.text(512, 600, 'Addison', {
+            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        });
+        this.msg_text.setOrigin(0.5);
     }
 }
