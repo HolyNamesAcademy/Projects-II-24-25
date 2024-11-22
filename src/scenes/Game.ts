@@ -1,4 +1,5 @@
 import { Scene, Utils } from 'phaser';
+import makeButton from '/utils';
 
 export class Game extends Scene
 {
@@ -80,7 +81,6 @@ export class Game extends Scene
             });
         });
 
-        this.winButton = makeButton(Game, 'Win Addison', 35, 150, 600, 'WinScene')
         /*this.winButton = this.add.text(150, 600, 'Win Addison', {
             fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
