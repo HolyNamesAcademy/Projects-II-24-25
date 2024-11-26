@@ -1,4 +1,4 @@
-import { Scene, Utils } from 'phaser';
+import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 
 export class Game extends Scene
@@ -19,13 +19,21 @@ export class Game extends Scene
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
+    initialCoordinates: {x: number, y:number};
+
     constructor ()
     {
         super('Game');
     }
 
+    init (data: { coordinates: {x: number, y: number}})
+    {
+        this.initialCoordinates = data.coordinates;
+    }
+
     create ()
     {
+        console.log(this.initialCoordinates);
         this.camera = this.cameras.main;
 
         this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
@@ -43,7 +51,7 @@ export class Game extends Scene
         this.platforms.create(350, 600, 'platform');
         this.platforms.create(550, 900, 'platform');
 
-        this.player = this.physics.add.sprite(500, 100, 'addison');
+        this.player = this.physics.add.sprite(this.initialCoordinates.x, this.initialCoordinates.y, 'addison');
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
         this.nonCollisionItems.add(this.door);
 
@@ -105,6 +113,11 @@ export class Game extends Scene
                 this.crouching = false;
             } else if (!this.player.body.touching.down) {
                 this.player.anims.play('jump');
+            }
+
+            if (this.player.body.velocity.x == 0)
+            {
+                localStorage.setItem("coords", JSON.stringify(this.player.getCenter()));
             }
 
             const { y: playerY } = this.player.getBottomCenter();
