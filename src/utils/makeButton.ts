@@ -18,10 +18,12 @@ export default function makeButton(
     button.on('pointerover', () =>{
         button.setScale(1.15);
         button.setColor('#edd35f');
+        game.sys.canvas.style.cursor = 'pointer';
     });
     button.on('pointerout', () => {
         button.setScale(1);
         button.setColor('#ffffff');
+        game.sys.canvas.style.cursor = 'default';
     });
     button.on('pointerdown', click);
 
