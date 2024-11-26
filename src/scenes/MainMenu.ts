@@ -39,9 +39,10 @@ export class MainMenu extends Scene
         });
 
         makeButton(this, "Resume", 35, 512, 450, () =>{
-            const coords = localStorage.getItem("coords")
+            const coords = localStorage.getItem("coords");
+            const backY = localStorage.getItem("scrollPos");
             console.log(coords);
-            if(coords != null)
+            if(coords != null && backY != null)
             {
                 console.log(JSON.parse(coords));
                 this.cameras.main.fadeOut(1000, 0, 0, 0);
