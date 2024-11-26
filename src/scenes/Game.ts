@@ -10,8 +10,6 @@ export class Game extends Scene
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
-    dieButton: Phaser.GameObjects.Text;
-    winButton: Phaser.GameObjects.Text;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
     crouching: boolean = false;
