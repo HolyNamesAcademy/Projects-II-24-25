@@ -34,23 +34,29 @@ export class MainMenu extends Scene
         makeButton(this, "Start", 35, 512, 400, () =>{
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('Game');
+                this.scene.start('Game', {coordinates: {x: 500, y: 100}});
             });
         });
 
         makeButton(this, "Resume", 35, 512, 450, () =>{
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                const stage = window.localStorage.getItem('stage');
-                if(stage === '2')
-                {
-                    this.scene.start('StageTwo');
-                }
-                else if(stage === '3')
-                {
-                    this.scene.start('StageThree');
-                }
-            });
+            const coords = localStorage.getItem("coords");
+            const backY = localStorage.getItem("scrollPos");
+            console.log(coords);
+            if(coords != null && backY != null)
+            {
+                console.log(JSON.parse(coords));
+                this.cameras.main.fadeOut(1000, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('Game', {coordinates: JSON.parse(coords)});
+                });
+            }
+            else
+            {
+                this.cameras.main.fadeOut(1000, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('Game', {coordinates: {x: 500, y: 100}});
+                });
+            }
         });
 
         makeButton(this, "Select Character", 35, 512, 500, () =>{
