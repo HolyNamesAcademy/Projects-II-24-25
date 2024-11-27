@@ -19,21 +19,26 @@ export class Game extends Scene
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
-    initialCoordinates: {x: number, y:number};
+    //initialCoordinates: {x: number, y:number};
+    gameProgress:
+    {
+        coordinates: {x: number, y: number};
+        scrollPosition: number;
+    }
 
     constructor ()
     {
         super('Game');
     }
 
-    init (data: { coordinates: {x: number, y: number}})
+    init (data: { coordinates: {x: number, y: number}, scrollPosition: number})
     {
-        this.initialCoordinates = data.coordinates;
+        this.gameProgress = data;
     }
 
     create ()
     {
-        console.log(this.initialCoordinates);
+        console.log(this.gameProgress);
         this.camera = this.cameras.main;
 
         this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
@@ -51,7 +56,7 @@ export class Game extends Scene
         this.platforms.create(350, 600, 'platform');
         this.platforms.create(550, 900, 'platform');
 
-        this.player = this.physics.add.sprite(this.initialCoordinates.x, this.initialCoordinates.y, 'addison');
+        this.player = this.physics.add.sprite(this.gameProgress.coordinates.x, this.gameProgress.coordinates.y, 'addison');
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
         this.nonCollisionItems.add(this.door);
 
@@ -117,7 +122,9 @@ export class Game extends Scene
 
             if (this.player.body.velocity.x == 0)
             {
-                localStorage.setItem("coords", JSON.stringify(this.player.getCenter()));
+                this.gameProgress.scrollPosition = this.backgroundY;
+                this.gameProgress.coordinates = this.player.getCenter();
+                localStorage.setItem("gameProgress", JSON.stringify(this.gameProgress));
             }
 
             const { y: playerY } = this.player.getBottomCenter();

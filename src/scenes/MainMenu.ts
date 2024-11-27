@@ -34,15 +34,14 @@ export class MainMenu extends Scene
         makeButton(this, "Start", 35, 512, 400, () =>{
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('Game', {coordinates: {x: 500, y: 100}});
+                this.scene.start('Game', {coordinates: {x: 500, y: 100}, scrollPosition: 300});
             });
         });
 
         makeButton(this, "Resume", 35, 512, 450, () =>{
             const coords = localStorage.getItem("coords");
-            const backY = localStorage.getItem("scrollPos");
             console.log(coords);
-            if(coords != null && backY != null)
+            if(coords != null)
             {
                 console.log(JSON.parse(coords));
                 this.cameras.main.fadeOut(1000, 0, 0, 0);
