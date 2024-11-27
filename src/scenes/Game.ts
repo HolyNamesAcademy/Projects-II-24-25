@@ -1,4 +1,4 @@
-import { Scene, Utils } from 'phaser';
+import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 
 export class Game extends Scene

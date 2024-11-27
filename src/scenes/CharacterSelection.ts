@@ -1,12 +1,20 @@
 import { Scene } from 'phaser';
+import makeButton from '../utils/makeButton';
 
 export class CharacterSelection extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
     msg_text : Phaser.GameObjects.Text;
+    characterName : Phaser.GameObjects.Text;
     backButton: Phaser.GameObjects.Text;
     player: Phaser.GameObjects.Image ;
+    leftButton: Phaser.GameObjects.Text;
+    rightButton: Phaser.GameObjects.Text;
+    
+    characters: Phaser.GameObjects.Image[];
+    characterNames: string[];
+    currentCharacter: number = 0;
 
     constructor ()
     {
@@ -29,37 +37,68 @@ export class CharacterSelection extends Scene
         this.msg_text.setOrigin(0.5);
 
         //BackButton code
-        this.backButton = this.add.text(100, 700, 'Return', {
-            fontFamily: 'MedievalSharp', fontSize: 35, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
-        this.backButton.setInteractive();
-        this.backButton.on('pointerover', () =>{
-            this.backButton.setScale(1.15);
-            this.backButton.setColor('#edd35f');
-        });
-        this.backButton.on('pointerout', () => {
-            this.backButton.setScale(1);
-            this.backButton.setColor('#ffffff');
-        });
-        this.backButton.on('pointerdown', () =>{
+        makeButton(this, 'Return', 35, 100, 700, () =>{
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('MainMenu');
             });
-        }); //End of BackButton code
+        });
 
-
-        this.player = this.add.sprite(500, 400, 'addison');
-        this.player.setScale(5);
-        this.player.setSize(16, 32);
-
-        this.msg_text = this.add.text(512, 600, 'Addison', {
+        this.characterName = this.add.text(512, 600, 'Addison', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         });
-        this.msg_text.setOrigin(0.5);
+        this.characterName.setOrigin(0.5);
+
+        //ScrollCharacters code left
+        makeButton(this, '<', 35, 400, 400, () =>{
+            
+            if(this.currentCharacter == 0){
+                this.currentCharacter = this.characters.length-1;
+            }
+            this.displayCharacter(this.currentCharacter -  1);
+        });
+        //ScrollCharacters code left
+        makeButton(this, '>', 35, 625, 400, () =>{
+            if(this.currentCharacter == this.characters.length -1){
+                this.currentCharacter = -1;
+            }
+            this.displayCharacter(1 + this.currentCharacter);
+        });
+
+        this.characters = [
+            this.makeCharacter('addison'),
+            this.makeCharacter('allie'),
+            this.makeCharacter('clare'),
+            this.makeCharacter('finley'),
+            this.makeCharacter('lucy'),
+        ];
+        this.characterNames = [
+            "Addison",
+            "Allie",
+            "Clare",
+            "Finley",
+            "Lucy",
+        ];
+        this.displayCharacter(0);
+    }
+
+    makeCharacter(name: string) {
+        const character = this.add.sprite(435, 400, name);
+        character.setScale(10);
+        character.setSize(16, 32);
+        character.setOrigin(0.5);
+        character.setVisible(false);
+        return character;
+    }
+
+    displayCharacter(index: number) {
+        this.characters[this.currentCharacter].setVisible(false);
+        this.characters[index].setVisible(true);
+
+        this.characterName.setText(this.characterNames[index]);
+
+        this.currentCharacter = index;
     }
 }
