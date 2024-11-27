@@ -87,6 +87,8 @@ export class Game extends Scene
                 this.scene.start('DeathScreen');
             });
         });
+
+        this.setInitialPosition(this.gameProgress.scrollPosition);
     }
 
     update () {
@@ -158,6 +160,26 @@ export class Game extends Scene
         this.platforms.incY(y);
         this.nonCollisionItems.incY(y);
         this.player.y += y;
+
+        // Refresh the physics bodies to reflect the changes.
+        this.platforms.refresh();
+        this.nonCollisionItems.refresh();
+    }
+
+    /**
+     * @param scrollPosition the position to set the background and all other objects to
+     */
+    setInitialPosition(scrollPosition: number) {
+        // Set the background to the scrollPosition.
+        this.backgroundY = scrollPosition;
+        this.background.tilePositionY = this.backgroundY;
+
+        // Move all the static objects to align with how far down the player is.
+        // Subtract the scrollPosition from 384 to get the amount to move the objects.
+        // Multiply by -1 to move the objects in the positive Y (down) direction.
+        // Multiply by 2 to move the objects twice the distance as the background.
+        this.platforms.incY((scrollPosition - 384) * -1 * 2);
+        this.nonCollisionItems.incY((scrollPosition - 384) * -1 * 2);
 
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
