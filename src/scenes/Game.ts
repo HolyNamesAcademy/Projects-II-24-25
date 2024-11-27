@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
+import { GameProgress } from '../types';
 
 export class Game extends Scene
 {
@@ -19,19 +20,14 @@ export class Game extends Scene
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
-    //initialCoordinates: {x: number, y:number};
-    gameProgress:
-    {
-        coordinates: {x: number, y: number};
-        scrollPosition: number;
-    }
+    gameProgress: GameProgress;
 
     constructor ()
     {
         super('Game');
     }
 
-    init (data: { coordinates: {x: number, y: number}, scrollPosition: number})
+    init (data: GameProgress)
     {
         this.gameProgress = data;
     }
@@ -56,9 +52,14 @@ export class Game extends Scene
         this.platforms.create(350, 600, 'platform');
         this.platforms.create(550, 900, 'platform');
 
-        this.player = this.physics.add.sprite(this.gameProgress.coordinates.x, this.gameProgress.coordinates.y, 'addison');
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
         this.nonCollisionItems.add(this.door);
+
+        this.player = this.physics.add.sprite(
+            this.gameProgress.coordinates.x,
+            this.gameProgress.coordinates.y,
+            'addison'
+        );
 
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
@@ -67,11 +68,12 @@ export class Game extends Scene
 
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
+            // If the player is inside a platform, move them up.
             this.player.y -= this.scrollSpeed * 2;
         });
 
         this.cursors = this.input?.keyboard?.createCursorKeys();
-      
+
         makeButton(this, "Win Addison", 35, 150, 650, () =>{
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
