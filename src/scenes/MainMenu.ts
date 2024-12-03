@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser';
 import makeButton from '../utils/makeButton';
+import { GameProgress } from '../types';
 
 export class MainMenu extends Scene
 {
@@ -11,6 +12,13 @@ export class MainMenu extends Scene
     continue: GameObjects.Text;
     characters: GameObjects.Text;
     authors: GameObjects.Text;
+
+    defaultGameProgress: GameProgress = {
+        coordinates: {x: 500, y: 100}, 
+        scrollPosition: 384, 
+        skills: {doubleJump: false, climb: false},
+        character: "addison",
+    }
 
     constructor ()
     {
@@ -31,35 +39,21 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
 
 
-        makeButton(this, "Start", 35, 512, 400, () =>{
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('Game', {coordinates: {x: 500, y: 100}});
-            });
+        makeButton(this, "Start", 35, 512, 400, () => {
+            this.startGame();
         });
 
-        makeButton(this, "Resume", 35, 512, 450, () =>{
-            const coords = localStorage.getItem("coords");
-            const backY = localStorage.getItem("scrollPos");
-            console.log(coords);
-            if(coords != null && backY != null)
-            {
-                console.log(JSON.parse(coords));
-                this.cameras.main.fadeOut(1000, 0, 0, 0);
-                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                    this.scene.start('Game', {coordinates: JSON.parse(coords)});
-                });
-            }
-            else
-            {
-                this.cameras.main.fadeOut(1000, 0, 0, 0);
-                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                    this.scene.start('Game', {coordinates: {x: 500, y: 100}});
-                });
+        makeButton(this, "Resume", 35, 512, 450, () => {
+            const gameProgress = localStorage.getItem("gameProgress");
+            console.log(gameProgress);
+            if(gameProgress != null) {
+                this.startGame(JSON.parse(gameProgress));
+            } else {
+                this.startGame();
             }
         });
 
-        makeButton(this, "Select Character", 35, 512, 500, () =>{
+        makeButton(this, "Select Character", 35, 512, 500, () => {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('CharacterSelection');
@@ -72,6 +66,13 @@ export class MainMenu extends Scene
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5);
+    }
 
+    startGame(progress: GameProgress = this.defaultGameProgress)
+    {
+        this.cameras.main.fadeOut(1000, 0, 0, 0);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('Game', progress);
+        });
     }
 }
