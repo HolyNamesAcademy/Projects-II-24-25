@@ -15,8 +15,6 @@ export class Game extends Scene
 
     crouching: boolean = false;
 
-    backgroundX: number = 512;
-    backgroundY: number = 384;
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
@@ -37,7 +35,7 @@ export class Game extends Scene
         console.log(this.gameProgress);
         this.camera = this.cameras.main;
 
-        this.background = this.add.tileSprite(this.backgroundX, this.backgroundY, 512, 384, 'background');
+        this.background = this.add.tileSprite(512, 384, 512, 384, 'background');
         this.background.scale = 2;
 
         this.nonCollisionItems = this.physics.add.staticGroup();
@@ -47,10 +45,13 @@ export class Game extends Scene
         this.platforms.create(200, 300, 'platform');
         this.platforms.create(600, 300, 'platform');
         this.platforms.create(1150, 300, 'platform');
-        this.platforms.create(900, 1800, 'platform');
-        this.platforms.create(900, 600, 'platform');
-        this.platforms.create(350, 600, 'platform');
+
+        this.platforms.create(900, 650, 'platform');
+        this.platforms.create(350, 650, 'platform');
+
         this.platforms.create(550, 900, 'platform');
+
+        this.platforms.create(900, 1800, 'platform');
 
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
         this.nonCollisionItems.add(this.door);
@@ -126,7 +127,6 @@ export class Game extends Scene
 
             if (this.player.body.velocity.x == 0)
             {
-                this.gameProgress.scrollPosition = this.backgroundY;
                 this.gameProgress.coordinates = this.player.getCenter();
                 localStorage.setItem("gameProgress", JSON.stringify(this.gameProgress));
             }
@@ -142,7 +142,7 @@ export class Game extends Scene
 
             if (playerY > 550) {
                 this.scroll(-1 * this.scrollSpeed);
-            } else if (playerY < 200 && this.backgroundY > 384)  {
+            } else if (playerY < 200 && this.gameProgress.scrollPosition > 384)  {
                 this.scroll(this.scrollSpeed);
             }
     }
@@ -153,8 +153,8 @@ export class Game extends Scene
     scroll(y: number) {
         // The background scrolls at half the speed of the player and platforms (It is scaled to 2x).
         // It also scrolls in the opposite direction because it us using a tileSprite.
-        this.backgroundY += 0.5 * y * -1;
-        this.background.tilePositionY = this.backgroundY;
+        this.gameProgress.scrollPosition += 0.5 * y * -1;
+        this.background.tilePositionY = this.gameProgress.scrollPosition;
 
         // Move all platforms and the player in the same direction.
         this.platforms.incY(y);
@@ -171,8 +171,8 @@ export class Game extends Scene
      */
     setInitialPosition(scrollPosition: number) {
         // Set the background to the scrollPosition.
-        this.backgroundY = scrollPosition;
-        this.background.tilePositionY = this.backgroundY;
+        this.gameProgress.scrollPosition = scrollPosition;
+        this.background.tilePositionY = this.gameProgress.scrollPosition;
 
         // Move all the static objects to align with how far down the player is.
         // Subtract the scrollPosition from 384 to get the amount to move the objects.
