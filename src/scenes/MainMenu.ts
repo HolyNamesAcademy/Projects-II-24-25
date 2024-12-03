@@ -13,6 +13,13 @@ export class MainMenu extends Scene
     characters: GameObjects.Text;
     authors: GameObjects.Text;
 
+    defaultGameProgress: GameProgress = {
+        coordinates: {x: 500, y: 100}, 
+        scrollPosition: 384, 
+        skills: {doubleJump: false, climb: false},
+        character: "addison",
+    }
+
     constructor ()
     {
         super('MainMenu');
@@ -61,7 +68,7 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
     }
 
-    startGame(progress: GameProgress = {coordinates: {x: 500, y: 100}, scrollPosition: 384})
+    startGame(progress: GameProgress = this.defaultGameProgress)
     {
         this.cameras.main.fadeOut(1000, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
