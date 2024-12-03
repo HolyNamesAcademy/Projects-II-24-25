@@ -55,16 +55,22 @@ export class CharacterSelection extends Scene
         makeButton(this, '<', 35, 400, 400, () =>{
             
             if(this.currentCharacter == 0){
-                this.currentCharacter = this.characters.length-1;
+                this.currentCharacter = 4;
+                this.displayCharacter(this.currentCharacter);
             }
-            this.displayCharacter(this.currentCharacter -  1);
+            else{
+                this.displayCharacter(this.currentCharacter-1);
+            }
         });
-        //ScrollCharacters code left
+        //ScrollCharacters code right
         makeButton(this, '>', 35, 625, 400, () =>{
-            if(this.currentCharacter == this.characters.length -1){
-                this.currentCharacter = -1;
+            if(this.currentCharacter == 4){
+                this.currentCharacter = 0;
+                this.displayCharacter(this.currentCharacter);
             }
-            this.displayCharacter(1 + this.currentCharacter);
+            else{
+                this.displayCharacter(this.currentCharacter+1);
+            }
         });
 
         this.characters = [

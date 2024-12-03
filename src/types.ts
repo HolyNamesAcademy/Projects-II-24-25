@@ -7,3 +7,14 @@ export interface GameProgress {
   }
   character: "addison";
 }
+
+export interface LayoutObject{
+  type: string;
+  x: number;
+  y: number,
+  scale?: number,
+}
+
+export interface Layout{
+  platforms: LayoutObject [];
+}
