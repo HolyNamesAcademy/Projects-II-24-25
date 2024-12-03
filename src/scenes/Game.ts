@@ -1,6 +1,22 @@
 import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
-import { GameProgress } from '../types';
+import { GameProgress, Layout } from '../types';
+import generatePlatforms from '../utils/generatePlatforms';
+
+const layout: Layout = {
+    platforms: [
+        {type: "platform", x: 200, y: 300},
+        {type: "platform", x: 600, y: 0},
+        {type: "platform", x: 1150, y: 0},
+
+        {type: "platform", x: 350, y: 300},
+        {type: "platform", x: 900, y: 0},
+
+        {type: "platform", x: 550, y: 300},
+
+        {type: "platform", x: 900, y: 900},
+    ]
+}
 
 export class Game extends Scene
 {
@@ -41,17 +57,7 @@ export class Game extends Scene
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-
-        this.platforms.create(200, 300, 'platform');
-        this.platforms.create(600, 300, 'platform');
-        this.platforms.create(1150, 300, 'platform');
-
-        this.platforms.create(900, 650, 'platform');
-        this.platforms.create(350, 650, 'platform');
-
-        this.platforms.create(550, 900, 'platform');
-
-        this.platforms.create(900, 1800, 'platform');
+        generatePlatforms(this.platforms, layout);
 
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
         this.nonCollisionItems.add(this.door);
