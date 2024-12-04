@@ -32,6 +32,8 @@
         "@rollup/plugin-terser": "^0.4.4",
         "@rollup/plugin-typescript": "^11.1.6",
         "@rollup/plugin-url": "^8.0.2",
+        "@stylistic/eslint-plugin": "^2.11.0",
+        "@stylistic/eslint-plugin-ts": "^2.11.0",
         "eslint": "^9.16.0",
         "globals": "^15.8.0",
         "rollup": "^4.17.2",
