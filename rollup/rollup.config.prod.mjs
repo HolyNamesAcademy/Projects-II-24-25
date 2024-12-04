@@ -1,4 +1,4 @@
-import { nodeResolve } from "@rollup/plugin-node-resolve";
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import del from 'rollup-plugin-delete';
 import { babel } from '@rollup/plugin-babel';
@@ -14,15 +14,17 @@ const phasermsg = () => {
     return {
         name: 'phasermsg',
         buildStart() {
+            // eslint-disable-next-line no-undef
             process.stdout.write(`Building for production...\n`);
         },
         buildEnd() {
-            const line = "---------------------------------------------------------";
+            const line = '---------------------------------------------------------';
             const msg = `❤️❤️❤️ Tell us about your game! - games@phaser.io ❤️❤️❤️`;
+            // eslint-disable-next-line no-undef
             process.stdout.write(`${line}\n${msg}\n${line}\n`);
-        }
-    }
-}   
+        },
+    };
+};
 
 export default {
     input: 'src/main.ts',
@@ -30,7 +32,7 @@ export default {
         file: './dist/bundle.js',
         name: 'PhaserTemplate',
         format: 'iife',
-        sourcemap: true
+        sourcemap: true,
     },
     plugins: [
         glslify(),
@@ -42,35 +44,35 @@ export default {
         commonjs({
             include: [
                 'node_modules/eventemitter3/**',
-                'node_modules/phaser/**'
+                'node_modules/phaser/**',
             ],
             exclude: [
                 'node_modules/phaser/src/polyfills/requestAnimationFrame.js',
-                'node_modules/phaser/src/phaser-esm.js'
+                'node_modules/phaser/src/phaser-esm.js',
             ],
             sourceMap: false,
-            ignoreGlobal: false
+            ignoreGlobal: false,
         }),
         terser({
             format: {
-                comments: false
-            }
+                comments: false,
+            },
         }),
         del({
             targets: 'dist/*',
-            runOnce: true
+            runOnce: true,
         }),
         babel({
             babelHelpers: 'bundled',
-            exclude: 'node_modules/**'
+            exclude: 'node_modules/**',
         }),
         url(),
         copy({
             targets: [
                 { src: 'index.html', dest: 'dist/' },
                 { src: 'public/*', dest: 'dist/' },
-            ]
+            ],
         }),
-        phasermsg()
-    ]
+        phasermsg(),
+    ],
 };

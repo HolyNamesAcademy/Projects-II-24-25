@@ -6,15 +6,15 @@ import tseslint from 'typescript-eslint';
 
 export default [
     {
-        files: ['**/*.{js,mjs,cjs,ts}']
+        files: ['**/*.{js,mjs,cjs,ts}'],
     },
     {
-        ignores: ['dist/**', 'node_modules/**']
+        ignores: ['dist/**', 'node_modules/**'],
     },
     {
         languageOptions: { globals: globals.browser },
         plugins: {
-            '@stylistic/ts': stylisticTs
+            '@stylistic/ts': stylisticTs,
         },
     },
     pluginJs.configs.recommended,
