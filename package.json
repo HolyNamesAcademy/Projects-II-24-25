@@ -6,7 +6,9 @@
         "dev": "node log.js dev & rollup --watch --config rollup/rollup.config.dev.mjs --no-treeshake",
         "build": "node log.js build & rollup --config rollup/rollup.config.prod.mjs",
         "dev-nolog": "rollup --watch --config rollup/rollup.config.dev.mjs --no-treeshake",
-        "build-nolog": "rollup --config rollup/rollup.config.prod.mjs"
+        "build-nolog": "rollup --config rollup/rollup.config.prod.mjs",
+        "lint": "eslint .",
+        "lint:fix": "npm run lint -- --fix"
     },
     "repository": {
         "type": "git",
@@ -24,6 +26,7 @@
     },
     "devDependencies": {
         "@babel/preset-env": "^7.24.5",
+        "@eslint/js": "^9.16.0",
         "@rollup/plugin-alias": "^5.1.0",
         "@rollup/plugin-babel": "^6.0.4",
         "@rollup/plugin-commonjs": "^25.0.7",
@@ -31,6 +34,8 @@
         "@rollup/plugin-terser": "^0.4.4",
         "@rollup/plugin-typescript": "^11.1.6",
         "@rollup/plugin-url": "^8.0.2",
+        "eslint": "^9.16.0",
+        "globals": "^15.8.0",
         "rollup": "^4.17.2",
         "rollup-plugin-copy": "^3.5.0",
         "rollup-plugin-delete": "^2.0.0",
@@ -38,6 +43,7 @@
         "rollup-plugin-livereload": "^2.0.5",
         "rollup-plugin-serve": "^1.1.1",
         "tslib": "^2.6.2",
-        "typescript": "^5.4.5"
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.17.0"
     }
 }
