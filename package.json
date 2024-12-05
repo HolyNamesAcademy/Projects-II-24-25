@@ -6,7 +6,8 @@
         "dev": "rollup --watch --config rollup/rollup.config.dev.mjs --no-treeshake",
         "build": "rollup --config rollup/rollup.config.prod.mjs",
         "lint": "eslint .",
-        "lint:fix": "npm run lint -- --fix"
+        "lint:fix": "npm run lint -- --fix",
+        "install:school": "npm config set strict-ssl false; npm install; npm config set strict-ssl true;"
     },
     "repository": {
         "type": "git",
