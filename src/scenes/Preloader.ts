@@ -44,6 +44,10 @@ export class Preloader extends Scene
             'AddisonSpriteSheetRed.png',
             { frameWidth: 32, frameHeight: 32 }
         );
+        this.load.spritesheet('finley', 
+            'finley.png',
+            { frameWidth: 32, frameHeight: 32 }
+        );
     }
 
     create ()
