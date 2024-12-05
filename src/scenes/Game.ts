@@ -5,21 +5,20 @@ import generatePlatforms from '../utils/generatePlatforms';
 
 const layout: Layout = {
     platforms: [
-        {type: "platform", x: 200, y: 300},
-        {type: "platform", x: 600, y: 0},
-        {type: "platform", x: 1150, y: 0},
+        { type: 'platform', x: 200, y: 300 },
+        { type: 'platform', x: 600, y: 0 },
+        { type: 'platform', x: 1150, y: 0 },
 
-        {type: "platform", x: 350, y: 300},
-        {type: "platform", x: 900, y: 0},
+        { type: 'platform', x: 350, y: 300 },
+        { type: 'platform', x: 900, y: 0 },
 
-        {type: "platform", x: 550, y: 300},
+        { type: 'platform', x: 550, y: 300 },
 
-        {type: "platform", x: 900, y: 900},
-    ]
-}
+        { type: 'platform', x: 900, y: 900 },
+    ],
+};
 
-export class Game extends Scene
-{
+export class Game extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.TileSprite;
     msg_text: Phaser.GameObjects.Text;
@@ -36,18 +35,15 @@ export class Game extends Scene
 
     gameProgress: GameProgress;
 
-    constructor ()
-    {
+    constructor() {
         super('Game');
     }
 
-    init (data: GameProgress)
-    {
+    init(data: GameProgress) {
         this.gameProgress = data;
     }
 
-    create ()
-    {
+    create() {
         console.log(this.gameProgress);
         this.camera = this.cameras.main;
 
@@ -65,7 +61,7 @@ export class Game extends Scene
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
             this.gameProgress.coordinates.y,
-            'addison'
+            'addison',
         );
 
         this.player.setBounce(0.2);
@@ -81,14 +77,14 @@ export class Game extends Scene
 
         this.cursors = this.input?.keyboard?.createCursorKeys();
 
-        makeButton(this, "Win Addison", 35, 150, 650, () =>{
+        makeButton(this, 'Win Addison', 35, 150, 650, () => {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('WinScene');
             });
         });
 
-        makeButton(this, "Kill Addison", 35, 150, 700, () =>{
+        makeButton(this, 'Kill Addison', 35, 150, 700, () => {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('DeathScreen');
@@ -98,59 +94,56 @@ export class Game extends Scene
         this.setInitialPosition(this.gameProgress.scrollPosition);
     }
 
-    update () {
-        if (this.cursors?.left.isDown)
-            {
-                this.player.setVelocityX(-160);
+    update() {
+        if (this.cursors?.left.isDown) {
+            this.player.setVelocityX(-160);
 
-                this.player.anims.play('left', true);
-            }
-            else if (this.cursors?.right.isDown)
-            {
-                this.player.setVelocityX(160);
+            this.player.anims.play('left', true);
+        }
+        else if (this.cursors?.right.isDown) {
+            this.player.setVelocityX(160);
 
-                this.player.anims.play('right', true);
-            }
-            else
-            {
-                this.player.setVelocityX(0);
+            this.player.anims.play('right', true);
+        }
+        else {
+            this.player.setVelocityX(0);
 
-                this.player.anims.play('turn');
-            }
+            this.player.anims.play('turn');
+        }
 
-            if (this.cursors?.up.isDown && this.player.body.touching.down)
-            {
-                this.player.anims.play('crouch');//find way to delay jump until crouch frame remains for 1 sec
-                this.crouching = true;
-            }
-            else if (this.cursors?.up.isUp && this.crouching){
-                this.player.anims.play('jump');//find way to stop if after bounce? //no bounce?
-                this.player.setVelocityY(-430);
-                this.crouching = false;
-            } else if (!this.player.body.touching.down) {
-                this.player.anims.play('jump');
-            }
+        if (this.cursors?.up.isDown && this.player.body.touching.down) {
+            this.player.anims.play('crouch');// find way to delay jump until crouch frame remains for 1 sec
+            this.crouching = true;
+        }
+        else if (this.cursors?.up.isUp && this.crouching) {
+            this.player.anims.play('jump');// find way to stop if after bounce? //no bounce?
+            this.player.setVelocityY(-430);
+            this.crouching = false;
+        }
+        else if (!this.player.body.touching.down) {
+            this.player.anims.play('jump');
+        }
 
-            if (this.player.body.velocity.x == 0)
-            {
-                this.gameProgress.coordinates = this.player.getCenter();
-                localStorage.setItem("gameProgress", JSON.stringify(this.gameProgress));
-            }
+        if (this.player.body.velocity.x == 0) {
+            this.gameProgress.coordinates = this.player.getCenter();
+            localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
+        }
 
-            const { y: playerY } = this.player.getBottomCenter();
+        const { y: playerY } = this.player.getBottomCenter();
 
-            if (playerY > 2000) {
-                this.scene.start('DeathScreen');
-            }
-            if (playerY > 750) {
-                this.player.setCollideWorldBounds(false);
-            }
+        if (playerY > 2000) {
+            this.scene.start('DeathScreen');
+        }
+        if (playerY > 750) {
+            this.player.setCollideWorldBounds(false);
+        }
 
-            if (playerY > 550) {
-                this.scroll(-1 * this.scrollSpeed);
-            } else if (playerY < 200 && this.gameProgress.scrollPosition > 384)  {
-                this.scroll(this.scrollSpeed);
-            }
+        if (playerY > 550) {
+            this.scroll(-1 * this.scrollSpeed);
+        }
+        else if (playerY < 200 && this.gameProgress.scrollPosition > 384) {
+            this.scroll(this.scrollSpeed);
+        }
     }
 
     /**

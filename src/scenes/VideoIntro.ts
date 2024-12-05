@@ -1,18 +1,15 @@
 import { Scene } from 'phaser';
 
-export class VideoIntro extends Scene
-{
+export class VideoIntro extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
-    msg_text : Phaser.GameObjects.Text;
+    msg_text: Phaser.GameObjects.Text;
 
-    constructor ()
-    {
+    constructor() {
         super('VideoIntro');
     }
 
-    create ()
-    {
+    create() {
         window.localStorage.setItem('stage', '2');
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x00ff00);
@@ -23,14 +20,12 @@ export class VideoIntro extends Scene
         this.msg_text = this.add.text(512, 384, 'StageTwo', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
-            align: 'center'
+            align: 'center',
         });
         this.msg_text.setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
-
             this.scene.start('StageThree');
-
         });
     }
 }

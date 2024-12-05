@@ -7,10 +7,10 @@ import { CharacterSelection } from './scenes/CharacterSelection';
 import { DeathScreen } from './scenes/DeathScreen';
 import { StageTwo } from './scenes/StageTwo';
 import { StageThree } from './scenes/StageThree';
-import {WinScene} from './scenes/WinScene';
-import {VideoIntro} from './scenes/VideoIntro';
+import { WinScene } from './scenes/WinScene';
+import { VideoIntro } from './scenes/VideoIntro';
 
-import { Game, Types } from "phaser";
+import { Game, Types } from 'phaser';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -23,14 +23,14 @@ const config: Types.Core.GameConfig = {
     pixelArt: true,
     scale: {
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { x: 0, y: 550 },
-            debug: false
-        }
+            debug: false,
+        },
     },
     scene: [
         Boot,
@@ -43,8 +43,8 @@ const config: Types.Core.GameConfig = {
         DeathScreen,
         StageTwo,
         StageThree,
-        WinScene
-    ]
+        WinScene,
+    ],
 };
 
 export default new Game(config);
