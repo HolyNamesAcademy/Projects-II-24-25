@@ -25,6 +25,7 @@ export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+    vine: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
@@ -57,6 +58,10 @@ export class Game extends Scene {
 
         this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
         this.nonCollisionItems.add(this.door);
+
+        this.vine = this.physics.add.staticSprite(300, 500, 'vine', 0).setScale(5);
+        this.nonCollisionItems.add(this.vine);
+        this.vine.anims.play('vine');
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
@@ -95,6 +100,8 @@ export class Game extends Scene {
     }
 
     update() {
+        this.vine.anims.play('vine');
+
         if (this.cursors?.left.isDown) {
             this.player.setVelocityX(-160);
 
