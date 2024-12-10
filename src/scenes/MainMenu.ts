@@ -50,13 +50,6 @@ export class MainMenu extends Scene {
             }
         });
 
-        makeButton(this, 'Select Character', 35, 512, 500, () => {
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('CharacterSelection');
-            });
-        });
-
         // Loads the names of the authors at botton of the screen
         this.authors = this.add.text(512, 700, '\nAllie Staiger       Addison Theis       Clare Kanazawa        Finley McMurtrie       Lucy Martenstein', {
             fontFamily: 'MedievalSharp', fontSize: 20, color: '#ffffff',
@@ -65,10 +58,15 @@ export class MainMenu extends Scene {
         }).setOrigin(0.5);
     }
 
-    startGame(progress: GameProgress = this.defaultGameProgress) {
+    startGame(progress: GameProgress | null = null) {
         this.cameras.main.fadeOut(1000, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('Game', progress);
+            if (progress === null) {
+                this.scene.start('characterSelection', this.defaultGameProgress);
+            }
+            else {
+                this.scene.start('Game', progress);
+            }
         });
     }
 }

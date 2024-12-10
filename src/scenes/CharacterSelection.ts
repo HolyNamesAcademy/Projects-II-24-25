@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
+import { GameProgress } from '../types';
 
 export class CharacterSelection extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -13,10 +14,16 @@ export class CharacterSelection extends Scene {
 
     characters: Phaser.GameObjects.Image[];
     characterNames: string[];
+    characterKeys: string[];
     currentCharacter: number = 0;
+    gameProgress: GameProgress;
 
     constructor() {
         super('CharacterSelection');
+    }
+
+    init(data: GameProgress) {
+        this.gameProgress = data;
     }
 
     create() {
@@ -64,6 +71,13 @@ export class CharacterSelection extends Scene {
             else
                 this.displayCharacter(1 + this.currentCharacter);
         });
+        makeButton(this, 'Start', 35, 924, 700, () => {
+            this.gameProgress.character = this.characterKeys[this.currentCharacter];
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.start('Game', this.gameProgress);
+            });
+        });
 
         this.characters = [
             this.makeCharacter('addison'),
@@ -78,6 +92,13 @@ export class CharacterSelection extends Scene {
             'Clare',
             'Finley',
             'Lucy',
+        ];
+        this.characterKeys = [
+            'addison',
+            'allie',
+            'clare',
+            'finley',
+            'lucy',
         ];
         this.displayCharacter(0);
     }

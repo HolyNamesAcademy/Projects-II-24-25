@@ -5,7 +5,7 @@ export interface GameProgress {
         doubleJump: boolean;
         climb: boolean;
     };
-    character: 'addison';
+    character: string;
 }
 
 export interface LayoutObject {
