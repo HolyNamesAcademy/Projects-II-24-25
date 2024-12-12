@@ -32,8 +32,8 @@ export class Preloader extends Scene {
 
         this.load.image('background', 'Wall.png');
 
-        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 34 });
-        this.load.spritesheet('basicKey', '.png', { frameWidth: 38, frameHeight: 34 });
+        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 32 });
+        this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
 
         this.load.spritesheet('addison',
             'AddisonSpriteSheetRed.png',
@@ -77,6 +77,18 @@ export class Preloader extends Scene {
             key: 'crouch',
             frames: [{ key: 'addison', frame: 6 }],
             frameRate: 30,
+        });
+        this.anims.create({
+            key: 'key-left',
+            frames: this.anims.generateFrameNumbers('basicKey', { frames: [0,1,2] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'key-right',
+            frames: this.anims.generateFrameNumbers('basicKey', { frames: [3,4,5] }),
+            frameRate: 5,
+            repeat: -1,
         });
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
