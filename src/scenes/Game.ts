@@ -1,13 +1,16 @@
 import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress, Layout } from '../types';
-import generatePlatforms from '../utils/generatePlatforms';
+import generateLevel from '../utils/generateLevel';
 
 const layout: Layout = {
-    platforms: [
+    objects: [
         { type: 'platform', x: 200, y: 300 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 1150, y: 0 },
+        { type: 'door', x: 200, y: 0 },
+        { type: 'vine', x: 700, y: 0 },
+        { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
         { type: 'platform', x: 350, y: 300 },
         { type: 'platform', x: 900, y: 0 },
@@ -26,6 +29,7 @@ export class Game extends Scene {
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     basicKey: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+    vines: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
@@ -54,10 +58,7 @@ export class Game extends Scene {
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-        generatePlatforms(this.platforms, layout);
-
-        this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
-        this.nonCollisionItems.add(this.door);
+        generateLevel(this, this.platforms, layout);
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
