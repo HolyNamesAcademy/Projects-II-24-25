@@ -24,6 +24,7 @@ export class Game extends Scene {
     msg_text: Phaser.GameObjects.Text;
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    basicKey: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
@@ -63,6 +64,8 @@ export class Game extends Scene {
             this.gameProgress.coordinates.y,
             'addison',
         );
+
+        this.basicKey = this.physics.add.sprite(600, 400, 'basicKey');
 
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
