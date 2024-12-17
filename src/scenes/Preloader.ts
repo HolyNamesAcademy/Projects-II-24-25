@@ -50,7 +50,7 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'vine',
             frames: this.anims.generateFrameNumbers('vine', { frames: [0, 1] }),
-            frameRate: 1,
+            frameRate: 2,
             repeat: -1,
         });
 

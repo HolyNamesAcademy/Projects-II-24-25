@@ -16,5 +16,5 @@ export interface LayoutObject {
 }
 
 export interface Layout {
-    platforms: LayoutObject [];
+    objects: LayoutObject [];
 }
