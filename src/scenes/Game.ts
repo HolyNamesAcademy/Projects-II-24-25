@@ -8,6 +8,9 @@ const layout: Layout = {
         { type: 'platform', x: 200, y: 300 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 1150, y: 0 },
+        { type: 'door', x: 200, y: 0 },
+        { type: 'vine', x: 700, y: 0 },
+        { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
         { type: 'platform', x: 350, y: 300 },
         { type: 'platform', x: 900, y: 0 },
@@ -55,17 +58,6 @@ export class Game extends Scene {
 
         this.platforms = this.physics.add.staticGroup();
         generateLevel(this, this.platforms, layout);
-
-        this.door = this.physics.add.staticSprite(200, 190, 'door', 0).setScale(5.5);
-        this.nonCollisionItems.add(this.door);
-
-        // this.vines = this.physics.add.staticSprite(800, 346, 'vine', 0).setScale(5);
-        // this.nonCollisionItems.add(this.vines);
-        // this.vines.anims.play('vine');
-
-        // this.vine = this.physics.add.staticSprite(800, 464, 'vine', 0).setScale(5);
-        // this.nonCollisionItems.add(this.vine);
-        // this.vine.anims.play('vine');
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
