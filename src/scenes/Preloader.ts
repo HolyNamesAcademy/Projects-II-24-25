@@ -36,6 +36,8 @@ export class Preloader extends Scene {
         
         this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
 
+        this.load.spritesheet('vine', 'Vines.png', { frameWidth: 9, frameHeight: 24 });
+
         this.load.spritesheet('addison',
             'AddisonSpriteSheetRed.png',
             { frameWidth: 32, frameHeight: 32 },
@@ -47,6 +49,13 @@ export class Preloader extends Scene {
     }
 
     create() {
+        this.anims.create({
+            key: 'vine',
+            frames: this.anims.generateFrameNumbers('vine', { frames: [0, 1] }),
+            frameRate: 2,
+            repeat: -1,
+        });
+
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
         this.anims.create({
