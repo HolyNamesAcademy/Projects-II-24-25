@@ -14,6 +14,7 @@ const layout: Layout = {
 
         { type: 'platform', x: 350, y: 300 },
         { type: 'platform', x: 900, y: 0 },
+        { type: 'pedestal', x: 900, y: 0 },
 
         { type: 'platform', x: 550, y: 300 },
 
@@ -58,7 +59,10 @@ export class Game extends Scene {
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-        generateLevel(this, this.platforms, layout);
+        const { doors, vines, pedestals } = generateLevel(this, this.platforms, layout);
+        this.nonCollisionItems.addMultiple(doors);
+        this.nonCollisionItems.addMultiple(vines);
+        this.nonCollisionItems.addMultiple(pedestals);
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
@@ -120,11 +124,13 @@ export class Game extends Scene {
             this.player.anims.play('crouch');// find way to delay jump until crouch frame remains for 1 sec
             this.crouching = true;
         }
+
         else if (this.cursors?.up.isUp && this.crouching) {
             this.player.anims.play('jump');// find way to stop if after bounce? //no bounce?
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
+
         else if (!this.player.body.touching.down) {
             this.player.anims.play('jump');
         }

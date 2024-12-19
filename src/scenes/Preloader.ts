@@ -33,10 +33,12 @@ export class Preloader extends Scene {
         this.load.image('background', 'Wall.png');
 
         this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 32 });
-        
+
         this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
 
         this.load.spritesheet('vine', 'Vines.png', { frameWidth: 9, frameHeight: 24 });
+
+        this.load.spritesheet('keyPedestal', 'Pedestal_Frames.png', { frameWidth: 36, frameHeight: 84 });
 
         this.load.spritesheet('addison',
             'AddisonSpriteSheetRed.png',
@@ -52,6 +54,13 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'vine',
             frames: this.anims.generateFrameNumbers('vine', { frames: [0, 1] }),
+            frameRate: 2,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'keyPedestal',
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [2, 6] }),
             frameRate: 2,
             repeat: -1,
         });
@@ -90,13 +99,13 @@ export class Preloader extends Scene {
         });
         this.anims.create({
             key: 'key-left',
-            frames: this.anims.generateFrameNumbers('basicKey', { frames: [0,1,2] }),
+            frames: this.anims.generateFrameNumbers('basicKey', { frames: [0, 1, 2] }),
             frameRate: 5,
             repeat: -1,
         });
         this.anims.create({
             key: 'key-right',
-            frames: this.anims.generateFrameNumbers('basicKey', { frames: [3,4,5] }),
+            frames: this.anims.generateFrameNumbers('basicKey', { frames: [3, 4, 5] }),
             frameRate: 5,
             repeat: -1,
         });
