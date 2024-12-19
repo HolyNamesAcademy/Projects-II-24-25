@@ -60,8 +60,8 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'keyPedestal',
-            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [2, 6] }),
-            frameRate: 2,
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [2, 3, 4, 5, 6] }),
+            frameRate: 3,
             repeat: -1,
         });
 

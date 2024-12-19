@@ -39,9 +39,11 @@ export default function generateLevel(
                 .setOrigin(0.5, 1);
             doors.push(trapdoor);
         }
-        else if (type === 'pedestal') {
-            const pedestal = game.physics.add.staticSprite(x, currentY, 'pedestal', 0)
-                .setOrigin(0.5, 1);
+        else if (type === 'keyPedestal') {
+            const pedestal = game.physics.add.staticSprite(x, currentY, 'keyPedestal', 2)
+                .setOrigin(0.5, 1)
+                .setScale(2);
+            pedestal.anims.play('keyPedestal');
             pedestals.push(pedestal);
         }
     });

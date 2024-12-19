@@ -14,7 +14,7 @@ const layout: Layout = {
 
         { type: 'platform', x: 350, y: 300 },
         { type: 'platform', x: 900, y: 0 },
-        { type: 'pedestal', x: 900, y: 0 },
+        { type: 'keyPedestal', x: 900, y: 0 },
 
         { type: 'platform', x: 550, y: 300 },
 
