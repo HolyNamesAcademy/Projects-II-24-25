@@ -13,8 +13,9 @@ export interface LayoutObject {
     x: number;
     y: number;
     scale?: number;
+    verticalOffset?: number;
 }
 
 export interface Layout {
-    platforms: LayoutObject [];
+    objects: LayoutObject [];
 }
