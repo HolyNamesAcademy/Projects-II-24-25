@@ -42,7 +42,8 @@ export default function generateLevel(
         else if (type === 'keyPedestal') {
             const pedestal = game.physics.add.staticSprite(x, currentY, 'keyPedestal', 2)
                 .setOrigin(0.5, 1)
-                .setScale(2);
+                .setScale(2)
+                .setInteractive();
             pedestal.anims.play('keyPedestal');
             pedestals.push(pedestal);
         }

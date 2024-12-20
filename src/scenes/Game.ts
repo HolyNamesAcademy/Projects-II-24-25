@@ -101,6 +101,19 @@ export class Game extends Scene {
         });
 
         this.setInitialPosition(this.gameProgress.scrollPosition);
+
+        pedestals.forEach((pedestal) => {
+            pedestal.on('pointerover', () => {
+                pedestal.anims.play('keyPedestal', false);
+                pedestal.anims.play('pedestalFlash', true);
+            });
+        });
+        pedestals.forEach((pedestal) => {
+            pedestal.on('pointerout', () => {
+                pedestal.anims.play('pedestalFlash', false);
+                pedestal.anims.play('keyPedestal', true);
+            });
+        });
     }
 
     update() {
