@@ -30,7 +30,7 @@ export class Preloader extends Scene {
 
         this.load.image('background', 'Wall.png');
 
-        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 32 });
+        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
 
         this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
 
