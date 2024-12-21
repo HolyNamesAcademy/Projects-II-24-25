@@ -50,6 +50,18 @@ export class Preloader extends Scene {
 
     create() {
         this.anims.create({
+            key: 'openDoor',
+            frames: this.anims.generateFrameNumbers('door', { frames: [1, 2] }),
+            frameRate: 2,
+        });
+
+        this.anims.create({
+            key: 'closeDoor',
+            frames: this.anims.generateFrameNumbers('door', { frames: [2, 1, 0] }),
+            frameRate: 2,
+        });
+
+        this.anims.create({
             key: 'vine',
             frames: this.anims.generateFrameNumbers('vine', { frames: [0, 1] }),
             frameRate: 2,

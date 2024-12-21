@@ -31,7 +31,8 @@ export default function generateLevel(
         else if (type === 'door') {
             const door = game.physics.add.staticSprite(x, currentY, 'door', 0)
                 .setOrigin(0.5, 1)
-                .setScale(5.5);
+                .setScale(5.5)
+                .setInteractive();
             doors.push(door);
         }
         else if (type === 'trapdoor') {

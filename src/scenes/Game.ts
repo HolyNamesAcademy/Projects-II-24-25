@@ -114,6 +114,17 @@ export class Game extends Scene {
                 pedestal.anims.play('keyPedestal', true);
             });
         });
+
+        doors.forEach((door) => {
+            door.on('pointerdown', () => {
+                if (anims.currentAnim() === 'closeDoor') {
+                    door.anims.play('openDoor', true);
+                }
+                else {
+                    door.anims.play('closeDoor', true);
+                }
+            });
+        });
     }
 
     update() {
