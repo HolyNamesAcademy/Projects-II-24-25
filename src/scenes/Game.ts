@@ -14,7 +14,8 @@ const layout: Layout = {
 
         { type: 'platform', x: 350, y: 300 },
         { type: 'platform', x: 900, y: 0 },
-        { type: 'keyPedestal', x: 900, y: 0 },
+        { type: 'keyPedestal', x: 350, y: 0 },
+        { type: 'spikes', x: 900, y: 0 },
 
         { type: 'platform', x: 550, y: 300 },
 
@@ -59,10 +60,11 @@ export class Game extends Scene {
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-        const { doors, vines, pedestals } = generateLevel(this, this.platforms, layout);
+        const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, layout);
         this.nonCollisionItems.addMultiple(doors);
         this.nonCollisionItems.addMultiple(vines);
         this.nonCollisionItems.addMultiple(pedestals);
+        this.nonCollisionItems.addMultiple(spikes);
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
@@ -114,6 +116,8 @@ export class Game extends Scene {
                 pedestal.anims.play('keyPedestal', true);
             });
         });
+
+        this.physics.add.collider(this.player, spikes);
 
         // doors.forEach((door) => {
         //     door.on('pointerdown', () => {

@@ -50,11 +50,12 @@ export default function generateLevel(
             pedestals.push(pedestal);
         }
         else if (type === 'spikes') {
-            const spike = game.physics.add.staticSprite(x, currentY, 'spike', 0)
+            const spike = game.physics.add.staticSprite(x, currentY, 'spikes', 0)
                 .setOrigin(0.5, 1)
-                .setInteractive();
+                .setInteractive()
+                .setScale(3);
             spikes.push(spike);
         }
     });
-    return { vines, doors, pedestals };
+    return { vines, doors, pedestals, spikes };
 }
