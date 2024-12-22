@@ -36,6 +36,8 @@ export class Preloader extends Scene {
 
         this.load.spritesheet('vine', 'Vines.png', { frameWidth: 9, frameHeight: 24 });
 
+        this.load.spritesheet('spikes', 'Spikes.png', { frameWidth: 10, frameHeight: 10 });
+
         this.load.spritesheet('keyPedestal', 'Pedestal_Frames.png', { frameWidth: 36, frameHeight: 84 });
 
         this.load.spritesheet('addison',
