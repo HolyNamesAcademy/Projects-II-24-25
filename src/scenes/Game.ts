@@ -12,12 +12,12 @@ const layout: Layout = {
         { type: 'vine', x: 700, y: 0 },
         { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
-        { type: 'platform', x: 350, y: 300 },
+        { type: 'platform', x: 350, y: 400 },
         { type: 'platform', x: 900, y: 0 },
         { type: 'keyPedestal', x: 350, y: 0 },
-        { type: 'spikes', x: 900, y: 0 },
+        { type: 'spikes', x: 920, y: 0 },
 
-        { type: 'platform', x: 550, y: 300 },
+        { type: 'platform', x: 550, y: 400 },
 
         { type: 'platform', x: 900, y: 900 },
     ],
@@ -72,8 +72,8 @@ export class Game extends Scene {
             'addison',
         );
 
-        this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
-        this.nonCollisionItems.add(this.basicKey);
+        // this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
+        // this.nonCollisionItems.add(this.basicKey);
 
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
@@ -114,6 +114,12 @@ export class Game extends Scene {
             pedestal.on('pointerout', () => {
                 pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
+            });
+        });
+
+        spikes.forEach((spike) => {
+            spike.on('collide', () => {
+                this.scene.start('DeathScreen');
             });
         });
 
