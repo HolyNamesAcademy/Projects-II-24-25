@@ -14,12 +14,18 @@ const layout: Layout = {
 
         { type: 'platform', x: 350, y: 400 },
         { type: 'platform', x: 900, y: 0 },
-        { type: 'keyPedestal', x: 350, y: 0 },
         { type: 'spikes', x: 920, y: 0 },
+        { type: 'vine', x: 200, y: 0 },
+        { type: 'vine', x: 200, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 250, y: 0 },
+        { type: 'vine', x: 250, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 250, y: 0, verticalOffset: 48 },
 
         { type: 'platform', x: 550, y: 400 },
-
-        { type: 'platform', x: 900, y: 900 },
+        { type: 'platform', x: 200, y: 0 },
+        { type: 'platform', x: 700, y: 0 },
+        { type: 'door', x: 150, y: 0 },
+        { type: 'keyPedestal', x: 600, y: 0 },
     ],
 };
 
@@ -30,8 +36,6 @@ export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-    door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-    vines: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
@@ -114,6 +118,14 @@ export class Game extends Scene {
             pedestal.on('pointerout', () => {
                 pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
+            });
+        });
+        pedestals.forEach((pedestal) => {
+            pedestal.on('pointerdown', () => {
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('StageThree');
+                });
             });
         });
 
