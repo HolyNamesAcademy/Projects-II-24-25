@@ -117,13 +117,9 @@ export class Game extends Scene {
             });
         });
 
-        spikes.forEach((spike) => {
-            spike.on('collide', () => {
-                this.scene.start('DeathScreen');
-            });
+        this.physics.add.collider(this.player, spikes, () => {
+            this.scene.start('DeathScreen');
         });
-
-        this.physics.add.collider(this.player, spikes);
 
         doors.forEach((door) => {
             door.on('pointerdown', () => {
