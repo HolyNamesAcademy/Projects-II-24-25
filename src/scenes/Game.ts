@@ -125,16 +125,16 @@ export class Game extends Scene {
 
         this.physics.add.collider(this.player, spikes);
 
-        // doors.forEach((door) => {
-        //     door.on('pointerdown', () => {
-        //         if (anims.currentAnim() === 'closeDoor') {
-        //             door.anims.play('openDoor', true);
-        //         }
-        //         else {
-        //             door.anims.play('closeDoor', true);
-        //         }
-        //     });
-        // });
+        doors.forEach((door) => {
+            door.on('pointerdown', () => {
+                if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
+                    door.anims.play('closeDoor', true);
+                }
+                else {
+                    door.anims.play('openDoor', true);
+                }
+            });
+        });
     }
 
     update() {
