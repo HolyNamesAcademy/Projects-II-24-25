@@ -145,6 +145,12 @@ export class Game extends Scene {
         });
     }
 
+    createWindow(x: number, y: number, width: number, height: number, a: Scene) {
+        const zone = this.add.zone(x, y, width, height).setInteractive();
+        const scene1 = new Scene (zone);
+        this.scene.add('popup', scene1);
+    }
+
     update() {
         if (this.cursors?.left.isDown) {
             this.player.setVelocityX(-160);
