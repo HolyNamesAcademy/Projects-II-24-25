@@ -142,6 +142,11 @@ export class Game extends Scene {
                 }
             });
         });
+
+        this.physics.add.collider(this.player, this.basicKey, () =>{
+            this.basicKey.setVisible(false);
+            console.log("hiding key");
+        });
     }
 
     update() {
