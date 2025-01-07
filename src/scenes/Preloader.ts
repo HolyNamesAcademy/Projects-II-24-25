@@ -30,11 +30,13 @@ export class Preloader extends Scene {
 
         this.load.image('background', 'Wall.png');
 
-        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 32 });
+        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
 
         this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
 
         this.load.spritesheet('vine', 'Vines.png', { frameWidth: 9, frameHeight: 24 });
+
+        this.load.spritesheet('spikes', 'spikes1.png', { frameWidth: 53, frameHeight: 18 });
 
         this.load.spritesheet('keyPedestal', 'Pedestal_Frames.png', { frameWidth: 36, frameHeight: 84 });
 
@@ -50,6 +52,18 @@ export class Preloader extends Scene {
 
     create() {
         this.anims.create({
+            key: 'openDoor',
+            frames: this.anims.generateFrameNumbers('door', { frames: [1, 2] }),
+            frameRate: 4,
+        });
+
+        this.anims.create({
+            key: 'closeDoor',
+            frames: this.anims.generateFrameNumbers('door', { frames: [2, 1, 0] }),
+            frameRate: 4,
+        });
+
+        this.anims.create({
             key: 'vine',
             frames: this.anims.generateFrameNumbers('vine', { frames: [0, 1] }),
             frameRate: 2,
@@ -63,38 +77,16 @@ export class Preloader extends Scene {
             repeat: -1,
         });
 
+        this.anims.create({
+            key: 'pedestalFlash',
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [7] }),
+            frameRate: 3,
+            repeat: -1,
+        });
+
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [2, 12] }),
-            frameRate: 5,
-            repeat: -1,
-        });
 
-        this.anims.create({
-            key: 'turn',
-            frames: [{ key: 'addison', frame: 0 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [1, 11] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'jump',
-            frames: [{ key: 'addison', frame: 7 }],
-            frameRate: 5,
-        });
-        this.anims.create({
-            key: 'crouch',
-            frames: [{ key: 'addison', frame: 6 }],
-            frameRate: 30,
-        });
         this.anims.create({
             key: 'key-left',
             frames: this.anims.generateFrameNumbers('basicKey', { frames: [0, 1, 2] }),
@@ -107,8 +99,158 @@ export class Preloader extends Scene {
             frameRate: 5,
             repeat: -1,
         });
-
+        this.makeAddisonAnimations();
+        this.makeFinleyAnimations();
+        this.makeBeanieFinleyAnimations();
+        this.makeCapFinleyAnimations();
+        this.makeBaldFinleyAnimations();
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
+    }
+
+    makeAddisonAnimations() {
+        this.anims.create({
+            key: 'addison-left',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [2, 12] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'addison-forward',
+            frames: [{ key: 'addison', frame: 0 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'addison-right',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [1, 11] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'addison-jump',
+            frames: [{ key: 'addison', frame: 7 }],
+            frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'addison-crouch',
+            frames: [{ key: 'addison', frame: 6 }],
+            frameRate: 30,
+        });
+    }
+
+    makeFinleyAnimations() {
+        this.anims.create({
+            key: 'finley-left',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [5, 7] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'finley-forward',
+            frames: [{ key: 'finley', frame: 0 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'finley-right',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [8, 10] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'finley-jump',
+            frames: [{ key: 'finley', frame: 4 }],
+            frameRate: 5,
+        });
+    }
+
+    makeBeanieFinleyAnimations() {
+        this.anims.create({
+            key: 'beanieFinley-left',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [17, 19] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'beanieFinley-forward',
+            frames: [{ key: 'finley', frame: 12 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'beanieFinley-right',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [20, 22] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'beanieFinley-jump',
+            frames: [{ key: 'finley', frame: 16 }],
+            frameRate: 5,
+        });
+    }
+
+    makeCapFinleyAnimations() {
+        this.anims.create({
+            key: 'capFinley-left',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [29, 31] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'capFinley-forward',
+            frames: [{ key: 'finley', frame: 24 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'capFinley-right',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [32, 34] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'capFinley-jump',
+            frames: [{ key: 'finley', frame: 28 }],
+            frameRate: 5,
+        });
+    }
+
+    makeBaldFinleyAnimations() {
+        this.anims.create({
+            key: 'baldFinley-left',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [41, 43] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'baldFinley-forward',
+            frames: [{ key: 'finley', frame: 36 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'baldFinley-right',
+            frames: this.anims.generateFrameNumbers('finley', { frames: [44, 46] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'baldFinley-jump',
+            frames: [{ key: 'finley', frame: 40 }],
+            frameRate: 5,
+        });
     }
 }

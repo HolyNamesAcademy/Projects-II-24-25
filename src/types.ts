@@ -14,6 +14,7 @@ export interface LayoutObject {
     y: number;
     scale?: number;
     verticalOffset?: number;
+    nextScene?: string;
 }
 
 export interface Layout {

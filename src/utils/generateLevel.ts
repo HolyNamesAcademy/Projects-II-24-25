@@ -9,6 +9,7 @@ export default function generateLevel(
     const vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     const doors: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     const pedestals: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
+    const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
     let currentY = 0;
     layout.objects.forEach((object: LayoutObject) => {
         const { x, y, type, verticalOffset } = object;
@@ -31,7 +32,8 @@ export default function generateLevel(
         else if (type === 'door') {
             const door = game.physics.add.staticSprite(x, currentY, 'door', 0)
                 .setOrigin(0.5, 1)
-                .setScale(5.5);
+                .setScale(5.5)
+                .setInteractive();
             doors.push(door);
         }
         else if (type === 'trapdoor') {
@@ -42,10 +44,18 @@ export default function generateLevel(
         else if (type === 'keyPedestal') {
             const pedestal = game.physics.add.staticSprite(x, currentY, 'keyPedestal', 2)
                 .setOrigin(0.5, 1)
-                .setScale(2);
+                .setScale(2)
+                .setInteractive();
             pedestal.anims.play('keyPedestal');
             pedestals.push(pedestal);
         }
+        else if (type === 'spikes') {
+            const spike = game.physics.add.staticSprite(x, currentY, 'spikes', 0)
+                .setOrigin(0.5, 1)
+                .setInteractive()
+                .setScale(3);
+            spikes.push(spike);
+        }
     });
-    return { vines, doors, pedestals };
+    return { vines, doors, pedestals, spikes };
 }

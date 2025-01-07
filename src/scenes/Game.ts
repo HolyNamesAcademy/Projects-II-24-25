@@ -12,13 +12,20 @@ const layout: Layout = {
         { type: 'vine', x: 700, y: 0 },
         { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
-        { type: 'platform', x: 350, y: 300 },
+        { type: 'platform', x: 350, y: 400 },
         { type: 'platform', x: 900, y: 0 },
-        { type: 'keyPedestal', x: 900, y: 0 },
+        { type: 'spikes', x: 920, y: 0 },
+        { type: 'vine', x: 200, y: 0 },
+        { type: 'vine', x: 200, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 250, y: 0 },
+        { type: 'vine', x: 250, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 250, y: 0, verticalOffset: 48 },
 
-        { type: 'platform', x: 550, y: 300 },
-
-        { type: 'platform', x: 900, y: 900 },
+        { type: 'platform', x: 550, y: 400 },
+        { type: 'platform', x: 200, y: 0 },
+        { type: 'platform', x: 700, y: 0 },
+        { type: 'door', x: 150, y: 0 },
+        { type: 'keyPedestal', x: 600, y: 0 },
     ],
 };
 
@@ -29,8 +36,6 @@ export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-    door: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-    vines: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
@@ -59,20 +64,20 @@ export class Game extends Scene {
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-        const { doors, vines, pedestals } = generateLevel(this, this.platforms, layout);
+        const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, layout);
         this.nonCollisionItems.addMultiple(doors);
         this.nonCollisionItems.addMultiple(vines);
         this.nonCollisionItems.addMultiple(pedestals);
+        this.nonCollisionItems.addMultiple(spikes);
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
             this.gameProgress.coordinates.y,
-            'addison',
+            this.gameProgress.character,
         );
 
         this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
         this.nonCollisionItems.add(this.basicKey);
-
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
@@ -101,38 +106,79 @@ export class Game extends Scene {
         });
 
         this.setInitialPosition(this.gameProgress.scrollPosition);
+
+        pedestals.forEach((pedestal) => {
+            pedestal.on('pointerover', () => {
+                pedestal.anims.play('keyPedestal', false);
+                pedestal.anims.play('pedestalFlash', true);
+            });
+        });
+        pedestals.forEach((pedestal) => {
+            pedestal.on('pointerout', () => {
+                pedestal.anims.play('pedestalFlash', false);
+                pedestal.anims.play('keyPedestal', true);
+            });
+        });
+        pedestals.forEach((pedestal) => {
+            pedestal.on('pointerdown', () => {
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('StageThree');
+                });
+            });
+        });
+
+        this.physics.add.collider(this.player, spikes, () => {
+            this.scene.start('DeathScreen');
+        });
+
+        doors.forEach((door) => {
+            door.on('pointerdown', () => {
+                if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
+                    door.anims.play('closeDoor', true);
+                }
+                else {
+                    door.anims.play('openDoor', true);
+                }
+            });
+        });
+
+        this.physics.add.collider(this.player, this.basicKey, () =>{
+            this.basicKey.setVisible(false);
+            console.log("hiding key");
+        });
     }
 
     update() {
         if (this.cursors?.left.isDown) {
             this.player.setVelocityX(-160);
 
-            this.player.anims.play('left', true);
+            this.player.anims.play(`${this.gameProgress.character}-left`, true);
         }
         else if (this.cursors?.right.isDown) {
             this.player.setVelocityX(160);
 
-            this.player.anims.play('right', true);
+            this.player.anims.play(`${this.gameProgress.character}-right`, true);
         }
         else {
             this.player.setVelocityX(0);
 
-            this.player.anims.play('turn');
+            this.player.anims.play(`${this.gameProgress.character}-turn`);
         }
 
         if (this.cursors?.up.isDown && this.player.body.touching.down) {
-            this.player.anims.play('crouch');// find way to delay jump until crouch frame remains for 1 sec
+            this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
             this.crouching = true;
         }
 
         else if (this.cursors?.up.isUp && this.crouching) {
-            this.player.anims.play('jump');// find way to stop if after bounce? //no bounce?
+            this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
 
         else if (!this.player.body.touching.down) {
-            this.player.anims.play('jump');
+            this.player.anims.play(`${this.gameProgress.character}-jump`);
         }
 
         if (this.player.body.velocity.x == 0) {
