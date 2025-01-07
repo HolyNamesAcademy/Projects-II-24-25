@@ -76,9 +76,8 @@ export class Game extends Scene {
             'addison',
         );
 
-        // this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
-        // this.nonCollisionItems.add(this.basicKey);
-
+        this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
+        this.nonCollisionItems.add(this.basicKey);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
