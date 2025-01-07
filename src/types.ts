@@ -13,8 +13,10 @@ export interface LayoutObject {
     x: number;
     y: number;
     scale?: number;
+    verticalOffset?: number;
+    nextScene?: string;
 }
 
 export interface Layout {
-    platforms: LayoutObject [];
+    objects: LayoutObject [];
 }

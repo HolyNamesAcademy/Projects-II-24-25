@@ -26,27 +26,64 @@ export class Preloader extends Scene {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('logo', 'logo.png');
-
         this.load.image('platform', 'platform.png');
 
         this.load.image('background', 'Wall.png');
 
-        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 32 });
+        this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
 
         this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
+
+        this.load.spritesheet('vine', 'Vines.png', { frameWidth: 9, frameHeight: 24 });
+
+        this.load.spritesheet('spikes', 'spikes1.png', { frameWidth: 53, frameHeight: 18 });
+
+        this.load.spritesheet('keyPedestal', 'Pedestal_Frames.png', { frameWidth: 36, frameHeight: 84 });
 
         this.load.spritesheet('addison',
             'AddisonSpriteSheetRed.png',
             { frameWidth: 32, frameHeight: 32 },
         );
         this.load.spritesheet('finley',
-            'finley.png',
+            'finley4.png',
             { frameWidth: 32, frameHeight: 32 },
         );
     }
 
     create() {
+        this.anims.create({
+            key: 'openDoor',
+            frames: this.anims.generateFrameNumbers('door', { frames: [1, 2] }),
+            frameRate: 4,
+        });
+
+        this.anims.create({
+            key: 'closeDoor',
+            frames: this.anims.generateFrameNumbers('door', { frames: [2, 1, 0] }),
+            frameRate: 4,
+        });
+
+        this.anims.create({
+            key: 'vine',
+            frames: this.anims.generateFrameNumbers('vine', { frames: [0, 1] }),
+            frameRate: 2,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'keyPedestal',
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [2, 3, 4, 5, 6] }),
+            frameRate: 3,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'pedestalFlash',
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [7] }),
+            frameRate: 3,
+            repeat: -1,
+        });
+
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
 

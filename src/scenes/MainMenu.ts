@@ -4,7 +4,6 @@ import { GameProgress } from '../types';
 
 export class MainMenu extends Scene {
     background: GameObjects.Image;
-    logo: GameObjects.Image;
     gameTitle: GameObjects.Text;
     title: GameObjects.Text;
     restart: GameObjects.Text;
