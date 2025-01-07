@@ -51,6 +51,8 @@ export class Preloader extends Scene {
     }
 
     create() {
+        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
+        //  For example, you can define global animations here, so we can use them in other scenes.
         this.anims.create({
             key: 'openDoor',
             frames: this.anims.generateFrameNumbers('door', { frames: [1, 2] }),
@@ -84,9 +86,6 @@ export class Preloader extends Scene {
             repeat: -1,
         });
 
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
         this.anims.create({
             key: 'key-left',
             frames: this.anims.generateFrameNumbers('basicKey', { frames: [0, 1, 2] }),
@@ -99,11 +98,14 @@ export class Preloader extends Scene {
             frameRate: 5,
             repeat: -1,
         });
+
+        // Make all the character animations
         this.makeAddisonAnimations();
         this.makeFinleyAnimations();
         this.makeBeanieFinleyAnimations();
         this.makeCapFinleyAnimations();
         this.makeBaldFinleyAnimations();
+
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
     }
