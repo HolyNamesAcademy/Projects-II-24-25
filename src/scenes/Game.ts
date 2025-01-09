@@ -73,12 +73,11 @@ export class Game extends Scene {
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
             this.gameProgress.coordinates.y,
-            'addison',
+            this.gameProgress.character,
         );
 
-        // this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
-        // this.nonCollisionItems.add(this.basicKey);
-
+        this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
+        this.nonCollisionItems.add(this.basicKey);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
@@ -143,6 +142,11 @@ export class Game extends Scene {
                 }
             });
         });
+
+        this.physics.add.collider(this.player, this.basicKey, () =>{
+            this.basicKey.setVisible(false);
+            console.log('hiding key');
+        });
     }
 
     createWindow(x: number, y: number, width: number, height: number, a: Scene) {
@@ -155,32 +159,32 @@ export class Game extends Scene {
         if (this.cursors?.left.isDown) {
             this.player.setVelocityX(-160);
 
-            this.player.anims.play('left', true);
+            this.player.anims.play(`${this.gameProgress.character}-left`, true);
         }
         else if (this.cursors?.right.isDown) {
             this.player.setVelocityX(160);
 
-            this.player.anims.play('right', true);
+            this.player.anims.play(`${this.gameProgress.character}-right`, true);
         }
         else {
             this.player.setVelocityX(0);
 
-            this.player.anims.play('turn');
+            this.player.anims.play(`${this.gameProgress.character}-forward`);
         }
 
         if (this.cursors?.up.isDown && this.player.body.touching.down) {
-            this.player.anims.play('crouch');// find way to delay jump until crouch frame remains for 1 sec
+            this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
             this.crouching = true;
         }
 
         else if (this.cursors?.up.isUp && this.crouching) {
-            this.player.anims.play('jump');// find way to stop if after bounce? //no bounce?
+            this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
 
         else if (!this.player.body.touching.down) {
-            this.player.anims.play('jump');
+            this.player.anims.play(`${this.gameProgress.character}-jump`);
         }
 
         if (this.player.body.velocity.x == 0) {
