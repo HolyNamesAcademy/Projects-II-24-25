@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress, Layout } from '../types';
 import generateLevel from '../utils/generateLevel';
+import { StageThree } from './StageThree';
 
 const layout: Layout = {
     objects: [
@@ -143,16 +144,21 @@ export class Game extends Scene {
             });
         });
 
-        this.physics.add.collider(this.player, this.basicKey, () =>{
+        this.physics.add.collider(this.player, this.basicKey, () => {
             this.basicKey.setVisible(false);
             console.log('hiding key');
         });
+
+        this.createWindow(512, 300, 512, 300);
     }
 
-    createWindow(x: number, y: number, width: number, height: number, a: Scene) {
+    createWindow(x: number, y: number, width: number, height: number) {
+        console.log('creating window');
+        const uniqueIdentifier = 'popup' + Math.random();
+
         const zone = this.add.zone(x, y, width, height).setInteractive();
-        const scene1 = new Scene (zone);
-        this.scene.add('popup', scene1);
+        const scene = new StageThree(uniqueIdentifier, zone, width, height);
+        this.scene.add(uniqueIdentifier, scene, true);
     }
 
     update() {
