@@ -145,7 +145,7 @@ export class Game extends Scene {
 
         this.physics.add.collider(this.player, this.basicKey, () =>{
             this.basicKey.setVisible(false);
-            console.log("hiding key");
+            console.log('hiding key');
         });
     }
 
@@ -163,7 +163,7 @@ export class Game extends Scene {
         else {
             this.player.setVelocityX(0);
 
-            this.player.anims.play(`${this.gameProgress.character}-turn`);
+            this.player.anims.play(`${this.gameProgress.character}-forward`);
         }
 
         if (this.cursors?.up.isDown && this.player.body.touching.down) {
