@@ -42,6 +42,8 @@ export class Game extends Scene {
 
     crouching: boolean = false;
 
+    onVine: boolean = false;
+
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
@@ -133,6 +135,10 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
+        this.physics.add.collider(this.player, vines, () => {
+            this.onVine = true;
+        });
+
         doors.forEach((door) => {
             door.on('pointerdown', () => {
                 if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
@@ -212,6 +218,16 @@ export class Game extends Scene {
         }
         else if (playerY < 200 && this.gameProgress.scrollPosition > 384) {
             this.scroll(this.scrollSpeed);
+        }
+
+        if (this.onVine && this.cursors?.up.isDown) {
+            this.player.anims.play('climb');
+            this.player.setGravity(0, 0);
+            this.player.y -= 1;
+        }
+        else {
+            this.onVine = false;
+            this.player.setGravity(0, 0);
         }
     }
 
