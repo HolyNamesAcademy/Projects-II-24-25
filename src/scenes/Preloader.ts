@@ -26,7 +26,7 @@ export class Preloader extends Scene {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('platform', 'platform.png');
+        this.load.spritesheet('platform', 'wood final allie pls.png', { frameWidth: 100, frameHeight: 7 });
 
         this.load.image('background', 'Wall.png');
 
