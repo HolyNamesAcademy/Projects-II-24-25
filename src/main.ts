@@ -29,7 +29,7 @@ const config: Types.Core.GameConfig = {
         default: 'arcade',
         arcade: {
             gravity: { x: 0, y: 550 },
-            debug: false,
+            debug: window.location.hostname === 'localhost',
         },
     },
     scene: [
