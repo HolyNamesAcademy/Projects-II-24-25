@@ -144,8 +144,10 @@ export class Game extends Scene {
         });
 
         this.physics.add.collider(this.player, this.basicKey, () =>{
-            this.basicKey.setVisible(false);
-            console.log('hiding key');
+            // this.basicKey.setVisible(false);
+            // console.log('hiding key');
+            this.basicKey.play("key-left");
+            this.gameProgress.inventory.finalKey = true;
         });
     }
 
@@ -154,11 +156,19 @@ export class Game extends Scene {
             this.player.setVelocityX(-160);
 
             this.player.anims.play(`${this.gameProgress.character}-left`, true);
+
+            if(this.gameProgress.inventory.finalKey){
+                this.basicKey.play("key-left")
+            }
         }
         else if (this.cursors?.right.isDown) {
             this.player.setVelocityX(160);
 
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
+
+            if(this.gameProgress.inventory.finalKey){
+                this.basicKey.play("key-right")
+            }
         }
         else {
             this.player.setVelocityX(0);
