@@ -147,10 +147,10 @@ export class Game extends Scene {
             });
         });
 
-        this.physics.add.collider(this.player, this.basicKey, () =>{
+        this.physics.add.collider(this.player, this.basicKey, () => {
             // this.basicKey.setVisible(false);
             // console.log('hiding key');
-            this.basicKey.play("key-left");
+            this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
         });
     }
@@ -163,8 +163,8 @@ export class Game extends Scene {
 
             this.player.anims.play(`${this.gameProgress.character}-left`, true);
 
-            if(this.gameProgress.inventory.finalKey){
-                this.basicKey.play("key-left")
+            if (this.gameProgress.inventory.finalKey) {
+                this.basicKey.play('key-left');
             }
         }
         else if (this.cursors?.right.isDown) {
@@ -172,8 +172,8 @@ export class Game extends Scene {
 
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
 
-            if(this.gameProgress.inventory.finalKey){
-                this.basicKey.play("key-right")
+            if (this.gameProgress.inventory.finalKey) {
+                this.basicKey.play('key-right');
             }
         }
         else {
