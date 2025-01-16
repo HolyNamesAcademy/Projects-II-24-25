@@ -16,7 +16,9 @@ export default function generateLevel(
         currentY += y;
         if (type === 'platform') {
             platforms.create(x, currentY, type)
-                .setOrigin(0.5, 0);
+                .setOrigin(0.5, 0)
+                .setScale(4)
+                .refreshBody();
         }
         else if (type === 'vine') {
             let vineY = currentY;

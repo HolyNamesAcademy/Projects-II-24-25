@@ -26,13 +26,13 @@ export class Preloader extends Scene {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('platform', 'platform.png');
+        this.load.image('platform', 'wood final allie pls.png');
 
         this.load.image('background', 'Wall.png');
 
         this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
 
-        this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 34 });
+        this.load.spritesheet('basicKey', 'commonKey.png', { frameWidth: 15, frameHeight: 32 });
 
         this.load.spritesheet('vine', 'Vines.png', { frameWidth: 9, frameHeight: 24 });
 
