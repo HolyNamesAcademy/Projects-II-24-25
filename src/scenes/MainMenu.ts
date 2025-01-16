@@ -16,6 +16,7 @@ export class MainMenu extends Scene {
         scrollPosition: 384,
         skills: { doubleJump: false, climb: false },
         character: 'addison',
+        inventory: {finalKey: false}
     };
 
     constructor() {

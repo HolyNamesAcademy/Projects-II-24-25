@@ -26,7 +26,7 @@ export class Preloader extends Scene {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('platform', 'platform.png');
+        this.load.image('platform', 'wood final allie pls.png');
 
         this.load.image('background', 'Wall.png');
 
@@ -87,13 +87,13 @@ export class Preloader extends Scene {
         });
 
         this.anims.create({
-            key: 'key-left',
+            key: 'key-right',
             frames: this.anims.generateFrameNumbers('basicKey', { frames: [0, 1, 2] }),
             frameRate: 5,
             repeat: -1,
         });
         this.anims.create({
-            key: 'key-right',
+            key: 'key-left',
             frames: this.anims.generateFrameNumbers('basicKey', { frames: [3, 4, 5] }),
             frameRate: 5,
             repeat: -1,

@@ -6,6 +6,9 @@ export interface GameProgress {
         climb: boolean;
     };
     character: string;
+    inventory: {
+        finalKey: boolean;
+    }
 }
 
 export interface LayoutObject {
