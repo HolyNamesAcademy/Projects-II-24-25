@@ -48,6 +48,10 @@ export class Preloader extends Scene {
             'finley4.png',
             { frameWidth: 32, frameHeight: 32 },
         );
+        this.load.spritesheet('clare',
+            'CLARE2.png',
+            { frameWidth: 32, frameHeight: 32 },
+        );
     }
 
     create() {
@@ -252,6 +256,34 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'baldFinley-jump',
             frames: [{ key: 'finley', frame: 40 }],
+            frameRate: 5,
+        });
+    }
+
+    makeClareAnimations() {
+        this.anims.create({
+            key: 'clare-left',
+            frames: this.anims.generateFrameNumbers('clare', { frames: [5, 7] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'clare-forward',
+            frames: [{ key: 'clare', frame: 0 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'clare-right',
+            frames: this.anims.generateFrameNumbers('clare', { frames: [8, 10] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'clare-jump',
+            frames: [{ key: 'clare', frame: 4 }],
             frameRate: 5,
         });
     }
