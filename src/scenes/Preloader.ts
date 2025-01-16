@@ -28,7 +28,7 @@ export class Preloader extends Scene {
 
         this.load.image('platform', 'wood final allie pls.png');
 
-        this.load.image('background', 'Wall.png');
+        this.load.spritesheet('background', 'Wall.png', { frameWidth: 512, frameHeight: 384 });
 
         this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
 
@@ -57,6 +57,13 @@ export class Preloader extends Scene {
     create() {
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
+        this.anims.create({
+            key: 'background',
+            frames: this.anims.generateFrameNumbers('background', { frames: [0, 1] }),
+            frameRate: 2,
+            repeat: -1,
+        });
+
         this.anims.create({
             key: 'openDoor',
             frames: this.anims.generateFrameNumbers('door', { frames: [1, 2] }),
