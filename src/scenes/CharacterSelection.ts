@@ -17,6 +17,7 @@ export class CharacterSelection extends Scene {
     characterKeys: string[];
     currentCharacter: number = 0;
     gameProgress: GameProgress;
+    currentAlternate: number = 0;
 
     constructor() {
         super('CharacterSelection');
@@ -65,6 +66,14 @@ export class CharacterSelection extends Scene {
         });
         // ScrollCharacters code right
         makeButton(this, '>', 35, 625, 400, () => {
+            if (this.currentCharacter == this.characters.length - 1) {
+                this.displayCharacter(0);
+            }
+            else
+                this.displayCharacter(1 + this.currentCharacter);
+        });
+        // ScrollCharacters code up
+        makeButton(this, '^', 35, 625, 400, () => {
             if (this.currentCharacter == this.characters.length - 1) {
                 this.displayCharacter(0);
             }

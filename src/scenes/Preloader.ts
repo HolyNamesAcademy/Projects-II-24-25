@@ -116,6 +116,7 @@ export class Preloader extends Scene {
         this.makeBeanieFinleyAnimations();
         this.makeCapFinleyAnimations();
         this.makeBaldFinleyAnimations();
+        this.makeClareAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
