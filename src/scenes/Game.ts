@@ -135,9 +135,9 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
-        this.physics.add.collider(this.player, vines, () => {
-            this.onVine = true;
-        });
+        // this.physics.add.collider(this.player, vines, () => {
+        //     this.onVine = true;
+        // });
 
         doors.forEach((door) => {
             door.on('pointerdown', () => {

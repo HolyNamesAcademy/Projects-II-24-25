@@ -37,8 +37,8 @@ export default function generateLevel(
                 .setOrigin(0.5, 1)
                 .setScale(5.5)
                 .refreshBody()
-                .setSize(36, 192)
                 .setInteractive();
+            door.body?.setSize(110, 200, false);
             doors.push(door);
         }
         else if (type === 'trapdoor') {
