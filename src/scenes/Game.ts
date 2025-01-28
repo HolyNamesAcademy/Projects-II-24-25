@@ -157,7 +157,7 @@ export class Game extends Scene {
             this.gameProgress.inventory.finalKey = true;
         });
 
-        this.createWindow(512, 300, 512, 300);
+        // this.createWindow(512, 300, 512, 300);
     }
 
     createWindow(x: number, y: number, width: number, height: number) {
