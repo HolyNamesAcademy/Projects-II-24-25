@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress, Layout } from '../types';
 import generateLevel from '../utils/generateLevel';
+import { StageThree } from './StageThree';
 
 const layout: Layout = {
     objects: [
@@ -43,6 +44,8 @@ export class Game extends Scene {
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
     crouching: boolean = false;
+
+    onVine: boolean = false;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -136,6 +139,10 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
+        // this.physics.add.collider(this.player, vines, () => {
+        //     this.onVine = true;
+        // });
+
         doors.forEach((door) => {
             door.on('pointerdown', () => {
                 if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
@@ -153,6 +160,17 @@ export class Game extends Scene {
             this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
         });
+
+        // this.createWindow(512, 300, 512, 300);
+    }
+
+    createWindow(x: number, y: number, width: number, height: number) {
+        console.log('creating window');
+        const uniqueIdentifier = 'popup' + Math.random();
+
+        const zone = this.add.zone(x, y, width, height).setInteractive();
+        const scene = new StageThree(uniqueIdentifier, zone, width, height);
+        this.scene.add(uniqueIdentifier, scene, true);
     }
 
     update() {
@@ -216,6 +234,16 @@ export class Game extends Scene {
         }
         else if (playerY < 200 && this.gameProgress.scrollPosition > 384) {
             this.scroll(this.scrollSpeed);
+        }
+
+        if (this.onVine && this.cursors?.up.isDown) {
+            this.player.anims.play('climb');
+            this.player.setGravity(0, 0);
+            this.player.y -= 1;
+        }
+        else {
+            this.onVine = false;
+            this.player.setGravity(0, 0);
         }
     }
 
