@@ -27,6 +27,7 @@ export default function generateLevel(
             }
             const vine = game.physics.add.staticSprite(x, vineY, 'vine', 0)
                 .setScale(5)
+                .refreshBody()
                 .setOrigin(0.5, 0);
             vine.anims.play('vine');
             vines.push(vine);
@@ -35,7 +36,9 @@ export default function generateLevel(
             const door = game.physics.add.staticSprite(x, currentY, 'door', 0)
                 .setOrigin(0.5, 1)
                 .setScale(5.5)
+                .refreshBody()
                 .setInteractive();
+            door.body?.setSize(110, 200, false);
             doors.push(door);
         }
         else if (type === 'trapdoor') {
@@ -47,6 +50,7 @@ export default function generateLevel(
             const pedestal = game.physics.add.staticSprite(x, currentY, 'keyPedestal', 2)
                 .setOrigin(0.5, 1)
                 .setScale(2)
+                .refreshBody()
                 .setInteractive();
             pedestal.anims.play('keyPedestal');
             pedestals.push(pedestal);
@@ -55,7 +59,8 @@ export default function generateLevel(
             const spike = game.physics.add.staticSprite(x, currentY, 'spikes', 0)
                 .setOrigin(0.5, 1)
                 .setInteractive()
-                .setScale(3);
+                .setScale(3)
+                .refreshBody();
             spikes.push(spike);
         }
     });

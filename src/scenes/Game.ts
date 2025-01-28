@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress, Layout } from '../types';
 import generateLevel from '../utils/generateLevel';
+import { StageThree } from './StageThree';
 
 const layout: Layout = {
     objects: [
@@ -31,7 +32,10 @@ const layout: Layout = {
 
 export class Game extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
+
     background: Phaser.GameObjects.TileSprite;
+    backgroundAnimation: Phaser.GameObjects.Sprite;
+
     msg_text: Phaser.GameObjects.Text;
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -40,6 +44,8 @@ export class Game extends Scene {
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
 
     crouching: boolean = false;
+
+    onVine: boolean = false;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -60,6 +66,7 @@ export class Game extends Scene {
 
         this.background = this.add.tileSprite(512, 384, 512, 384, 'background');
         this.background.scale = 2;
+        this.backgroundAnimation = this.add.sprite(0, 0, 'background').setVisible(false).play('background');
 
         this.nonCollisionItems = this.physics.add.staticGroup();
 
@@ -132,6 +139,10 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
+        // this.physics.add.collider(this.player, vines, () => {
+        //     this.onVine = true;
+        // });
+
         doors.forEach((door) => {
             door.on('pointerdown', () => {
                 if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
@@ -143,22 +154,35 @@ export class Game extends Scene {
             });
         });
 
-        this.physics.add.collider(this.player, this.basicKey, () =>{
+        this.physics.add.collider(this.player, this.basicKey, () => {
             // this.basicKey.setVisible(false);
             // console.log('hiding key');
-            this.basicKey.play("key-left");
+            this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
         });
+
+        // this.createWindow(512, 300, 512, 300);
+    }
+
+    createWindow(x: number, y: number, width: number, height: number) {
+        console.log('creating window');
+        const uniqueIdentifier = 'popup' + Math.random();
+
+        const zone = this.add.zone(x, y, width, height).setInteractive();
+        const scene = new StageThree(uniqueIdentifier, zone, width, height);
+        this.scene.add(uniqueIdentifier, scene, true);
     }
 
     update() {
+        this.background.setFrame(this.backgroundAnimation.frame.name);
+
         if (this.cursors?.left.isDown) {
             this.player.setVelocityX(-160);
 
             this.player.anims.play(`${this.gameProgress.character}-left`, true);
 
-            if(this.gameProgress.inventory.finalKey){
-                this.basicKey.play("key-left")
+            if (this.gameProgress.inventory.finalKey) {
+                this.basicKey.play('key-left');
             }
         }
         else if (this.cursors?.right.isDown) {
@@ -166,8 +190,8 @@ export class Game extends Scene {
 
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
 
-            if(this.gameProgress.inventory.finalKey){
-                this.basicKey.play("key-right")
+            if (this.gameProgress.inventory.finalKey) {
+                this.basicKey.play('key-right');
             }
         }
         else {
@@ -210,6 +234,16 @@ export class Game extends Scene {
         }
         else if (playerY < 200 && this.gameProgress.scrollPosition > 384) {
             this.scroll(this.scrollSpeed);
+        }
+
+        if (this.onVine && this.cursors?.up.isDown) {
+            this.player.anims.play('climb');
+            this.player.setGravity(0, 0);
+            this.player.y -= 1;
+        }
+        else {
+            this.onVine = false;
+            this.player.setGravity(0, 0);
         }
     }
 
