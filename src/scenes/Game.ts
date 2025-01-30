@@ -39,6 +39,7 @@ export class Game extends Scene {
     basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
+    platformCollisions: Phaser.Physics.Arcade.Collider;
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
 
     crouching: boolean = false;
@@ -137,11 +138,6 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
-        this.physics.add.overlap(this.player, vines, () => {
-            this.onVine = true;
-            console.log(this.onVine);
-        });
-
         doors.forEach((door) => {
             door.on('pointerdown', () => {
                 if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
@@ -237,13 +233,12 @@ export class Game extends Scene {
 
         if (onVine && this.cursors?.up.isDown) {
             this.player.anims.play('addison-climb');
-            this.player.setGravity(0, 0);
-            this.player.y -= 10;
+            this.player.setVelocityY(-100);
             console.log(this.player.y);
+            this.platformCollisions.active = false;
         }
         else {
-            this.onVine = false;
-            this.player.setGravity(0, 550);
+            this.platformCollisions.active = true;
         }
     }
 
