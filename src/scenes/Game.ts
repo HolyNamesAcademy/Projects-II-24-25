@@ -34,17 +34,17 @@ export class Game extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.TileSprite;
     msg_text: Phaser.GameObjects.Text;
+
     platforms: Phaser.Physics.Arcade.StaticGroup;
+    platformCollisions: Phaser.Physics.Arcade.Collider;
+
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
-    platformCollisions: Phaser.Physics.Arcade.Collider;
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
 
     crouching: boolean = false;
-
-    onVine: boolean = false;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -89,9 +89,11 @@ export class Game extends Scene {
         this.player.setScale(5);
         this.player.setSize(16, 32);
 
-        this.physics.add.collider(this.player, this.platforms);
+        this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
-            // If the player is inside a platform, move them up.
+            if (this.onVineFunction()) {
+                return;
+            }
             this.player.y -= this.scrollSpeed * 2;
         });
 
@@ -243,12 +245,13 @@ export class Game extends Scene {
     }
 
     onVineFunction() {
-        const boundsPlayer = this.player.getBounds();
-        const overlap = this.vines.find((vine) => {
-            const vinebounds = vine.getBounds();
-            return Phaser.Geom.Intersects.GetRectangleToRectangle(boundsPlayer, vinebounds).length != 0;
-        });
-        return overlap != undefined;
+        // const boundsPlayer = this.player.getBounds();
+        // const overlap = this.vines.find((vine) => {
+        //     const vinebounds = vine.getBounds();
+        //     return Phaser.Geom.Intersects.GetRectangleToRectangle(boundsPlayer, vinebounds).length != 0;
+        // });
+        // return overlap != undefined;
+        return this.physics.overlap(this.vines, this.player);
     }
 
     /**
