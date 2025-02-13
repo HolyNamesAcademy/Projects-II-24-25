@@ -240,8 +240,9 @@ export class Game extends Scene {
 
         if (onVine && this.cursors?.up.isDown) {
             console.log(this.player.anims.currentAnim);
-            if (this.player.anims.currentAnim?.key != 'addison-climb') {
-                this.player.anims.play('addison-climb');
+            const climbAnimation = `${this.gameProgress.character}-climb`;
+            if (this.player.anims.currentAnim?.key != climbAnimation) {
+                this.player.anims.play(climbAnimation);
             }
             this.player.setVelocityY(-200);
             console.log(this.player.y);

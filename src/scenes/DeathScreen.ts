@@ -12,7 +12,8 @@ export class DeathScreen extends Scene {
     }
 
     create() {
-        window.localStorage.setItem('stage', '1');
+        localStorage.removeItem('gameProgress');
+
         this.camera = this.cameras.main;
 
         this.msg_text = this.add.text(512, 384, 'You Died!', {
@@ -25,7 +26,6 @@ export class DeathScreen extends Scene {
         makeButton(this, 'Main Menu', 35, 150, 700, () => {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                localStorage.removeItem('gameProgress');
                 this.scene.start('MainMenu');
             });
         });
