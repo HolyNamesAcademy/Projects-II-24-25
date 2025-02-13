@@ -182,7 +182,7 @@ export class Game extends Scene {
                 this.basicKey.play('key-left');
             }
         }
-        else if (this.cursors?.right.isDown) {
+        if (this.cursors?.right.isDown) {
             this.player.setVelocityX(160);
 
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
@@ -208,7 +208,7 @@ export class Game extends Scene {
             this.crouching = false;
         }
 
-        else if (!this.player.body.touching.down) {
+        else if (!onVine && !this.player.body.touching.down) {
             this.player.anims.play(`${this.gameProgress.character}-jump`);
         }
 
@@ -234,8 +234,11 @@ export class Game extends Scene {
         }
 
         if (onVine && this.cursors?.up.isDown) {
-            this.player.anims.play('addison-climb');
-            this.player.setVelocityY(-100);
+            console.log(this.player.anims.currentAnim);
+            if (this.player.anims.currentAnim?.key != 'addison-climb') {
+                this.player.anims.play('addison-climb');
+            }
+            this.player.setVelocityY(-200);
             console.log(this.player.y);
             this.platformCollisions.active = false;
         }
