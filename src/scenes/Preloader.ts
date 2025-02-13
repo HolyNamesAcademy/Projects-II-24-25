@@ -154,6 +154,13 @@ export class Preloader extends Scene {
             frames: [{ key: 'addison', frame: 6 }],
             frameRate: 30,
         });
+
+        this.anims.create({
+            key: 'addison-climb',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [10, 11] }),
+            frameRate: 2,
+            repeat: -1,
+        });
     }
 
     makeFinleyAnimations() {

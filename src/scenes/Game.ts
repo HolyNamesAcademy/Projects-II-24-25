@@ -15,7 +15,7 @@ const layout: Layout = {
 
         { type: 'platform', x: 350, y: 400 },
         { type: 'platform', x: 900, y: 0 },
-        { type: 'spikes', x: 920, y: 0 },
+        { type: 'spikes', x: 930, y: 0 }, // used to be x:920
         { type: 'vine', x: 200, y: 0 },
         { type: 'vine', x: 200, y: 0, verticalOffset: 24 },
         { type: 'vine', x: 250, y: 0 },
@@ -37,15 +37,17 @@ export class Game extends Scene {
     backgroundAnimation: Phaser.GameObjects.Sprite;
 
     msg_text: Phaser.GameObjects.Text;
+
     platforms: Phaser.Physics.Arcade.StaticGroup;
+    platformCollisions: Phaser.Physics.Arcade.Collider;
+
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
+    vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
 
     crouching: boolean = false;
-
-    onVine: boolean = false;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -76,6 +78,7 @@ export class Game extends Scene {
         this.nonCollisionItems.addMultiple(vines);
         this.nonCollisionItems.addMultiple(pedestals);
         this.nonCollisionItems.addMultiple(spikes);
+        this.vines = vines;
 
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
@@ -90,9 +93,11 @@ export class Game extends Scene {
         this.player.setScale(5);
         this.player.setSize(16, 32);
 
-        this.physics.add.collider(this.player, this.platforms);
+        this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
-            // If the player is inside a platform, move them up.
+            if (this.onVineFunction()) {
+                return;
+            }
             this.player.y -= this.scrollSpeed * 2;
         });
 
@@ -139,10 +144,6 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
-        // this.physics.add.collider(this.player, vines, () => {
-        //     this.onVine = true;
-        // });
-
         doors.forEach((door) => {
             door.on('pointerdown', () => {
                 if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
@@ -174,6 +175,7 @@ export class Game extends Scene {
     }
 
     update() {
+        const onVine = this.onVineFunction();
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
         if (this.cursors?.left.isDown) {
@@ -185,7 +187,7 @@ export class Game extends Scene {
                 this.basicKey.play('key-left');
             }
         }
-        else if (this.cursors?.right.isDown) {
+        if (this.cursors?.right.isDown) {
             this.player.setVelocityX(160);
 
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
@@ -200,18 +202,18 @@ export class Game extends Scene {
             this.player.anims.play(`${this.gameProgress.character}-forward`);
         }
 
-        if (this.cursors?.up.isDown && this.player.body.touching.down) {
+        if (!onVine && this.cursors?.up.isDown && this.player.body.touching.down) {
             this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
             this.crouching = true;
         }
 
-        else if (this.cursors?.up.isUp && this.crouching) {
+        else if (!onVine && this.cursors?.up.isUp && this.crouching) {
             this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
 
-        else if (!this.player.body.touching.down) {
+        else if (!onVine && !this.player.body.touching.down) {
             this.player.anims.play(`${this.gameProgress.character}-jump`);
         }
 
@@ -236,15 +238,28 @@ export class Game extends Scene {
             this.scroll(this.scrollSpeed);
         }
 
-        if (this.onVine && this.cursors?.up.isDown) {
-            this.player.anims.play('climb');
-            this.player.setGravity(0, 0);
-            this.player.y -= 1;
+        if (onVine && this.cursors?.up.isDown) {
+            console.log(this.player.anims.currentAnim);
+            if (this.player.anims.currentAnim?.key != 'addison-climb') {
+                this.player.anims.play('addison-climb');
+            }
+            this.player.setVelocityY(-200);
+            console.log(this.player.y);
+            this.platformCollisions.active = false;
         }
         else {
-            this.onVine = false;
-            this.player.setGravity(0, 0);
+            this.platformCollisions.active = true;
         }
+    }
+
+    onVineFunction() {
+        // const boundsPlayer = this.player.getBounds();
+        // const overlap = this.vines.find((vine) => {
+        //     const vinebounds = vine.getBounds();
+        //     return Phaser.Geom.Intersects.GetRectangleToRectangle(boundsPlayer, vinebounds).length != 0;
+        // });
+        // return overlap != undefined;
+        return this.physics.overlap(this.vines, this.player);
     }
 
     /**
