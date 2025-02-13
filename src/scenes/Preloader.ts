@@ -28,7 +28,7 @@ export class Preloader extends Scene {
 
         this.load.image('platform', 'wood final allie pls.png');
 
-        this.load.image('background', 'Wall.png');
+        this.load.spritesheet('background', 'Wall.png', { frameWidth: 512, frameHeight: 384 });
 
         this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
 
@@ -48,11 +48,22 @@ export class Preloader extends Scene {
             'finley4.png',
             { frameWidth: 32, frameHeight: 32 },
         );
+        this.load.spritesheet('clare',
+            'CLARE2.png',
+            { frameWidth: 32, frameHeight: 32 },
+        );
     }
 
     create() {
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
+        this.anims.create({
+            key: 'background',
+            frames: this.anims.generateFrameNumbers('background', { frames: [0, 1] }),
+            frameRate: 2,
+            repeat: -1,
+        });
+
         this.anims.create({
             key: 'openDoor',
             frames: this.anims.generateFrameNumbers('door', { frames: [1, 2] }),
@@ -105,6 +116,7 @@ export class Preloader extends Scene {
         this.makeBeanieFinleyAnimations();
         this.makeCapFinleyAnimations();
         this.makeBaldFinleyAnimations();
+        this.makeClareAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
@@ -174,7 +186,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'finley-jump',
-            frames: [{ key: 'finley', frame: 4 }],
+            frames: [{ key: 'finley', frame: 2 }],
             frameRate: 5,
         });
     }
@@ -202,7 +214,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'beanieFinley-jump',
-            frames: [{ key: 'finley', frame: 16 }],
+            frames: [{ key: 'finley', frame: 14 }],
             frameRate: 5,
         });
     }
@@ -230,7 +242,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'capFinley-jump',
-            frames: [{ key: 'finley', frame: 28 }],
+            frames: [{ key: 'finley', frame: 26 }],
             frameRate: 5,
         });
     }
@@ -258,7 +270,35 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'baldFinley-jump',
-            frames: [{ key: 'finley', frame: 40 }],
+            frames: [{ key: 'finley', frame: 38 }],
+            frameRate: 5,
+        });
+    }
+
+    makeClareAnimations() {
+        this.anims.create({
+            key: 'clare-left',
+            frames: this.anims.generateFrameNumbers('clare', { frames: [5, 7] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'clare-forward',
+            frames: [{ key: 'clare', frame: 0 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'clare-right',
+            frames: this.anims.generateFrameNumbers('clare', { frames: [8, 10] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'clare-jump',
+            frames: [{ key: 'clare', frame: 4 }],
             frameRate: 5,
         });
     }
