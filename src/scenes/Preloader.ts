@@ -179,7 +179,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'finley-jump',
-            frames: [{ key: 'finley', frame: 4 }],
+            frames: [{ key: 'finley', frame: 2 }],
             frameRate: 5,
         });
     }
@@ -207,7 +207,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'beanieFinley-jump',
-            frames: [{ key: 'finley', frame: 16 }],
+            frames: [{ key: 'finley', frame: 14 }],
             frameRate: 5,
         });
     }
@@ -235,7 +235,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'capFinley-jump',
-            frames: [{ key: 'finley', frame: 28 }],
+            frames: [{ key: 'finley', frame: 26 }],
             frameRate: 5,
         });
     }
@@ -263,7 +263,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'baldFinley-jump',
-            frames: [{ key: 'finley', frame: 40 }],
+            frames: [{ key: 'finley', frame: 38 }],
             frameRate: 5,
         });
     }
