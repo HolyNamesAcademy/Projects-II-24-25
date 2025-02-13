@@ -187,7 +187,7 @@ export class Game extends Scene {
                 this.basicKey.play('key-left');
             }
         }
-        if (this.cursors?.right.isDown) {
+        else if (this.cursors?.right.isDown) {
             this.player.setVelocityX(160);
 
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
