@@ -173,43 +173,57 @@ export class Game extends Scene {
     update() {
         const onVine = this.onVineFunction();
 
-        if (this.cursors?.left.isDown) {
-            this.player.setVelocityX(-160);
-
-            this.player.anims.play(`${this.gameProgress.character}-left`, true);
-
-            if (this.gameProgress.inventory.finalKey) {
-                this.basicKey.play('key-left');
+        if (onVine && this.cursors?.up.isDown) {
+            console.log(this.player.anims.currentAnim);
+            if (this.player.anims.currentAnim?.key != 'addison-climb') {
+                this.player.anims.play('addison-climb');
             }
+            this.player.setVelocityY(-200);
+            console.log(this.player.y);
+            this.platformCollisions.active = false;
         }
-        if (this.cursors?.right.isDown) {
-            this.player.setVelocityX(160);
+        else if (!onVine) {
+            this.platformCollisions.active = true;
+            if (!onVine && this.cursors?.left.isDown) {
+                this.player.setVelocityX(-160);
 
-            this.player.anims.play(`${this.gameProgress.character}-right`, true);
+                this.player.anims.play(`${this.gameProgress.character}-left`, true);
 
-            if (this.gameProgress.inventory.finalKey) {
-                this.basicKey.play('key-right');
+                if (this.gameProgress.inventory.finalKey) {
+                    this.basicKey.play('key-left');
+                }
             }
-        }
-        else {
-            this.player.setVelocityX(0);
 
-            this.player.anims.play(`${this.gameProgress.character}-forward`);
-        }
+            else if (!onVine && this.cursors?.right.isDown) {
+                this.player.setVelocityX(160);
 
-        if (!onVine && this.cursors?.up.isDown && this.player.body.touching.down) {
-            this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
-            this.crouching = true;
-        }
+                this.player.anims.play(`${this.gameProgress.character}-right`, true);
 
-        else if (!onVine && this.cursors?.up.isUp && this.crouching) {
-            this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
-            this.player.setVelocityY(-430);
-            this.crouching = false;
-        }
+                if (this.gameProgress.inventory.finalKey) {
+                    this.basicKey.play('key-right');
+                }
+            }
 
-        else if (!onVine && !this.player.body.touching.down) {
-            this.player.anims.play(`${this.gameProgress.character}-jump`);
+            else if (!onVine && this.cursors?.up.isDown && this.player.body.touching.down) {
+                this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
+                this.crouching = true;
+            }
+
+            else if (!onVine && this.cursors?.up.isUp && this.crouching) {
+                this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
+                this.player.setVelocityY(-430);
+                this.crouching = false;
+            }
+
+            else if (!onVine && !this.player.body.touching.down) {
+                this.player.anims.play(`${this.gameProgress.character}-jump`);
+            }
+
+            else {
+                this.player.setVelocityX(0);
+
+                this.player.anims.play(`${this.gameProgress.character}-forward`);
+            }
         }
 
         if (this.player.body.velocity.x == 0) {
@@ -231,19 +245,6 @@ export class Game extends Scene {
         }
         else if (playerY < 200 && this.gameProgress.scrollPosition > 384) {
             this.scroll(this.scrollSpeed);
-        }
-
-        if (onVine && this.cursors?.up.isDown) {
-            console.log(this.player.anims.currentAnim);
-            if (this.player.anims.currentAnim?.key != 'addison-climb') {
-                this.player.anims.play('addison-climb');
-            }
-            this.player.setVelocityY(-200);
-            console.log(this.player.y);
-            this.platformCollisions.active = false;
-        }
-        else {
-            this.platformCollisions.active = true;
         }
     }
 
