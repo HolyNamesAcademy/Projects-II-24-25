@@ -32,7 +32,10 @@ const layout: Layout = {
 
 export class Game extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
+
     background: Phaser.GameObjects.TileSprite;
+    backgroundAnimation: Phaser.GameObjects.Sprite;
+
     msg_text: Phaser.GameObjects.Text;
 
     platforms: Phaser.Physics.Arcade.StaticGroup;
@@ -65,6 +68,7 @@ export class Game extends Scene {
 
         this.background = this.add.tileSprite(512, 384, 512, 384, 'background');
         this.background.scale = 2;
+        this.backgroundAnimation = this.add.sprite(0, 0, 'background').setVisible(false).play('background');
 
         this.nonCollisionItems = this.physics.add.staticGroup();
 
@@ -172,6 +176,7 @@ export class Game extends Scene {
 
     update() {
         const onVine = this.onVineFunction();
+        this.background.setFrame(this.backgroundAnimation.frame.name);
 
         if (onVine && this.cursors?.up.isDown) {
             console.log(this.player.anims.currentAnim);
