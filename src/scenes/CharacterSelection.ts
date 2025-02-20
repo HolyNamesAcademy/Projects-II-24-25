@@ -19,6 +19,9 @@ export class CharacterSelection extends Scene {
     gameProgress: GameProgress;
     currentStyle: number = 0;
 
+    upButton: Phaser.GameObjects.Text;
+    downButton: Phaser.GameObjects.Text;
+
     constructor() {
         super('CharacterSelection');
     }
@@ -73,14 +76,14 @@ export class CharacterSelection extends Scene {
                 this.displayCharacter(1 + this.currentCharacter, 0);
         });
         // ScrollCharacters code up
-        makeButton(this, '^', 35, 513, 230, () => {
+        this.upButton = makeButton(this, '^', 35, 513, 230, () => {
             if (this.currentStyle == this.characters[this.currentCharacter].length - 1) {
                 this.displayCharacter(this.currentCharacter, 0);
             }
             else
                 this.displayCharacter(this.currentCharacter, this.currentStyle + 1);
         });
-        makeButton(this, 'v', 35, 513, 650, () => {
+        this.downButton = makeButton(this, 'v', 35, 513, 650, () => {
             if (this.currentStyle == 0) {
                 this.displayCharacter(this.currentCharacter, this.characters[this.currentCharacter].length - 1);
             }
@@ -138,5 +141,14 @@ export class CharacterSelection extends Scene {
 
         this.currentCharacter = index;
         this.currentStyle = style;
+
+        if (this.characters[index].length > 1) {
+            this.upButton.setVisible(true);
+            this.downButton.setVisible(true);
+        }
+        else {
+            this.upButton.setVisible(false);
+            this.downButton.setVisible(false);
+        }
     }
 }
