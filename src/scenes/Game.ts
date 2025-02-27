@@ -95,7 +95,7 @@ export class Game extends Scene {
 
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
-            if (this.onVineFunction()) {
+            if (this.checkOnVine()) {
                 return;
             }
             this.player.y -= this.scrollSpeed * 2;
@@ -124,15 +124,11 @@ export class Game extends Scene {
                 pedestal.anims.play('keyPedestal', false);
                 pedestal.anims.play('pedestalFlash', true);
             });
-        });
-        pedestals.forEach((pedestal) => {
             pedestal.on('pointerout', () => {
                 pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
             });
-        });
-        pedestals.forEach((pedestal) => {
-            pedestal.on('pointerdown', () => {
+            pedestal.on('pointerup', () => {
                 this.cameras.main.fadeOut(500, 0, 0, 0);
                 this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                     this.scene.start('StageThree');
@@ -175,44 +171,45 @@ export class Game extends Scene {
     }
 
     update() {
-        const onVine = this.onVineFunction();
+        const onVine = this.checkOnVine();
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
-        if (onVine && this.cursors?.up.isDown) {
-            console.log(this.player.anims.currentAnim);
-            this.playAnimation('climb');
+        const pressingLeft = this.cursors?.left.isDown;
+        const pressingRight = this.cursors?.right.isDown;
+        const pressingUp = this.cursors?.up.isDown;
+
+        const faceForward = !pressingLeft && !pressingRight;
+
+        if (onVine && pressingUp) {
+            // They should always climb if they are holding up.
             this.player.setVelocityY(-200);
-            console.log(this.player.y);
             this.platformCollisions.active = false;
+
+            if (pressingLeft) {
+                // Go left if on vine and pressing left.
+                this.goLeft();
+            }
+            else if (pressingRight) {
+                // Go left if on vine and pressing left.
+                this.goRight();
+            }
+            else {
+                // Stop moving if on vine and not pressing left or right.
+                // play climbing since not playing a side to side.
+                this.player.setVelocityX(0);
+                this.playAnimation('climb');
+            }
         }
-        else if (!onVine) {
+        else {
             this.platformCollisions.active = true;
-            if (this.cursors?.left.isDown) {
-                this.player.setVelocityX(-160);
-
-                this.playAnimation('left');
-                if (this.gameProgress.inventory.finalKey) {
-                    this.basicKey.play('key-left');
-                }
-            }
-
-            else if (this.cursors?.right.isDown) {
-                this.player.setVelocityX(160);
-
-                this.playAnimation('right');
-
-                if (this.gameProgress.inventory.finalKey) {
-                    this.basicKey.play('key-right');
-                }
-            }
-
-            else if (this.cursors?.up.isDown && this.player.body.touching.down) {
+            if (pressingUp && this.player.body.touching.down) {
                 // find way to delay jump until crouch frame remains for 1 sec
                 this.playAnimation('crouch');
                 this.crouching = true;
+                this.scene.remove('popup');
             }
 
-            else if (this.cursors?.up.isUp && this.crouching) {
+            else if (!pressingUp && this.crouching) {
                 // find way to stop if after bounce? //no bounce?
                 this.playAnimation('jump');
                 this.player.setVelocityY(-430);
@@ -220,13 +217,24 @@ export class Game extends Scene {
             }
 
             else if (!this.player.body.touching.down) {
-                this.playAnimation('jump');
+                if (faceForward) {
+                    this.playAnimation('jump');
+                }
             }
 
             else {
                 this.player.setVelocityX(0);
+                if (faceForward) {
+                    this.playAnimation('forward');
+                }
+            }
 
-                this.playAnimation('forward');
+            if (pressingLeft) {
+                this.goLeft();
+            }
+
+            else if (pressingRight) {
+                this.goRight();
             }
         }
 
@@ -252,7 +260,29 @@ export class Game extends Scene {
         }
     }
 
-    onVineFunction() {
+    /**
+     * Movement Functions
+     */
+    goLeft() {
+        this.player.setVelocityX(-160);
+
+        this.playAnimation('left');
+        if (this.gameProgress.inventory.finalKey) {
+            this.basicKey.play('key-left');
+        }
+    }
+
+    goRight() {
+        this.player.setVelocityX(160);
+
+        this.playAnimation('right');
+
+        if (this.gameProgress.inventory.finalKey) {
+            this.basicKey.play('key-right');
+        }
+    }
+
+    checkOnVine() {
         return this.physics.overlap(this.vines, this.player);
     }
 
@@ -297,6 +327,7 @@ export class Game extends Scene {
 
     playAnimation(key: string) {
         if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-${key}`) {
+            console.log(`Playing: ${this.gameProgress.character}-${key}`);
             this.player.anims.play(`${this.gameProgress.character}-${key}`);
         }
     }
