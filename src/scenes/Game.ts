@@ -180,54 +180,53 @@ export class Game extends Scene {
 
         if (onVine && this.cursors?.up.isDown) {
             console.log(this.player.anims.currentAnim);
-            if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-climb`) {
-                this.player.anims.play(`${this.gameProgress.character}-climb`);
-            }
+            this.playAnimation('climb');
             this.player.setVelocityY(-200);
             console.log(this.player.y);
             this.platformCollisions.active = false;
         }
         else if (!onVine) {
             this.platformCollisions.active = true;
-            if (!onVine && this.cursors?.left.isDown) {
+            if (this.cursors?.left.isDown) {
                 this.player.setVelocityX(-160);
 
-                this.player.anims.play(`${this.gameProgress.character}-left`, true);
-
+                this.playAnimation('left');
                 if (this.gameProgress.inventory.finalKey) {
                     this.basicKey.play('key-left');
                 }
             }
 
-            else if (!onVine && this.cursors?.right.isDown) {
+            else if (this.cursors?.right.isDown) {
                 this.player.setVelocityX(160);
 
-                this.player.anims.play(`${this.gameProgress.character}-right`, true);
+                this.playAnimation('right');
 
                 if (this.gameProgress.inventory.finalKey) {
                     this.basicKey.play('key-right');
                 }
             }
 
-            else if (!onVine && this.cursors?.up.isDown && this.player.body.touching.down) {
-                this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
+            else if (this.cursors?.up.isDown && this.player.body.touching.down) {
+                // find way to delay jump until crouch frame remains for 1 sec
+                this.playAnimation('crouch');
                 this.crouching = true;
             }
 
-            else if (!onVine && this.cursors?.up.isUp && this.crouching) {
-                this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
+            else if (this.cursors?.up.isUp && this.crouching) {
+                // find way to stop if after bounce? //no bounce?
+                this.playAnimation('jump');
                 this.player.setVelocityY(-430);
                 this.crouching = false;
             }
 
-            else if (!onVine && !this.player.body.touching.down) {
-                this.player.anims.play(`${this.gameProgress.character}-jump`);
+            else if (!this.player.body.touching.down) {
+                this.playAnimation('jump');
             }
 
             else {
                 this.player.setVelocityX(0);
 
-                this.player.anims.play(`${this.gameProgress.character}-forward`);
+                this.playAnimation('forward');
             }
         }
 
@@ -254,12 +253,6 @@ export class Game extends Scene {
     }
 
     onVineFunction() {
-        // const boundsPlayer = this.player.getBounds();
-        // const overlap = this.vines.find((vine) => {
-        //     const vinebounds = vine.getBounds();
-        //     return Phaser.Geom.Intersects.GetRectangleToRectangle(boundsPlayer, vinebounds).length != 0;
-        // });
-        // return overlap != undefined;
         return this.physics.overlap(this.vines, this.player);
     }
 
@@ -300,5 +293,11 @@ export class Game extends Scene {
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
         this.nonCollisionItems.refresh();
+    }
+
+    playAnimation(key: string) {
+        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-${key}`) {
+            this.player.anims.play(`${this.gameProgress.character}-${key}`);
+        }
     }
 }
