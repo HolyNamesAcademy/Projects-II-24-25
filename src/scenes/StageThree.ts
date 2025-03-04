@@ -22,11 +22,11 @@ export class StageThree extends Scene {
         this.camera.setBackgroundColor(0x00ff00);
         this.camera.setViewport(this.parent.x - this.width / 2, this.parent.y - this.height / 2, this.width, this.height);
 
-        this.msg_text = this.add.text(this.width / 2, 40, 'StageThree', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center',
-        });
-        this.msg_text.setOrigin(0.5);
+        // this.msg_text = this.add.text(this.width / 2, 40, 'StageThree', {
+        //     fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
+        //     stroke: '#000000', strokeThickness: 8,
+        //     align: 'center',
+        // });
+        // this.msg_text.setOrigin(0.5);
     }
 }

@@ -40,6 +40,8 @@ export class Preloader extends Scene {
 
         this.load.spritesheet('keyPedestal', 'Pedestal_Frames.png', { frameWidth: 36, frameHeight: 84 });
 
+        this.load.spritesheet('Numbers', 'BetterNumbers.png', { frameWidth: 19, frameHeight: 19 });
+
         this.load.spritesheet('addison',
             'AddisonSpriteSheetRed.png',
             { frameWidth: 32, frameHeight: 32 },

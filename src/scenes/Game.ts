@@ -49,6 +49,8 @@ export class Game extends Scene {
 
     crouching: boolean = false;
 
+    puzzle1: boolean = false;
+
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
@@ -125,18 +127,22 @@ export class Game extends Scene {
                 pedestal.anims.play('pedestalFlash', true);
             });
         });
+
         pedestals.forEach((pedestal) => {
             pedestal.on('pointerout', () => {
                 pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
             });
         });
+
         pedestals.forEach((pedestal) => {
             pedestal.on('pointerdown', () => {
-                this.cameras.main.fadeOut(500, 0, 0, 0);
-                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                    this.scene.start('StageThree');
-                });
+                if (this.scene.get('puzzle1') == null) {
+                    this.createWindow(512, 300, 600, 400, 'puzzle1');
+                }
+                else {
+                    this.scene.remove('puzzle1');
+                }
             });
         });
 
@@ -161,13 +167,11 @@ export class Game extends Scene {
             this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
         });
-
-        // this.createWindow(512, 300, 512, 300);
     }
 
-    createWindow(x: number, y: number, width: number, height: number) {
+    createWindow(x: number, y: number, width: number, height: number, id: string) {
         console.log('creating window');
-        const uniqueIdentifier = 'popup' + Math.random();
+        const uniqueIdentifier = id;
 
         const zone = this.add.zone(x, y, width, height).setInteractive();
         const scene = new StageThree(uniqueIdentifier, zone, width, height);
@@ -199,7 +203,7 @@ export class Game extends Scene {
                 }
             }
 
-            else if (!onVine && this.cursors?.right.isDown) {
+            else if (this.cursors?.right.isDown) {
                 this.player.setVelocityX(160);
 
                 this.player.anims.play(`${this.gameProgress.character}-right`, true);
@@ -209,18 +213,18 @@ export class Game extends Scene {
                 }
             }
 
-            else if (!onVine && this.cursors?.up.isDown && this.player.body.touching.down) {
+            else if (this.cursors?.up.isDown && this.player.body.touching.down) {
                 this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
                 this.crouching = true;
             }
 
-            else if (!onVine && this.cursors?.up.isUp && this.crouching) {
+            else if (this.cursors?.up.isUp && this.crouching) {
                 this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
                 this.player.setVelocityY(-430);
                 this.crouching = false;
             }
 
-            else if (!onVine && !this.player.body.touching.down) {
+            else if (!this.player.body.touching.down) {
                 this.player.anims.play(`${this.gameProgress.character}-jump`);
             }
 
