@@ -159,8 +159,8 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'addison-climb',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [10, 11] }),
-            frameRate: 2,
+            frames: this.anims.generateFrameNumbers('addison', { frames: [9, 10] }),
+            frameRate: 4,
             repeat: -1,
         });
     }
