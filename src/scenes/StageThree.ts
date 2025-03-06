@@ -9,6 +9,8 @@ export class StageThree extends Scene {
     background: Phaser.GameObjects.Image;
     msg_text: Phaser.GameObjects.Text;
 
+    numbers: Phaser.Physics.Arcade.StaticGroup;
+
     constructor(key: string = 'StageThree', parent: Phaser.GameObjects.Zone, width: number, height: number) {
         super(key);
         this.parent = parent;
@@ -22,11 +24,6 @@ export class StageThree extends Scene {
         this.camera.setBackgroundColor(0x00ff00);
         this.camera.setViewport(this.parent.x - this.width / 2, this.parent.y - this.height / 2, this.width, this.height);
 
-        // this.msg_text = this.add.text(this.width / 2, 40, 'StageThree', {
-        //     fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-        //     stroke: '#000000', strokeThickness: 8,
-        //     align: 'center',
-        // });
-        // this.msg_text.setOrigin(0.5);
+        this.numbers.create(100, 200, 'Numbers', 0);
     }
 }
