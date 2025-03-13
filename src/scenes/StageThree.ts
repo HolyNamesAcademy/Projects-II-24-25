@@ -122,7 +122,6 @@ export class StageThree extends Scene {
                 }
                 else if (this.resetPressed) {
                     number.setFrame(cell.value * 3 - 3);
-                    this.resetPressed = false;
                 }
                 else if (cell.state == 'green') {
                     number.setFrame(cell.value * 3 - 2);
@@ -134,6 +133,7 @@ export class StageThree extends Scene {
             });
         });
         this.reset.setVisible(false);
+        this.resetPressed = false;
     }
 
     lostPuzzle() {
