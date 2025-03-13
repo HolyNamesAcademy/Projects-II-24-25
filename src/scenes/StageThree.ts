@@ -2,7 +2,7 @@ import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 
 const puzzleDimensions = [5, 2];
-const maxTime = 20;
+const maxTime = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 type Cell = {
@@ -28,6 +28,7 @@ export class StageThree extends Scene {
     reset: Phaser.GameObjects.Text;
     startTime: number;
     lost: boolean;
+    resetPressed: boolean;
     timesLost: number;
 
     constructor(key: string = 'StageThree', parent: Phaser.GameObjects.Zone, width: number, height: number) {
@@ -46,12 +47,20 @@ export class StageThree extends Scene {
         this.puzzle = this.createPuzzle();
         this.renderPuzzle();
         this.timesLost = 0;
+        this.resetPressed = false;
 
         this.clock = this.add.text(300, 350, '0:20', {
             fontFamily: 'MedievalSharp', fontSize: 40, color: '#ffffff',
             stroke: '#000000', strokeThickness: 10,
             align: 'center',
         }).setOrigin(0.5);
+
+        this.reset = makeButton(this, 'Reset', 40, 150, 350, () => {
+            // this.lost = false;
+            this.resetPressed = true;
+            this.createPuzzle();
+            this.updatePuzzle();
+        }).setVisible(false);
     }
 
     createPuzzle(): Cell[][] {
@@ -111,6 +120,10 @@ export class StageThree extends Scene {
                 if (this.lost) {
                     number.setFrame(cell.value * 3 - 1);
                 }
+                else if (this.resetPressed) {
+                    number.setFrame(cell.value * 3 - 3);
+                    this.resetPressed = false;
+                }
                 else if (cell.state == 'green') {
                     number.setFrame(cell.value * 3 - 2);
                 }
@@ -120,6 +133,7 @@ export class StageThree extends Scene {
                 }
             });
         });
+        this.reset.setVisible(false);
     }
 
     lostPuzzle() {
@@ -127,11 +141,7 @@ export class StageThree extends Scene {
         this.lost = true;
         this.updatePuzzle();
         this.timesLost++;
-        makeButton(this, 'Reset', 40, 150, 350, () => {
-            this.lost = false;
-            this.createPuzzle();
-            // this.updatePuzzle();
-        });
+        this.reset.setVisible(true);
     }
 
     update() {
