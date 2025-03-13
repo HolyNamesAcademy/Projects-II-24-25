@@ -26,6 +26,7 @@ export class StageThree extends Scene {
     currentNumber: number;
     clock: Phaser.GameObjects.Text;
     reset: Phaser.GameObjects.Text;
+    win: Phaser.GameObjects.Text;
     startTime: number;
     lost: boolean;
     resetPressed: boolean;
@@ -62,6 +63,10 @@ export class StageThree extends Scene {
             this.resetPressed = true;
             this.createPuzzle();
             this.updatePuzzle();
+        }).setVisible(false);
+
+        this.win = makeButton(this, 'Key', 40, 500, 350, () => {
+            this.scene.remove();
         }).setVisible(false);
     }
 
@@ -149,7 +154,8 @@ export class StageThree extends Scene {
     }
 
     wonPuzzle() {
-        this.clock.setText('-:--');
+        this.clock.setText('You won!');
+        this.win.setVisible(true);
     }
 
     update() {
