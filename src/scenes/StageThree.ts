@@ -30,6 +30,7 @@ export class StageThree extends Scene {
     lost: boolean;
     resetPressed: boolean;
     timesLost: number;
+    numberGreen: number;
 
     constructor(key: string = 'StageThree', parent: Phaser.GameObjects.Zone, width: number, height: number) {
         super(key);
@@ -48,6 +49,7 @@ export class StageThree extends Scene {
         this.renderPuzzle();
         this.timesLost = 0;
         this.resetPressed = false;
+        this.numberGreen = 0;
 
         this.clock = this.add.text(300, 350, '0:20', {
             fontFamily: 'MedievalSharp', fontSize: 40, color: '#ffffff',
@@ -101,6 +103,8 @@ export class StageThree extends Scene {
                         cell.state = 'green';
                         console.log('green');
                         this.currentNumber++;
+                        this.numberGreen = this.numberGreen + 1;
+                        console.log(this.numberGreen);
                     }
                     else {
                         cell.state = 'red';
@@ -144,6 +148,10 @@ export class StageThree extends Scene {
         this.reset.setVisible(true);
     }
 
+    wonPuzzle() {
+        this.clock.setText('-:--');
+    }
+
     update() {
         const currentTime = Date.now();
         const time = maxTime - Math.floor((currentTime - this.startTime) / 1000);
@@ -153,6 +161,10 @@ export class StageThree extends Scene {
         }
         else {
             this.lostPuzzle();
+        }
+
+        if (this.numberGreen == 10) {
+            this.wonPuzzle();
         }
     }
 }
