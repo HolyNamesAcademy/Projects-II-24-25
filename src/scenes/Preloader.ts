@@ -100,6 +100,13 @@ export class Preloader extends Scene {
         });
 
         this.anims.create({
+            key: 'completedPuzzle',
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [2] }),
+            frameRate: 3,
+            repeat: -1,
+        });
+
+        this.anims.create({
             key: 'key-right',
             frames: this.anims.generateFrameNumbers('basicKey', { frames: [0, 1, 2] }),
             frameRate: 5,
