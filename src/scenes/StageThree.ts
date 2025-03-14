@@ -35,9 +35,7 @@ export class StageThree extends Scene {
     currentNumber: number;
     startTime: number;
     timesLost: number;
-
-    puzzle: Cell [] [];
-    gameState = GameState.Playing;
+    numberGreen: number;
 
     constructor(key: string = 'StageThree', parent: Phaser.GameObjects.Zone, width: number, height: number) {
         super(key);
@@ -94,9 +92,10 @@ export class StageThree extends Scene {
             }
             puzzle.push(row);
         }
+
         this.currentNumber = 1;
         this.startTime = Date.now();
-        this.puzzle = puzzle as Cell [][];
+        return puzzle as Cell [][];
     }
 
     renderPuzzle() {
@@ -108,18 +107,18 @@ export class StageThree extends Scene {
                 number.setInteractive();
                 number.setScale(4);
                 number.refreshBody();
+
                 number.on('pointerdown', () => {
                     if (this.currentNumber == cell.value) {
                         cell.state = 'green';
-                        console.log('green');
                         this.currentNumber++;
+                        this.numberGreen = this.numberGreen + 1;
+                        console.log(this.numberGreen);
                     }
                     else {
                         cell.state = 'red';
                         console.log('red');
-                        this.lostPuzzle();
                     }
-                    this.updatePuzzle();
                 });
             });
         });
