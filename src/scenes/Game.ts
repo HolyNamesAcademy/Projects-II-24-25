@@ -254,12 +254,6 @@ export class Game extends Scene {
     }
 
     onVineFunction() {
-        // const boundsPlayer = this.player.getBounds();
-        // const overlap = this.vines.find((vine) => {
-        //     const vinebounds = vine.getBounds();
-        //     return Phaser.Geom.Intersects.GetRectangleToRectangle(boundsPlayer, vinebounds).length != 0;
-        // });
-        // return overlap != undefined;
         return this.physics.overlap(this.vines, this.player);
     }
 
