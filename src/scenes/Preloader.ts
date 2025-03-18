@@ -40,6 +40,8 @@ export class Preloader extends Scene {
 
         this.load.spritesheet('keyPedestal', 'Pedestal_Frames.png', { frameWidth: 36, frameHeight: 84 });
 
+        this.load.spritesheet('Numbers', 'BetterNumbers.png', { frameWidth: 19, frameHeight: 19 });
+
         this.load.spritesheet('addison',
             'AddisonSpriteSheetRed.png',
             { frameWidth: 32, frameHeight: 32 },
@@ -93,6 +95,13 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'pedestalFlash',
             frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [7] }),
+            frameRate: 3,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'completedPuzzle',
+            frames: this.anims.generateFrameNumbers('keyPedestal', { frames: [2] }),
             frameRate: 3,
             repeat: -1,
         });
@@ -189,6 +198,12 @@ export class Preloader extends Scene {
             frames: [{ key: 'finley', frame: 2 }],
             frameRate: 5,
         });
+
+        this.anims.create({
+            key: 'finley-climb',
+            frames: [{ key: 'finley', frame: 1 }],
+            frameRate: -1,
+        });
     }
 
     makeBeanieFinleyAnimations() {
@@ -216,6 +231,12 @@ export class Preloader extends Scene {
             key: 'beanieFinley-jump',
             frames: [{ key: 'finley', frame: 14 }],
             frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'beanieFinley-climb',
+            frames: [{ key: 'finley', frame: 13 }],
+            frameRate: -1,
         });
     }
 
@@ -245,6 +266,12 @@ export class Preloader extends Scene {
             frames: [{ key: 'finley', frame: 26 }],
             frameRate: 5,
         });
+
+        this.anims.create({
+            key: 'capFinley-climb',
+            frames: [{ key: 'finley', frame: 25 }],
+            frameRate: -1,
+        });
     }
 
     makeBaldFinleyAnimations() {
@@ -272,6 +299,12 @@ export class Preloader extends Scene {
             key: 'baldFinley-jump',
             frames: [{ key: 'finley', frame: 38 }],
             frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'baldFinley-climb',
+            frames: [{ key: 'finley', frame: 37 }],
+            frameRate: -1,
         });
     }
 

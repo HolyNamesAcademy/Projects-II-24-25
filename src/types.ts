@@ -8,7 +8,7 @@ export interface GameProgress {
     character: string;
     inventory: {
         finalKey: boolean;
-    }
+    };
 }
 
 export interface LayoutObject {
