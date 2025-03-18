@@ -36,7 +36,7 @@ export class StageThree extends Scene {
     startTime: number;
     timesLost: number;
 
-    puzzle: Cell [] [];
+    puzzle: Cell [][];
     gameState = GameState.Playing;
 
     constructor(key: string = 'StageThree', parent: Phaser.GameObjects.Zone, width: number, height: number) {
@@ -71,6 +71,7 @@ export class StageThree extends Scene {
         }).setVisible(false);
 
         this.win = makeButton(this, 'Key', 40, 500, 350, () => {
+            this.events.emit('passBoolean', true);
             this.scene.remove();
         }).setVisible(false);
     }

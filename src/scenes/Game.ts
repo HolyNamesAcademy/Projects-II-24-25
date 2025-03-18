@@ -50,6 +50,7 @@ export class Game extends Scene {
     crouching: boolean = false;
 
     puzzle1: boolean = false;
+    winState: boolean = false;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -88,8 +89,8 @@ export class Game extends Scene {
             this.gameProgress.character,
         );
 
-        this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
-        this.nonCollisionItems.add(this.basicKey);
+        // this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
+        // this.nonCollisionItems.add(this.basicKey);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
@@ -139,6 +140,10 @@ export class Game extends Scene {
             pedestal.on('pointerdown', () => {
                 if (this.scene.get('puzzle1') == null) {
                     this.createWindow(512, 300, 600, 400, 'puzzle1');
+                    this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
+                        this.winState = value;
+                        console.log(this.winState);
+                    });
                 }
                 else {
                     this.scene.remove('puzzle1');
@@ -157,6 +162,16 @@ export class Game extends Scene {
                 }
                 else {
                     door.anims.play('openDoor', true);
+                }
+            });
+            this.physics.add.overlap(this.player, door, () => {
+                if (door.anims.getName() == 'openDoor') {
+                    this.player.setVisible(false);
+                    door.anims.play('closeDoor');
+                    this.cameras.main.fadeOut(1000, 0, 0, 0);
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                        this.scene.start('StageTwo');
+                    });
                 }
             });
         });
@@ -238,6 +253,10 @@ export class Game extends Scene {
         if (this.player.body.velocity.x == 0) {
             this.gameProgress.coordinates = this.player.getCenter();
             localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
+        }
+
+        if (this.winState) {
+            this.basicKey = this.physics.add.staticSprite(512, 600, 'basicKey', 0).setScale(6);
         }
 
         const { y: playerY } = this.player.getBottomCenter();
