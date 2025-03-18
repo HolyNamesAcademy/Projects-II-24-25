@@ -155,7 +155,7 @@ export class Game extends Scene {
             });
         });
 
-        this.physics.add.collider(this.player, this.basicKey, () => {
+        this.physics.add.overlap(this.player, this.basicKey, () => {
             // this.basicKey.setVisible(false);
             // console.log('hiding key');
             this.basicKey.play('key-left');
@@ -253,6 +253,10 @@ export class Game extends Scene {
         }
     }
 
+    onKeyFunction(){
+        return this.physics.overlap(this.key, this.player);
+
+    }
     onVineFunction() {
         // const boundsPlayer = this.player.getBounds();
         // const overlap = this.vines.find((vine) => {
