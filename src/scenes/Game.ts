@@ -254,7 +254,7 @@ export class Game extends Scene {
     }
 
     onKeyFunction(){
-        return this.physics.overlap(this.key, this.player);
+        return this.physics.overlap(this.basicKey, this.player);
 
     }
     onVineFunction() {
