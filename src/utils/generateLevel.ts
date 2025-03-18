@@ -15,7 +15,7 @@ export default function generateLevel(
         const { x, y, type, verticalOffset } = object;
         currentY += y;
         if (type === 'platform') {
-            platforms.create(x, currentY, type)
+            platforms.create(x, currentY, 'platform', 0)
                 .setOrigin(0.5, 0)
                 .setScale(4)
                 .refreshBody();

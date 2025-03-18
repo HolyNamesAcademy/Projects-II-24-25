@@ -49,6 +49,9 @@ export class Game extends Scene {
 
     crouching: boolean = false;
 
+    puzzle1: boolean = false;
+    winState: boolean = false;
+
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
 
@@ -86,8 +89,8 @@ export class Game extends Scene {
             this.gameProgress.character,
         );
 
-        this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
-        this.nonCollisionItems.add(this.basicKey);
+        // this.basicKey = this.physics.add.staticSprite(512, 500, 'basicKey', 0).setScale(6);
+        // this.nonCollisionItems.add(this.basicKey);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(5);
@@ -125,18 +128,26 @@ export class Game extends Scene {
                 pedestal.anims.play('pedestalFlash', true);
             });
         });
+
         pedestals.forEach((pedestal) => {
             pedestal.on('pointerout', () => {
                 pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
             });
         });
+
         pedestals.forEach((pedestal) => {
             pedestal.on('pointerdown', () => {
-                this.cameras.main.fadeOut(500, 0, 0, 0);
-                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                    this.scene.start('StageThree');
-                });
+                if (this.scene.get('puzzle1') == null) {
+                    this.createWindow(512, 300, 600, 400, 'puzzle1');
+                    this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
+                        this.winState = value;
+                        console.log(this.winState);
+                    });
+                }
+                else {
+                    this.scene.remove('puzzle1');
+                }
             });
         });
 
@@ -153,6 +164,16 @@ export class Game extends Scene {
                     door.anims.play('openDoor', true);
                 }
             });
+            this.physics.add.overlap(this.player, door, () => {
+                if (door.anims.getName() == 'openDoor') {
+                    this.player.setVisible(false);
+                    door.anims.play('closeDoor');
+                    this.cameras.main.fadeOut(1000, 0, 0, 0);
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                        this.scene.start('StageTwo');
+                    });
+                }
+            });
         });
 
         this.physics.add.overlap(this.player, this.basicKey, () => {
@@ -161,13 +182,11 @@ export class Game extends Scene {
             this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
         });
-
-        // this.createWindow(512, 300, 512, 300);
     }
 
-    createWindow(x: number, y: number, width: number, height: number) {
+    createWindow(x: number, y: number, width: number, height: number, id: string) {
         console.log('creating window');
-        const uniqueIdentifier = 'popup' + Math.random();
+        const uniqueIdentifier = id;
 
         const zone = this.add.zone(x, y, width, height).setInteractive();
         const scene = new StageThree(uniqueIdentifier, zone, width, height);
@@ -178,48 +197,66 @@ export class Game extends Scene {
         const onVine = this.onVineFunction();
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
-        if (this.cursors?.left.isDown) {
-            this.player.setVelocityX(-160);
-
-            this.player.anims.play(`${this.gameProgress.character}-left`, true);
-
-            if (this.gameProgress.inventory.finalKey) {
-                this.basicKey.play('key-left');
+        if (onVine && this.cursors?.up.isDown) {
+            console.log(this.player.anims.currentAnim);
+            if (this.player.anims.currentAnim?.key != 'addison-climb') {
+                this.player.anims.play('addison-climb');
             }
+            this.player.setVelocityY(-200);
+            console.log(this.player.y);
+            this.platformCollisions.active = false;
         }
-        else if (this.cursors?.right.isDown) {
-            this.player.setVelocityX(160);
+        else if (!onVine) {
+            this.platformCollisions.active = true;
+            if (!onVine && this.cursors?.left.isDown) {
+                this.player.setVelocityX(-160);
 
-            this.player.anims.play(`${this.gameProgress.character}-right`, true);
+                this.player.anims.play(`${this.gameProgress.character}-left`, true);
 
-            if (this.gameProgress.inventory.finalKey) {
-                this.basicKey.play('key-right');
+                if (this.gameProgress.inventory.finalKey) {
+                    this.basicKey.play('key-left');
+                }
             }
-        }
-        else {
-            this.player.setVelocityX(0);
 
-            this.player.anims.play(`${this.gameProgress.character}-forward`);
-        }
+            else if (this.cursors?.right.isDown) {
+                this.player.setVelocityX(160);
 
-        if (!onVine && this.cursors?.up.isDown && this.player.body.touching.down) {
-            this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
-            this.crouching = true;
-        }
+                this.player.anims.play(`${this.gameProgress.character}-right`, true);
 
-        else if (!onVine && this.cursors?.up.isUp && this.crouching) {
-            this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
-            this.player.setVelocityY(-430);
-            this.crouching = false;
-        }
+                if (this.gameProgress.inventory.finalKey) {
+                    this.basicKey.play('key-right');
+                }
+            }
 
-        else if (!onVine && !this.player.body.touching.down) {
-            this.player.anims.play(`${this.gameProgress.character}-jump`);
+            else if (this.cursors?.up.isDown && this.player.body.touching.down) {
+                this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
+                this.crouching = true;
+            }
+
+            else if (this.cursors?.up.isUp && this.crouching) {
+                this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
+                this.player.setVelocityY(-430);
+                this.crouching = false;
+            }
+
+            else if (!this.player.body.touching.down) {
+                this.player.anims.play(`${this.gameProgress.character}-jump`);
+            }
+
+            else {
+                this.player.setVelocityX(0);
+
+                this.player.anims.play(`${this.gameProgress.character}-forward`);
+            }
         }
 
         if (this.player.body.velocity.x == 0) {
             this.gameProgress.coordinates = this.player.getCenter();
             localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
+        }
+
+        if (this.winState) {
+            this.basicKey = this.physics.add.staticSprite(512, 600, 'basicKey', 0).setScale(6);
         }
 
         const { y: playerY } = this.player.getBottomCenter();
@@ -236,20 +273,6 @@ export class Game extends Scene {
         }
         else if (playerY < 200 && this.gameProgress.scrollPosition > 384) {
             this.scroll(this.scrollSpeed);
-        }
-
-        if (onVine && this.cursors?.up.isDown) {
-            console.log(this.player.anims.currentAnim);
-            const climbAnimation = `${this.gameProgress.character}-climb`;
-            if (this.player.anims.currentAnim?.key != climbAnimation) {
-                this.player.anims.play(climbAnimation);
-            }
-            this.player.setVelocityY(-200);
-            console.log(this.player.y);
-            this.platformCollisions.active = false;
-        }
-        else {
-            this.platformCollisions.active = true;
         }
     }
 
