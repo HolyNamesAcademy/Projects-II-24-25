@@ -98,7 +98,7 @@ export class Game extends Scene {
 
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
-            if (this.onVineFunction()) {
+            if (this.getOnVine()) {
                 return;
             }
             this.player.y -= this.scrollSpeed * 2;
@@ -194,59 +194,83 @@ export class Game extends Scene {
     }
 
     update() {
-        const onVine = this.onVineFunction();
+        const onVine = this.getOnVine();
+        const touchingPlatform = this.getTouchingPlatform();
+
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
-        if (onVine && this.cursors?.up.isDown) {
-            console.log(this.player.anims.currentAnim);
-            if (this.player.anims.currentAnim?.key != 'addison-climb') {
-                this.player.anims.play('addison-climb');
-            }
-            this.player.setVelocityY(-200);
-            console.log(this.player.y);
-            this.platformCollisions.active = false;
-        }
-        else if (!onVine) {
-            this.platformCollisions.active = true;
-            if (!onVine && this.cursors?.left.isDown) {
-                this.player.setVelocityX(-160);
-
-                this.player.anims.play(`${this.gameProgress.character}-left`, true);
-
-                if (this.gameProgress.inventory.finalKey) {
-                    this.basicKey.play('key-left');
+        if (onVine) {
+            // On a vine, either show forward when touching the platform
+            if (touchingPlatform) {
+                if (this.cursors?.left.isDown) {
+                    this.moveLeft();
                 }
+
+                else if (this.cursors?.right.isDown) {
+                    this.moveRight();
+                }
+                else {
+                    this.player.anims.play(`${this.gameProgress.character}-forward`);
+                }
+            }
+            // or show climb when not touching the platform
+            else if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-climb`) {
+                this.player.anims.play(`${this.gameProgress.character}-climb`);
+            }
+
+            // If they are pressing up, move up and allow moving though platform.
+            if (this.cursors?.up.isDown) {
+                this.player.setVelocityY(-200);
+                this.platformCollisions.active = false;
+            }
+            else {
+                this.platformCollisions.active = true;
+            }
+
+            // They can press left or right to move, but still show the climbing animation.
+            if (this.cursors?.left.isDown) {
+                this.player.setVelocityX(-160);
+            }
+            else if (this.cursors?.right.isDown) {
+                this.player.setVelocityX(160);
+            }
+            else {
+                this.player.setVelocityX(0);
+            }
+        }
+        else {
+            this.platformCollisions.active = true;
+
+            if (this.cursors?.left.isDown) {
+                this.moveLeft();
+                this.jumpWithoutAnimation();
             }
 
             else if (this.cursors?.right.isDown) {
-                this.player.setVelocityX(160);
-
-                this.player.anims.play(`${this.gameProgress.character}-right`, true);
-
-                if (this.gameProgress.inventory.finalKey) {
-                    this.basicKey.play('key-right');
-                }
+                this.moveRight();
+                this.jumpWithoutAnimation();
             }
-
-            else if (this.cursors?.up.isDown && this.player.body.touching.down) {
-                this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
-                this.crouching = true;
-            }
-
-            else if (this.cursors?.up.isUp && this.crouching) {
-                this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
-                this.player.setVelocityY(-430);
-                this.crouching = false;
-            }
-
-            else if (!this.player.body.touching.down) {
-                this.player.anims.play(`${this.gameProgress.character}-jump`);
-            }
-
             else {
                 this.player.setVelocityX(0);
 
-                this.player.anims.play(`${this.gameProgress.character}-forward`);
+                if (this.cursors?.up.isDown && this.player.body.touching.down) {
+                    this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
+                    this.crouching = true;
+                }
+
+                else if (this.cursors?.up.isUp && this.crouching) {
+                    this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
+                    this.player.setVelocityY(-430);
+                    this.crouching = false;
+                }
+
+                else if (!this.player.body.touching.down) {
+                    this.player.anims.play(`${this.gameProgress.character}-jump`);
+                }
+
+                else {
+                    this.player.anims.play(`${this.gameProgress.character}-forward`);
+                }
             }
         }
 
@@ -276,12 +300,16 @@ export class Game extends Scene {
         }
     }
 
-    onKeyFunction() {
+    getTouchingKey() {
         return this.physics.overlap(this.basicKey, this.player);
     }
 
-    onVineFunction() {
+    getOnVine() {
         return this.physics.overlap(this.vines, this.player);
+    }
+
+    getTouchingPlatform() {
+        return this.player.body.velocity.y < 5 && this.player.body.velocity.y > -5;
     }
 
     /**
@@ -321,5 +349,38 @@ export class Game extends Scene {
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
         this.nonCollisionItems.refresh();
+    }
+
+    moveLeft() {
+        this.player.setVelocityX(-160);
+        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-left`) {
+            this.player.anims.play(`${this.gameProgress.character}-left`, true);
+        }
+
+        if (this.gameProgress.inventory.finalKey) {
+            this.basicKey.play('key-left');
+        }
+    }
+
+    moveRight() {
+        this.player.setVelocityX(160);
+        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-right`) {
+            this.player.anims.play(`${this.gameProgress.character}-right`, true);
+        }
+
+        if (this.gameProgress.inventory.finalKey) {
+            this.basicKey.play('key-right');
+        }
+    }
+
+    jumpWithoutAnimation() {
+        if (this.cursors?.up.isDown && this.player.body.touching.down) {
+            this.crouching = true;
+        }
+
+        else if (this.cursors?.up.isUp && this.crouching) {
+            this.player.setVelocityY(-430);
+            this.crouching = false;
+        }
     }
 }
