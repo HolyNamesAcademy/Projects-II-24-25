@@ -143,6 +143,9 @@ export class Game extends Scene {
                     this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
                         this.winState = value;
                         console.log(this.winState);
+                        if(this.winState){
+                            this.generateBasicKey();
+                        }
                     });
                 }
                 else {
@@ -191,6 +194,11 @@ export class Game extends Scene {
         const zone = this.add.zone(x, y, width, height).setInteractive();
         const scene = new StageThree(uniqueIdentifier, zone, width, height);
         this.scene.add(uniqueIdentifier, scene, true);
+    }
+
+    generateBasicKey(){
+        this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0).setScale(6).refreshBody();
+            this.nonCollisionItems.add(this.basicKey);
     }
 
     update() {
@@ -253,10 +261,6 @@ export class Game extends Scene {
         if (this.player.body.velocity.x == 0) {
             this.gameProgress.coordinates = this.player.getCenter();
             localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
-        }
-
-        if (this.winState) {
-            this.basicKey = this.physics.add.staticSprite(512, 600, 'basicKey', 0).setScale(6);
         }
 
         const { y: playerY } = this.player.getBottomCenter();
