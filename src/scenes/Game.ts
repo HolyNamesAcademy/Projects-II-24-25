@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress, Layout } from '../types';
 import generateLevel from '../utils/generateLevel';
+import timer from '../utils/timer';
 import { StageThree } from './StageThree';
 
 const layout: Layout = {
@@ -9,7 +10,7 @@ const layout: Layout = {
         { type: 'platform', x: 200, y: 300 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 1150, y: 0 },
-        { type: 'door', x: 200, y: 0 },
+        { type: 'door', x: 200, y: 0, key: 'winKey' },
         { type: 'vine', x: 700, y: 0 },
         { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
@@ -25,7 +26,7 @@ const layout: Layout = {
         { type: 'platform', x: 550, y: 400 },
         { type: 'platform', x: 200, y: 0 },
         { type: 'platform', x: 700, y: 0 },
-        { type: 'door', x: 150, y: 0 },
+        { type: 'door', x: 150, y: 0, key: 'winKey' },
         { type: 'keyPedestal', x: 600, y: 0 },
     ],
 };
@@ -51,6 +52,7 @@ export class Game extends Scene {
 
     puzzle1: boolean = false;
     winState: boolean = false;
+    possessesKey: boolean = false;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -77,7 +79,7 @@ export class Game extends Scene {
 
         this.platforms = this.physics.add.staticGroup();
         const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, layout);
-        this.nonCollisionItems.addMultiple(doors);
+        this.nonCollisionItems.addMultiple(doors.map(d => d.object));
         this.nonCollisionItems.addMultiple(vines);
         this.nonCollisionItems.addMultiple(pedestals);
         this.nonCollisionItems.addMultiple(spikes);
@@ -142,6 +144,7 @@ export class Game extends Scene {
                     this.createWindow(512, 300, 600, 400, 'puzzle1');
                     this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
                         this.winState = value;
+                        this.gameProgress.keys.winKey = true;
                         console.log(this.winState);
                         if (this.winState) {
                             this.generateBasicKey();
@@ -158,19 +161,27 @@ export class Game extends Scene {
             this.scene.start('DeathScreen');
         });
 
-        doors.forEach((door) => {
-            door.on('pointerdown', () => {
-                if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
-                    door.anims.play('closeDoor', true);
-                }
-                else {
+        doors.forEach(({
+            key,
+            object: door,
+        }) => {
+            // door.on('pointerdown', () => {
+            //     if (door.anims.currentAnim && door.anims.currentAnim.key === 'openDoor') {
+            //         door.anims.play('closeDoor', true);
+            //     }
+            //     else {
+            //         door.anims.play('openDoor', true);
+            //     }
+            // });
+            this.physics.add.overlap(this.player, door, async () => {
+                console.log(key);
+                console.log(this.gameProgress.keys);
+                if (key && this.gameProgress.keys[key]) {
                     door.anims.play('openDoor', true);
-                }
-            });
-            this.physics.add.overlap(this.player, door, () => {
-                if (door.anims.getName() == 'openDoor') {
+                    await timer(500);
                     this.player.setVisible(false);
-                    door.anims.play('closeDoor');
+                    door.anims.play('closeDoor', true);
+                    await timer(500);
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                         this.scene.start('StageTwo');
@@ -184,6 +195,7 @@ export class Game extends Scene {
             // console.log('hiding key');
             this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
+            this.possessesKey = true;
         });
     }
 

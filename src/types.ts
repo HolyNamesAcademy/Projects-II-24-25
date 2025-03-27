@@ -6,6 +6,11 @@ export interface GameProgress {
         climb: boolean;
     };
     character: string;
+    keys: {
+        winKey: boolean;
+        door2Key: boolean;
+        trapdoor1Key: boolean;
+    };
     inventory: {
         finalKey: boolean;
     };
@@ -18,8 +23,14 @@ export interface LayoutObject {
     scale?: number;
     verticalOffset?: number;
     nextScene?: string;
+    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
 }
 
 export interface Layout {
     objects: LayoutObject [];
+}
+
+export interface LockableObject {
+    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
+    object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }
