@@ -53,6 +53,7 @@ export class Game extends Scene {
     puzzle1: boolean = false;
     winState: boolean = false;
     possessesKey: boolean = false;
+    currentDoorAnim: string;
 
     scrollSpeed: number = 4;
     doubleJump: boolean = false;
@@ -171,8 +172,10 @@ export class Game extends Scene {
             //     }
             // });
             this.physics.add.overlap(this.player, door, async () => {
-                console.log(key);
-                console.log(this.gameProgress.keys);
+                if (this.currentDoorAnim == 'openDoor') {
+                    return;
+                }
+                console.log('door overlap');
                 if (key && this.gameProgress.keys[key]) {
                     door.anims.play('openDoor', true);
                     await timer(500);
