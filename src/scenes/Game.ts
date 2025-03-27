@@ -172,11 +172,12 @@ export class Game extends Scene {
             //     }
             // });
             this.physics.add.overlap(this.player, door, async () => {
-                if (this.currentDoorAnim == 'openDoor') {
+                if (this.currentDoorAnim == key) {
                     return;
                 }
                 console.log('door overlap');
                 if (key && this.gameProgress.keys[key]) {
+                    this.currentDoorAnim = key;
                     door.anims.play('openDoor', true);
                     await timer(500);
                     this.player.setVisible(false);
