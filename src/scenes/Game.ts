@@ -213,7 +213,9 @@ export class Game extends Scene {
     }
 
     generateBasicKey(){
-        this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0).setScale(6).refreshBody();
+        this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0).setScale(5).refreshBody();
+            this.basicKey.x = this.player.x + 100;
+            this.basicKey.y = this.player.y+25;
             this.nonCollisionItems.add(this.basicKey);
     }
 
@@ -254,12 +256,15 @@ export class Game extends Scene {
             // They can press left or right to move, but still show the climbing animation.
             if (this.cursors?.left.isDown) {
                 this.player.setVelocityX(-160);
+                this.updateKeyPosition(this.basicKey, 0, 150);
             }
             else if (this.cursors?.right.isDown) {
                 this.player.setVelocityX(160);
+                this.updateKeyPosition(this.basicKey, 0, 150);
             }
             else {
                 this.player.setVelocityX(0);
+                this.updateKeyPosition(this.basicKey, 0, 150);
             }
         }
         else {
@@ -377,8 +382,11 @@ export class Game extends Scene {
             this.player.anims.play(`${this.gameProgress.character}-left`, true);
         }
 
-        if (this.gameProgress.inventory.finalKey) {
-            this.basicKey.play('key-left');
+        if (this.winState) {
+            if(this.basicKey.anims.currentAnim?.key != 'key-left'){
+                this.basicKey.play('key-left');
+            }
+            this.updateKeyPosition(this.basicKey, 125, 25);
         }
     }
 
@@ -388,10 +396,13 @@ export class Game extends Scene {
             this.player.anims.play(`${this.gameProgress.character}-right`, true);
         }
 
-        if (this.gameProgress.inventory.finalKey) {
-            this.basicKey.play('key-right');
+        if (this.winState) {
+            if(this.basicKey.anims.currentAnim?.key != 'key-right'){
+                this.basicKey.play('key-right');
+            }
+            this.updateKeyPosition(this.basicKey, -125, 25);
         }
-    }
+        }
 
     jumpWithoutAnimation() {
         if (this.cursors?.up.isDown && this.player.body.touching.down) {
@@ -402,5 +413,14 @@ export class Game extends Scene {
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
+
+    }
+    updateKeyPosition(
+        key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody, 
+        x: number,
+        y: number){
+            if(!key){return};
+            key.x = this.player.x + x;
+            key.y = this.player.y + y;
     }
 }
