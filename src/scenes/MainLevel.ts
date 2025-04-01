@@ -30,6 +30,8 @@ const layout: Layout = {
 };
 
 export class MainLevel extends SharedGameCode {
+    basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+
     puzzle1: boolean = false;
     winState: boolean = false;
     possessesKey: boolean = false;
@@ -97,9 +99,12 @@ export class MainLevel extends SharedGameCode {
     }
 
     generateBasicKey() {
-        this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0).setScale(5).refreshBody();
-        this.basicKey.x = this.player.x + 100;
-        this.basicKey.y = this.player.y + 25;
+        this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0)
+            .setScale(5)
+            .setPosition(this.player.x + 100, this.player.y + 25)
+            .refreshBody();
+
+        this.basicKey.play('key-left');
         this.nonCollisionItems.add(this.basicKey);
     }
 
@@ -151,7 +156,8 @@ export class MainLevel extends SharedGameCode {
         if (!key) {
             return;
         };
-        key.x = this.player.x + x;
-        key.y = this.player.y + y;
+        key.setPosition(this.player.x + x, this.player.y + y);
+
+        key.refreshBody();
     }
 }
