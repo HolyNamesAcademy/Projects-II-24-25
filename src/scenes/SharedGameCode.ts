@@ -9,25 +9,21 @@ export class SharedGameCode extends Scene {
     background: Phaser.GameObjects.TileSprite;
     backgroundAnimation: Phaser.GameObjects.Sprite;
 
-    msg_text: Phaser.GameObjects.Text;
-
     platforms: Phaser.Physics.Arcade.StaticGroup;
     platformCollisions: Phaser.Physics.Arcade.Collider;
-
-    player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-    cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
     pedestals: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
 
+    player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
+
     crouching: boolean = false;
     currentDoorAnim: string;
 
-    scrollSpeed: number = 4;
-
     gameProgress: GameProgress;
     layout: Layout;
+    scrollSpeed: number = 4;
 
     init(data: GameProgress) {
         this.gameProgress = data;
@@ -97,7 +93,6 @@ export class SharedGameCode extends Scene {
                 if (this.currentDoorAnim == key) {
                     return;
                 }
-                console.log('door overlap');
                 if (key && this.gameProgress.keys[key]) {
                     this.currentDoorAnim = key;
                     door.anims.play('openDoor', true);
@@ -146,6 +141,17 @@ export class SharedGameCode extends Scene {
             }
             else {
                 this.platformCollisions.active = true;
+            }
+
+            // They can press left or right to move, but still show the climbing animation.
+            if (this.cursors?.left.isDown) {
+                this.player.setVelocityX(-160);
+            }
+            else if (this.cursors?.right.isDown) {
+                this.player.setVelocityX(160);
+            }
+            else {
+                this.player.setVelocityX(0);
             }
         }
         else {
