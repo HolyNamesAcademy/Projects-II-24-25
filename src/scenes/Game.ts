@@ -93,8 +93,8 @@ export class Game extends Scene {
         // this.nonCollisionItems.add(this.basicKey);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
-        this.player.setScale(5);
-        this.player.setSize(4, 8);
+        this.player.setScale(1);
+        this.player.setSize(16, 32);
 
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
