@@ -18,6 +18,11 @@ export class MainMenu extends Scene {
         skills: { doubleJump: false, climb: false },
         character: 'addison',
         inventory: { finalKey: false },
+        keys: {
+            winKey: false,
+            door2Key: false,
+            trapdoor1Key: false,
+        },
     };
 
     constructor() {
