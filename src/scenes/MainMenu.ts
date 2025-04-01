@@ -3,7 +3,8 @@ import makeButton from '../utils/makeButton';
 import { GameProgress } from '../types';
 
 export class MainMenu extends Scene {
-    background: GameObjects.Image;
+    background: Phaser.GameObjects.TileSprite;
+    backgroundAnimation: Phaser.GameObjects.Sprite;
     gameTitle: GameObjects.Text;
     title: GameObjects.Text;
     restart: GameObjects.Text;
@@ -25,8 +26,10 @@ export class MainMenu extends Scene {
 
     create() {
         // Loads the dungeon background
-        this.background = this.add.image(512, 384, 'titleBackground');
+
+        this.background = this.add.tileSprite(512, 384, 512, 384, 'titleBackground');
         this.background.scale = 2;
+        this.backgroundAnimation = this.add.sprite(0, 0, 'titleBackground').setVisible(false).play('titleBackground');
 
         // Loads the title with the medieval font
         this.gameTitle = this.add.text(512, 160, 'Tall Boulder\nDungeon', {
@@ -68,5 +71,9 @@ export class MainMenu extends Scene {
                 this.scene.start('Game', progress);
             }
         });
+    }
+
+    update() {
+        this.background.setFrame(this.backgroundAnimation.frame.name);
     }
 }
