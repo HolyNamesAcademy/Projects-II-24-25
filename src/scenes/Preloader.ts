@@ -54,6 +54,10 @@ export class Preloader extends Scene {
             'CLARE2.png',
             { frameWidth: 32, frameHeight: 32 },
         );
+        this.load.spritesheet('allie',
+            'allie2.png',
+            { frameWidth: 32, frameHeight: 32 },
+        );
     }
 
     create() {
@@ -126,6 +130,7 @@ export class Preloader extends Scene {
         this.makeCapFinleyAnimations();
         this.makeBaldFinleyAnimations();
         this.makeClareAnimations();
+        this.makeAllieAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
@@ -167,6 +172,47 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'addison-climb',
             frames: this.anims.generateFrameNumbers('addison', { frames: [9, 10] }),
+            frameRate: 4,
+            repeat: -1,
+        });
+    }
+
+    makeAllieAnimations() {
+        this.anims.create({
+            key: 'allie-left',
+            frames: this.anims.generateFrameNumbers('allie', { frames: [11, 13] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'allie-forward',
+            frames: [{ key: 'allie', frame: 0 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'allie-right',
+            frames: this.anims.generateFrameNumbers('allie', { frames: [8, 10] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'allie-jump',
+            frames: [{ key: 'allie', frame: 2 }],
+            frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'allie-crouch',
+            frames: [{ key: 'allie', frame: 2 }],
+            frameRate: 30,
+        });
+
+        this.anims.create({
+            key: 'allie-climb',
+            frames: this.anims.generateFrameNumbers('allie', { frames: [4, 5] }),
             frameRate: 4,
             repeat: -1,
         });
