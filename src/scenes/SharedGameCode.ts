@@ -59,7 +59,7 @@ export class SharedGameCode extends Scene {
 
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
-        this.player.setScale(1);
+        this.player.setScale(5);
         this.player.setSize(16, 32);
 
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);

@@ -94,7 +94,7 @@ export class CharacterSelection extends Scene {
             this.gameProgress.character = this.characterKeys[this.currentCharacter][this.currentStyle];
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('Game', this.gameProgress);
+                this.scene.start('MainLevel', this.gameProgress);
             });
         });
 

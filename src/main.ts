@@ -1,5 +1,5 @@
 import { Boot } from './scenes/Boot';
-import { Game as MainGame } from './scenes/Game';
+import { MainLevel as MainGame } from './scenes/MainLevel';
 import { GameOver } from './scenes/GameOver';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';

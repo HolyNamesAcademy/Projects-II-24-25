@@ -73,7 +73,7 @@ export class MainMenu extends Scene {
                 this.scene.start('CharacterSelection', this.defaultGameProgress);
             }
             else {
-                this.scene.start('Game', progress);
+                this.scene.start('MainLevel', progress);
             }
         });
     }

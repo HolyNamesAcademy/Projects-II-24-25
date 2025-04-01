@@ -29,7 +29,7 @@ const layout: Layout = {
     ],
 };
 
-export class Game extends SharedGameCode {
+export class MainLevel extends SharedGameCode {
     puzzle1: boolean = false;
     winState: boolean = false;
     possessesKey: boolean = false;
@@ -38,7 +38,7 @@ export class Game extends SharedGameCode {
     doubleJump: boolean = false;
 
     constructor() {
-        super('Game');
+        super('MainLevel');
         this.layout = layout;
     }
 
