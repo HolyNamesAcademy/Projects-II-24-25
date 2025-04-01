@@ -30,6 +30,8 @@ const layout: Layout = {
 };
 
 export class MainLevel extends SharedGameCode {
+    basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+
     puzzle1: boolean = false;
     winState: boolean = false;
     possessesKey: boolean = false;
