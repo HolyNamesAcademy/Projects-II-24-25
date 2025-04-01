@@ -8,8 +8,8 @@ export default function generateLevel(
 ) {
     const vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     const doors: LockableObject[] = [];
-    const pedestals: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
-    const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
+    const pedestals: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
+    const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     let currentY = 0;
     layout.objects.forEach((object: LayoutObject) => {
         const { x, y, type, verticalOffset, key } = object;
