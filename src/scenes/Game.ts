@@ -143,7 +143,7 @@ export class Game extends Scene {
                     this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
                         this.winState = value;
                         console.log(this.winState);
-                        if(this.winState){
+                        if (this.winState) {
                             this.generateBasicKey();
                         }
                     });
@@ -196,11 +196,11 @@ export class Game extends Scene {
         this.scene.add(uniqueIdentifier, scene, true);
     }
 
-    generateBasicKey(){
+    generateBasicKey() {
         this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0).setScale(5).refreshBody();
-            this.basicKey.x = this.player.x + 100;
-            this.basicKey.y = this.player.y+25;
-            this.nonCollisionItems.add(this.basicKey);
+        this.basicKey.x = this.player.x + 100;
+        this.basicKey.y = this.player.y + 25;
+        this.nonCollisionItems.add(this.basicKey);
     }
 
     update() {
@@ -367,7 +367,7 @@ export class Game extends Scene {
         }
 
         if (this.winState) {
-            if(this.basicKey.anims.currentAnim?.key != 'key-left'){
+            if (this.basicKey.anims.currentAnim?.key != 'key-left') {
                 this.basicKey.play('key-left');
             }
             this.updateKeyPosition(this.basicKey, 125, 25);
@@ -381,12 +381,12 @@ export class Game extends Scene {
         }
 
         if (this.winState) {
-            if(this.basicKey.anims.currentAnim?.key != 'key-right'){
+            if (this.basicKey.anims.currentAnim?.key != 'key-right') {
                 this.basicKey.play('key-right');
             }
             this.updateKeyPosition(this.basicKey, -125, 25);
         }
-        }
+    }
 
     jumpWithoutAnimation() {
         if (this.cursors?.up.isDown && this.player.body.touching.down) {
@@ -397,14 +397,16 @@ export class Game extends Scene {
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
-
     }
+
     updateKeyPosition(
-        key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody, 
+        key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody,
         x: number,
-        y: number){
-            if(!key){return};
-            key.x = this.player.x + x;
-            key.y = this.player.y + y;
+        y: number) {
+        if (!key) {
+            return;
+        };
+        key.x = this.player.x + x;
+        key.y = this.player.y + y;
     }
 }
