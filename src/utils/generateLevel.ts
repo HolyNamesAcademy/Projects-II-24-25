@@ -1,4 +1,4 @@
-import { Layout, LayoutObject, LockableObject } from '../types';
+import { Layout, LayoutObject, LockableObject, puzzleObject } from '../types';
 import { Scene } from 'phaser';
 
 export default function generateLevel(
@@ -8,11 +8,11 @@ export default function generateLevel(
 ) {
     const vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     const doors: LockableObject[] = [];
-    const pedestals: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
+    const pedestals: puzzleObject[] = [];
     const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
     let currentY = 0;
     layout.objects.forEach((object: LayoutObject) => {
-        const { x, y, type, verticalOffset, key } = object;
+        const { x, y, type, verticalOffset, key, nextScene } = object;
         currentY += y;
         if (type === 'platform') {
             platforms.create(x, currentY, 'platform', 0)
@@ -40,6 +40,7 @@ export default function generateLevel(
                 .setInteractive();
             door.body?.setSize(110, 200, false);
             doors.push({
+                nextScene: nextScene,
                 key: key,
                 object: door,
             });
@@ -59,7 +60,10 @@ export default function generateLevel(
                 .refreshBody()
                 .setInteractive();
             pedestal.anims.play('keyPedestal');
-            pedestals.push(pedestal);
+            pedestals.push({
+                key: key,
+                object: pedestal,
+            });
         }
         else if (type === 'spikes') {
             const spike = game.physics.add.staticSprite(x, currentY, 'spikes', 0)

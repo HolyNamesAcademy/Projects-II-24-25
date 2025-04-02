@@ -1,5 +1,5 @@
 import { Boot } from './scenes/Boot';
-import { MainLevel as MainGame } from './scenes/MainLevel';
+import { MainLevel } from './scenes/MainLevel';
 import { GameOver } from './scenes/GameOver';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
@@ -37,7 +37,7 @@ const config: Types.Core.GameConfig = {
         Preloader,
         MainMenu,
         VideoIntro,
-        MainGame,
+        MainLevel,
         GameOver,
         CharacterSelection,
         DeathScreen,
