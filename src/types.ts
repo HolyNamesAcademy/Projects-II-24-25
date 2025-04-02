@@ -22,7 +22,7 @@ export interface LayoutObject {
     y: number;
     scale?: number;
     verticalOffset?: number;
-    nextScene?: string;
+    nextScene?: 'StageTwo' | 'VideoIntro' | 'WinScene';
     key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
 }
 
@@ -31,6 +31,12 @@ export interface Layout {
 }
 
 export interface LockableObject {
+    nextScene?: 'StageTwo' | 'VideoIntro' | 'WinScene';
+    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
+    object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+}
+
+export interface puzzleObject {
     key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }

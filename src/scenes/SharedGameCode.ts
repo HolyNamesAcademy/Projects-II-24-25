@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { GameProgress, Layout } from '../types';
+import { GameProgress, Layout, puzzleObject } from '../types';
 import generateLevel from '../utils/generateLevel';
 import timer from '../utils/timer';
 
@@ -12,8 +12,8 @@ export class SharedGameCode extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     platformCollisions: Phaser.Physics.Arcade.Collider;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
+    pedestals: puzzleObject[];
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
-    pedestals: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
 
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
@@ -41,8 +41,8 @@ export class SharedGameCode extends Scene {
         this.platforms = this.physics.add.staticGroup();
         const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, this.layout);
         this.nonCollisionItems.addMultiple(doors.map(d => d.object));
+        this.nonCollisionItems.addMultiple(pedestals.map(p => p.object));
         this.nonCollisionItems.addMultiple(vines);
-        this.nonCollisionItems.addMultiple(pedestals);
         this.nonCollisionItems.addMultiple(spikes);
         this.vines = vines;
         this.pedestals = pedestals;
@@ -70,7 +70,9 @@ export class SharedGameCode extends Scene {
 
         this.setInitialPosition(this.gameProgress.scrollPosition);
 
-        this.pedestals.forEach((pedestal) => {
+        pedestals.forEach(({
+            object: pedestal,
+        }) => {
             pedestal.on('pointerover', () => {
                 pedestal.anims.play('keyPedestal', false);
                 pedestal.anims.play('pedestalFlash', true);
@@ -86,6 +88,7 @@ export class SharedGameCode extends Scene {
         });
 
         doors.forEach(({
+            nextScene,
             key,
             object: door,
         }) => {
@@ -102,7 +105,7 @@ export class SharedGameCode extends Scene {
                     await timer(500);
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                        this.scene.start('StageTwo');
+                        this.scene.start(nextScene);
                     });
                 }
             });

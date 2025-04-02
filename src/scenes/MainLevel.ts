@@ -8,7 +8,7 @@ const layout: Layout = {
         { type: 'platform', x: 200, y: 300 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 1150, y: 0 },
-        { type: 'door', x: 200, y: 0, key: 'winKey' },
+        { type: 'door', x: 200, y: 0, key: 'winKey', nextScene: 'WinScene' },
         { type: 'vine', x: 700, y: 0 },
         { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
@@ -24,8 +24,8 @@ const layout: Layout = {
         { type: 'platform', x: 550, y: 400 },
         { type: 'platform', x: 200, y: 0 },
         { type: 'platform', x: 700, y: 0 },
-        { type: 'door', x: 150, y: 0, key: 'winKey' },
-        { type: 'keyPedestal', x: 600, y: 0 },
+        { type: 'door', x: 150, y: 0, key: 'door2Key', nextScene: 'StageTwo' },
+        { type: 'keyPedestal', x: 600, y: 0, key: 'door2Key' },
     ],
 };
 
@@ -61,14 +61,25 @@ export class MainLevel extends SharedGameCode {
             });
         });
 
-        this.pedestals.forEach((pedestal) => {
+        this.pedestals.forEach(({
+            key: key,
+            object: pedestal,
+        }) => {
             pedestal.on('pointerdown', () => {
                 if (this.scene.get('puzzle1') == null) {
                     this.createWindow(512, 300, 600, 400, 'puzzle1');
                     this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
                         this.winState = value;
-                        this.gameProgress.keys.winKey = true;
-                        console.log(this.winState);
+                        if (this.winState && key == 'winKey') {
+                            this.gameProgress.keys.winKey = true;
+                        }
+                        else if (this.winState && key == 'door2Key') {
+                            this.gameProgress.keys.door2Key = true;
+                        }
+                        else if (this.winState && key == 'trapdoor1Key') {
+                            this.gameProgress.keys.trapdoor1Key = true;
+                        }
+                        console.log(this.gameProgress.keys);
                         if (this.winState) {
                             this.generateBasicKey();
                         }
@@ -81,8 +92,6 @@ export class MainLevel extends SharedGameCode {
         });
 
         this.physics.add.overlap(this.player, this.basicKey, () => {
-            // this.basicKey.setVisible(false);
-            // console.log('hiding key');
             this.basicKey.play('key-left');
             this.gameProgress.inventory.finalKey = true;
             this.possessesKey = true;
