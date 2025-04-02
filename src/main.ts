@@ -6,7 +6,7 @@ import { Preloader } from './scenes/Preloader';
 import { CharacterSelection } from './scenes/CharacterSelection';
 import { DeathScreen } from './scenes/DeathScreen';
 import { StageTwo } from './scenes/StageTwo';
-import { StageThree } from './scenes/StageThree';
+import { Puzzle } from './scenes/Puzzle';
 import { WinScene } from './scenes/WinScene';
 import { VideoIntro } from './scenes/VideoIntro';
 
@@ -42,7 +42,7 @@ const config: Types.Core.GameConfig = {
         CharacterSelection,
         DeathScreen,
         StageTwo,
-        StageThree,
+        Puzzle,
         WinScene,
     ],
 };

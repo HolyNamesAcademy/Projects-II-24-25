@@ -1,7 +1,7 @@
 import { SharedGameCode } from './SharedGameCode';
 import makeButton from '../utils/makeButton';
 import { Layout } from '../types';
-import { StageThree } from './StageThree';
+import { Puzzle } from './Puzzle';
 
 const layout: Layout = {
     objects: [
@@ -103,7 +103,7 @@ export class MainLevel extends SharedGameCode {
         const uniqueIdentifier = id;
 
         const zone = this.add.zone(x, y, width, height).setInteractive();
-        const scene = new StageThree(uniqueIdentifier, zone, width, height);
+        const scene = new Puzzle(uniqueIdentifier, zone, width, height);
         this.scene.add(uniqueIdentifier, scene, true);
     }
 

@@ -18,7 +18,7 @@ enum GameState {
     Won,
 }
 
-export class StageThree extends Scene {
+export class Puzzle extends Scene {
     parent: Phaser.GameObjects.Zone;
     width: number;
     height: number;
@@ -39,7 +39,7 @@ export class StageThree extends Scene {
     puzzle: Cell [][];
     gameState = GameState.Playing;
 
-    constructor(key: string = 'StageThree', parent: Phaser.GameObjects.Zone, width: number, height: number) {
+    constructor(key: string = 'Puzzle', parent: Phaser.GameObjects.Zone, width: number, height: number) {
         super(key);
         this.parent = parent;
         this.width = width;

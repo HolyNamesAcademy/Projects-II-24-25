@@ -1,31 +1,21 @@
-import { Scene } from 'phaser';
+import { SharedGameCode } from './SharedGameCode';
+// import makeButton from '../utils/makeButton';
+import { Layout } from '../types';
+// import { Puzzle } from './Puzzle';
 
-export class StageTwo extends Scene {
-    camera: Phaser.Cameras.Scene2D.Camera;
-    background: Phaser.GameObjects.Image;
-    msg_text: Phaser.GameObjects.Text;
+const layout: Layout = {
+    objects: [
+        { type: 'platform', x: 200, y: 200 },
+    ],
+};
 
+export class StageTwo extends SharedGameCode {
     constructor() {
         super('StageTwo');
+        this.layout = layout;
     }
 
     create() {
-        window.localStorage.setItem('stage', '2');
-        this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
-
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
-
-        this.msg_text = this.add.text(512, 384, 'StageTwo', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center',
-        });
-        this.msg_text.setOrigin(0.5);
-
-        this.input.once('pointerdown', () => {
-            this.scene.start('StageThree');
-        });
+        super.create();
     }
 }
