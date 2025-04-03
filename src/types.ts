@@ -1,4 +1,5 @@
 export interface GameProgress {
+    scene: 'MainLevel' | 'StageTwo' | 'VideoIntro' | 'WinScene' | 'DeathScreen';
     coordinates: { x: number; y: number };
     scrollPosition: number;
     skills: {
@@ -36,7 +37,13 @@ export interface LockableObject {
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }
 
-export interface puzzleObject {
+export interface PuzzleObject {
     key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+}
+
+export interface TransitionObject {
+    scene: 'StageTwo' | 'VideoIntro' | 'WinScene' | 'MainLevel';
+    coordinates: { x: number; y: number };
+    scrollPosition: number;
 }

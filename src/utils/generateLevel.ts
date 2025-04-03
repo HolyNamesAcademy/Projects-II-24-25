@@ -1,4 +1,4 @@
-import { Layout, LayoutObject, LockableObject, puzzleObject } from '../types';
+import { Layout, LayoutObject, LockableObject, PuzzleObject } from '../types';
 import { Scene } from 'phaser';
 
 export default function generateLevel(
@@ -8,7 +8,7 @@ export default function generateLevel(
 ) {
     const vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     const doors: LockableObject[] = [];
-    const pedestals: puzzleObject[] = [];
+    const pedestals: PuzzleObject[] = [];
     const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
     let currentY = 0;
     layout.objects.forEach((object: LayoutObject) => {

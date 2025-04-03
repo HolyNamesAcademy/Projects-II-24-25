@@ -13,6 +13,7 @@ export class MainMenu extends Scene {
     authors: GameObjects.Text;
 
     defaultGameProgress: GameProgress = {
+        scene: 'MainLevel',
         coordinates: { x: 500, y: 100 },
         scrollPosition: 384,
         skills: { doubleJump: false, climb: false },

@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { GameProgress, Layout, puzzleObject } from '../types';
+import { GameProgress, Layout, PuzzleObject } from '../types';
 import generateLevel from '../utils/generateLevel';
 import timer from '../utils/timer';
 
@@ -12,7 +12,7 @@ export class SharedGameCode extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     platformCollisions: Phaser.Physics.Arcade.Collider;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
-    pedestals: puzzleObject[];
+    pedestals: PuzzleObject[];
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
 
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -105,7 +105,7 @@ export class SharedGameCode extends Scene {
                     await timer(500);
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                        this.scene.start(nextScene);
+                        this.scene.start(nextScene, this.gameProgress);
                     });
                 }
             });
