@@ -8,7 +8,7 @@ const layout: Layout = {
         { type: 'platform', x: 200, y: 300 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 1150, y: 0 },
-        { type: 'door', x: 200, y: 0, key: 'winKey', nextScene: 'WinScene' },
+        { type: 'door', x: 200, y: 0, key: 'winKey', next: { scene: 'WinScene', coordinates: { x: 10, y: 30 }, scrollPosition: 10 } },
         { type: 'vine', x: 700, y: 0 },
         { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
@@ -24,7 +24,7 @@ const layout: Layout = {
         { type: 'platform', x: 550, y: 400 },
         { type: 'platform', x: 200, y: 0 },
         { type: 'platform', x: 700, y: 0 },
-        { type: 'door', x: 150, y: 0, key: 'door2Key', nextScene: 'StageTwo' },
+        { type: 'door', x: 150, y: 0, key: 'door2Key', next: { scene: 'StageTwo', coordinates: { x: 10, y: 30 }, scrollPosition: 10 } },
         { type: 'keyPedestal', x: 600, y: 0, key: 'door2Key' },
     ],
 };

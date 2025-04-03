@@ -12,7 +12,7 @@ export default function generateLevel(
     const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
     let currentY = 0;
     layout.objects.forEach((object: LayoutObject) => {
-        const { x, y, type, verticalOffset, key, nextScene } = object;
+        const { x, y, type, verticalOffset, key, next } = object;
         currentY += y;
         if (type === 'platform') {
             platforms.create(x, currentY, 'platform', 0)
@@ -40,7 +40,7 @@ export default function generateLevel(
                 .setInteractive();
             door.body?.setSize(110, 200, false);
             doors.push({
-                nextScene: nextScene,
+                next: next,
                 key: key,
                 object: door,
             });

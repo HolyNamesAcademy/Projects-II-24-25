@@ -88,7 +88,7 @@ export class SharedGameCode extends Scene {
         });
 
         doors.forEach(({
-            nextScene,
+            next,
             key,
             object: door,
         }) => {
@@ -96,17 +96,22 @@ export class SharedGameCode extends Scene {
                 if (this.currentDoorAnim == key) {
                     return;
                 }
-                if (key && this.gameProgress.keys[key]) {
-                    this.currentDoorAnim = key;
+                if (!key || this.gameProgress.keys[key]) {
+                    this.currentDoorAnim = '';
                     door.anims.play('openDoor', true);
                     await timer(500);
                     this.player.setVisible(false);
                     door.anims.play('closeDoor', true);
-                    await timer(500);
-                    this.cameras.main.fadeOut(1000, 0, 0, 0);
-                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                        this.scene.start(nextScene, this.gameProgress);
-                    });
+                    if (next) {
+                        await timer(500);
+                        this.cameras.main.fadeOut(1000, 0, 0, 0);
+                        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                            this.gameProgress.coordinates = next.coordinates;
+                            this.gameProgress.scrollPosition = next.scrollPosition;
+                            this.gameProgress.scene = next.scene;
+                            this.scene.start(next.scene, this.gameProgress);
+                        });
+                    }
                 }
             });
         });
