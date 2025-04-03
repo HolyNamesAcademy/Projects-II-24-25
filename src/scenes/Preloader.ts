@@ -180,7 +180,7 @@ export class Preloader extends Scene {
     makeAllieAnimations() {
         this.anims.create({
             key: 'allie-left',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [11, 13] }),
+            frames: this.anims.generateFrameNumbers('allie', { frames: [8, 9, 10, 9] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -193,7 +193,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'allie-right',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [8, 10] }),
+            frames: this.anims.generateFrameNumbers('allie', { frames: [11, 12, 13, 12] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -221,7 +221,7 @@ export class Preloader extends Scene {
     makeFinleyAnimations() {
         this.anims.create({
             key: 'finley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [5, 7] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [5, 6, 7, 6] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -234,7 +234,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'finley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [8, 10] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [8, 9, 10, 9] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -255,7 +255,7 @@ export class Preloader extends Scene {
     makeBeanieFinleyAnimations() {
         this.anims.create({
             key: 'beanieFinley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [17, 19] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [17, 18, 19, 18] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -268,7 +268,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'beanieFinley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [20, 22] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [20, 21, 22, 21] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -289,7 +289,7 @@ export class Preloader extends Scene {
     makeCapFinleyAnimations() {
         this.anims.create({
             key: 'capFinley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [29, 31] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [29, 30, 31, 30] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -302,7 +302,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'capFinley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [32, 34] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [32, 33, 34, 33] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -323,7 +323,7 @@ export class Preloader extends Scene {
     makeBaldFinleyAnimations() {
         this.anims.create({
             key: 'baldFinley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [41, 43] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [41, 42, 43, 42] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -336,7 +336,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'baldFinley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [44, 46] }),
+            frames: this.anims.generateFrameNumbers('finley', { frames: [44, 45, 46, 45] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -357,7 +357,7 @@ export class Preloader extends Scene {
     makeClareAnimations() {
         this.anims.create({
             key: 'clare-left',
-            frames: this.anims.generateFrameNumbers('clare', { frames: [5, 7] }),
+            frames: this.anims.generateFrameNumbers('clare', { frames: [5, 6, 7, 6] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -370,7 +370,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'clare-right',
-            frames: this.anims.generateFrameNumbers('clare', { frames: [8, 10] }),
+            frames: this.anims.generateFrameNumbers('clare', { frames: [8, 9, 10, 9] }),
             frameRate: 5,
             repeat: -1,
         });
