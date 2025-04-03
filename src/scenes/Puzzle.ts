@@ -49,7 +49,7 @@ export class Puzzle extends Scene {
     create() {
         window.localStorage.setItem('stage', '3');
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+        this.camera.setBackgroundColor('#5B7C99');
         this.camera.setViewport(this.parent.x - this.width / 2, this.parent.y - this.height / 2, this.width, this.height);
 
         this.createPuzzle();
