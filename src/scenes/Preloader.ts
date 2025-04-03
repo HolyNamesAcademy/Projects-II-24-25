@@ -180,7 +180,7 @@ export class Preloader extends Scene {
     makeAllieAnimations() {
         this.anims.create({
             key: 'allie-left',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [11, 13] }),
+            frames: this.anims.generateFrameNumbers('allie', { frames: [8, 10] }),
             frameRate: 5,
             repeat: -1,
         });
@@ -193,7 +193,7 @@ export class Preloader extends Scene {
 
         this.anims.create({
             key: 'allie-right',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [8, 10] }),
+            frames: this.anims.generateFrameNumbers('allie', { frames: [11, 13] }),
             frameRate: 5,
             repeat: -1,
         });
