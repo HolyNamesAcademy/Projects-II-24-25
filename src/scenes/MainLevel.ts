@@ -24,7 +24,7 @@ const layout: Layout = {
         { type: 'platform', x: 550, y: 400 },
         { type: 'platform', x: 200, y: 0 },
         { type: 'platform', x: 700, y: 0 },
-        { type: 'door', x: 150, y: 0, key: 'door2Key', next: { scene: 'StageTwo', coordinates: { x: 150, y: 368 }, scrollPosition: 260 } },
+        { type: 'door', x: 150, y: 0, key: 'door2Key', next: { scene: 'StageTwo', coordinates: { x: 275, y: 316 }, scrollPosition: 260 } },
         { type: 'keyPedestal', x: 600, y: 0, key: 'door2Key' },
     ],
 };

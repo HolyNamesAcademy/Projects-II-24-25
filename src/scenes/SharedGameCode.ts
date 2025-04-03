@@ -111,7 +111,7 @@ export class SharedGameCode extends Scene {
                             this.gameProgress.coordinates = next.coordinates;
                             this.gameProgress.scrollPosition = next.scrollPosition;
                             this.gameProgress.scene = next.scene;
-                            this.gameProgress.keys[key] = false;
+                            // this.gameProgress.keys[key] = false;
                             localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
 
                             this.player.setX(next.coordinates.x);
