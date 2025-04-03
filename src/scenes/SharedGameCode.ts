@@ -61,6 +61,8 @@ export class SharedGameCode extends Scene {
         this.player.setScale(5);
         this.player.setSize(16, 32);
 
+        this.player.anims.play(`${this.gameProgress.character}-forward`);
+
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
             if (this.getOnVine()) {
@@ -85,7 +87,7 @@ export class SharedGameCode extends Scene {
         });
 
         this.physics.add.collider(this.player, spikes, () => {
-            this.scene.start('DeathScreen');
+            this.killPlayer();
         });
 
         doors.forEach(({
@@ -223,7 +225,7 @@ export class SharedGameCode extends Scene {
         const { y: playerY } = this.player.getBottomCenter();
 
         if (playerY > 2000) {
-            this.scene.start('DeathScreen');
+            this.killPlayer();
         }
         if (playerY > 750) {
             this.player.setCollideWorldBounds(false);
@@ -307,5 +309,9 @@ export class SharedGameCode extends Scene {
             this.player.setVelocityY(-430);
             this.crouching = false;
         }
+    }
+
+    killPlayer() {
+        this.scene.start('DeathScreen', this.gameProgress);
     }
 }

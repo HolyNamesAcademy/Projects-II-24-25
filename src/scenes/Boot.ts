@@ -6,6 +6,9 @@ export class Boot extends Scene {
     }
 
     preload() {
+        // Set the background color of the camera to black
+        this.cameras.main.setBackgroundColor('#000000');
+
         //  The Boot Scene is typically used to load in any assets you require for your Preloader, such as a game logo or background.
         //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
         this.load.spritesheet('titleBackground', 'assets/Wall Start Screen.png', { frameWidth: 512, frameHeight: 384 });

@@ -57,7 +57,7 @@ export class MainLevel extends SharedGameCode {
         makeButton(this, 'Kill Addison', 35, 150, 700, () => {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('DeathScreen');
+                this.killPlayer();
             });
         });
 

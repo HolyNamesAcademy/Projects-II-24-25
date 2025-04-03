@@ -33,7 +33,6 @@ export class MainMenu extends Scene {
 
     create() {
         // Loads the dungeon background
-
         this.background = this.add.tileSprite(512, 384, 512, 384, 'titleBackground');
         this.background.scale = 2;
         this.backgroundAnimation = this.add.sprite(0, 0, 'titleBackground').setVisible(false).play('titleBackground');
@@ -49,16 +48,13 @@ export class MainMenu extends Scene {
             this.startGame();
         });
 
-        makeButton(this, 'Resume', 35, 512, 450, () => {
-            const gameProgress = localStorage.getItem('gameProgress');
-            console.log(gameProgress);
-            if (gameProgress != null) {
+        const gameProgress = localStorage.getItem('gameProgress');
+        // If there is a game progress saved, show the resume button
+        if (gameProgress != null) {
+            makeButton(this, 'Resume', 35, 512, 450, () => {
                 this.startGame(JSON.parse(gameProgress));
-            }
-            else {
-                this.startGame();
-            }
-        });
+            });
+        }
 
         // Loads the names of the authors at botton of the screen
         this.authors = this.add.text(512, 700, '\nAllie Staiger       Addison Theis       Clare Kanazawa        Finley McMurtrie       Lucy Martenstein', {
