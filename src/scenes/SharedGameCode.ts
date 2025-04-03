@@ -96,8 +96,8 @@ export class SharedGameCode extends Scene {
                 if (this.currentDoorAnim == key) {
                     return;
                 }
-                if (!key || this.gameProgress.keys[key]) {
-                    this.currentDoorAnim = '';
+                if (key && this.gameProgress.keys[key]) {
+                    this.currentDoorAnim = key;
                     door.anims.play('openDoor', true);
                     await timer(500);
                     this.player.setVisible(false);
@@ -109,6 +109,7 @@ export class SharedGameCode extends Scene {
                             this.gameProgress.coordinates = next.coordinates;
                             this.gameProgress.scrollPosition = next.scrollPosition;
                             this.gameProgress.scene = next.scene;
+                            this.gameProgress.keys.door2Key = false;
                             this.scene.start(next.scene, this.gameProgress);
                         });
                     }
