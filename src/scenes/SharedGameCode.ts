@@ -47,6 +47,9 @@ export class SharedGameCode extends Scene {
         this.vines = vines;
         this.pedestals = pedestals;
 
+        // Set the scroll position before creating the player.
+        this.setInitialPosition(this.gameProgress.scrollPosition);
+
         this.player = this.physics.add.sprite(
             this.gameProgress.coordinates.x,
             this.gameProgress.coordinates.y,
@@ -67,8 +70,6 @@ export class SharedGameCode extends Scene {
         });
 
         this.cursors = this.input?.keyboard?.createCursorKeys();
-
-        this.setInitialPosition(this.gameProgress.scrollPosition);
 
         pedestals.forEach(({
             object: pedestal,
@@ -102,6 +103,7 @@ export class SharedGameCode extends Scene {
                     await timer(500);
                     this.player.setVisible(false);
                     door.anims.play('closeDoor', true);
+                    console.log('next', next);
                     if (next) {
                         await timer(500);
                         this.cameras.main.fadeOut(1000, 0, 0, 0);
@@ -109,7 +111,11 @@ export class SharedGameCode extends Scene {
                             this.gameProgress.coordinates = next.coordinates;
                             this.gameProgress.scrollPosition = next.scrollPosition;
                             this.gameProgress.scene = next.scene;
-                            this.gameProgress.keys.door2Key = false;
+                            this.gameProgress.keys[key] = false;
+                            localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
+
+                            this.player.setX(next.coordinates.x);
+                            this.player.setY(next.coordinates.y);
                             this.scene.start(next.scene, this.gameProgress);
                         });
                     }
@@ -200,8 +206,18 @@ export class SharedGameCode extends Scene {
         }
 
         if (this.player.body.velocity.x == 0) {
-            this.gameProgress.coordinates = this.player.getCenter();
-            localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
+            const updatedCoordinates = {
+                x: Math.round(this.player.getCenter().x),
+                y: Math.round(this.player.getCenter().y),
+            };
+            const existingCoordinates = this.gameProgress.coordinates;
+            const coordinatesChanged = updatedCoordinates.x != existingCoordinates.x || updatedCoordinates.y != existingCoordinates.y;
+
+            if (coordinatesChanged) {
+                this.gameProgress.coordinates = updatedCoordinates;
+                console.log(this.gameProgress.coordinates, this.gameProgress.scrollPosition);
+                localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
+            }
         }
 
         const { y: playerY } = this.player.getBottomCenter();

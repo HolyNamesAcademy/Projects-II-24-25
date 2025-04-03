@@ -1,6 +1,7 @@
 import { Scene, GameObjects } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress } from '../types';
+import clone from '../utils/clone';
 
 export class MainMenu extends Scene {
     background: Phaser.GameObjects.TileSprite;
@@ -71,7 +72,8 @@ export class MainMenu extends Scene {
         this.cameras.main.fadeOut(1000, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             if (progress === null) {
-                this.scene.start('CharacterSelection', this.defaultGameProgress);
+                const defaultGameProgress = clone<GameProgress>(this.defaultGameProgress);
+                this.scene.start('CharacterSelection', defaultGameProgress);
             }
             else {
                 this.scene.start(progress.scene, progress);
