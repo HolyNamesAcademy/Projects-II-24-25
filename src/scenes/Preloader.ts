@@ -1,11 +1,15 @@
 import { Scene } from 'phaser';
 
+const framesPerRow = 15;
 export class Preloader extends Scene {
     constructor() {
         super('Preloader');
     }
 
     init() {
+        // Set the background color of the camera to black
+        this.cameras.main.setBackgroundColor('#000000');
+
         //  We loaded this image in our Boot Scene, so we can display it here
         this.add.image(512, 384, 'titleBackground').scale = 2;
 
@@ -47,11 +51,11 @@ export class Preloader extends Scene {
             { frameWidth: 32, frameHeight: 32 },
         );
         this.load.spritesheet('finley',
-            'finley4.png',
+            'finley5.png',
             { frameWidth: 32, frameHeight: 32 },
         );
         this.load.spritesheet('clare',
-            'CLARE2.png',
+            'CLARE3.png',
             { frameWidth: 32, frameHeight: 32 },
         );
         this.load.spritesheet('allie',
@@ -126,6 +130,7 @@ export class Preloader extends Scene {
         // Make all the character animations
         this.makeAddisonAnimations();
         this.makeFinleyAnimations();
+        this.makeBlockFinleyAnimations();
         this.makeBeanieFinleyAnimations();
         this.makeCapFinleyAnimations();
         this.makeBaldFinleyAnimations();
@@ -175,210 +180,97 @@ export class Preloader extends Scene {
             frameRate: 4,
             repeat: -1,
         });
-    }
-
-    makeAllieAnimations() {
-        this.anims.create({
-            key: 'allie-left',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [8, 10] }),
-            frameRate: 5,
-            repeat: -1,
-        });
 
         this.anims.create({
-            key: 'allie-forward',
-            frames: [{ key: 'allie', frame: 0 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'allie-right',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [11, 13] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'allie-jump',
-            frames: [{ key: 'allie', frame: 2 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'allie-crouch',
-            frames: [{ key: 'allie', frame: 2 }],
-            frameRate: 30,
-        });
-
-        this.anims.create({
-            key: 'allie-climb',
-            frames: this.anims.generateFrameNumbers('allie', { frames: [4, 5] }),
+            key: 'addison-death',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [5] }),
             frameRate: 4,
             repeat: -1,
         });
     }
 
+    makeAllieAnimations() {
+        this.createAddisonStyleAnimations('allie', 'allie', 0);
+    }
+
     makeFinleyAnimations() {
-        this.anims.create({
-            key: 'finley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [5, 7] }),
-            frameRate: 5,
-            repeat: -1,
-        });
+        this.createAddisonStyleAnimations('finley', 'finley', 0);
+    }
 
-        this.anims.create({
-            key: 'finley-forward',
-            frames: [{ key: 'finley', frame: 0 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'finley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [8, 10] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'finley-jump',
-            frames: [{ key: 'finley', frame: 2 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'finley-climb',
-            frames: [{ key: 'finley', frame: 1 }],
-            frameRate: -1,
-        });
+    makeBlockFinleyAnimations() {
+        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRow);
     }
 
     makeBeanieFinleyAnimations() {
-        this.anims.create({
-            key: 'beanieFinley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [17, 19] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'beanieFinley-forward',
-            frames: [{ key: 'finley', frame: 12 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'beanieFinley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [20, 22] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'beanieFinley-jump',
-            frames: [{ key: 'finley', frame: 14 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'beanieFinley-climb',
-            frames: [{ key: 'finley', frame: 13 }],
-            frameRate: -1,
-        });
+        this.createAddisonStyleAnimations('beanieFinley', 'finley', framesPerRow * 2);
     }
 
     makeCapFinleyAnimations() {
-        this.anims.create({
-            key: 'capFinley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [29, 31] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'capFinley-forward',
-            frames: [{ key: 'finley', frame: 24 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'capFinley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [32, 34] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'capFinley-jump',
-            frames: [{ key: 'finley', frame: 26 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'capFinley-climb',
-            frames: [{ key: 'finley', frame: 25 }],
-            frameRate: -1,
-        });
+        this.createAddisonStyleAnimations('capFinley', 'finley', framesPerRow * 3);
     }
 
     makeBaldFinleyAnimations() {
-        this.anims.create({
-            key: 'baldFinley-left',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [41, 43] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'baldFinley-forward',
-            frames: [{ key: 'finley', frame: 36 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'baldFinley-right',
-            frames: this.anims.generateFrameNumbers('finley', { frames: [44, 46] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'baldFinley-jump',
-            frames: [{ key: 'finley', frame: 38 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'baldFinley-climb',
-            frames: [{ key: 'finley', frame: 37 }],
-            frameRate: -1,
-        });
+        this.createAddisonStyleAnimations('baldFinley', 'finley', framesPerRow * 4);
     }
 
     makeClareAnimations() {
+        this.createAddisonStyleAnimations('clare', 'clare', 0);
+    }
+
+    private createAddisonStyleAnimations(key: string, sprite: string, offset: number) {
+        const frames = {
+            left: [8 + offset, 9 + offset, 10 + offset, 9 + offset],
+            forward: [0 + offset],
+            right: [11 + offset, 12 + offset, 13 + offset, 12 + offset],
+            jump: [2 + offset],
+            crouch: [2 + offset],
+            climb: [4 + offset, 5 + offset],
+            death: [14 + offset],
+        };
+
         this.anims.create({
-            key: 'clare-left',
-            frames: this.anims.generateFrameNumbers('clare', { frames: [5, 7] }),
+            key: `${key}-left`,
+            frames: this.anims.generateFrameNumbers(sprite, { frames: frames.left }),
             frameRate: 5,
             repeat: -1,
         });
 
         this.anims.create({
-            key: 'clare-forward',
-            frames: [{ key: 'clare', frame: 0 }],
+            key: `${key}-forward`,
+            frames: frames.forward.map(frame => ({ key: sprite, frame })),
             frameRate: 20,
         });
 
         this.anims.create({
-            key: 'clare-right',
-            frames: this.anims.generateFrameNumbers('clare', { frames: [8, 10] }),
+            key: `${key}-right`,
+            frames: this.anims.generateFrameNumbers(sprite, { frames: frames.right }),
             frameRate: 5,
             repeat: -1,
         });
 
         this.anims.create({
-            key: 'clare-jump',
-            frames: [{ key: 'clare', frame: 4 }],
-            frameRate: 5,
+            key: `${key}-jump`,
+            frames: frames.jump.map(frame => ({ key: sprite, frame })),
+            frameRate: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-crouch`,
+            frames: frames.crouch.map(frame => ({ key: sprite, frame })),
+            frameRate: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-climb`,
+            frames: frames.climb.map(frame => ({ key: sprite, frame })),
+            frameRate: 4,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-death`,
+            frames: frames.death.map(frame => ({ key: sprite, frame })),
+            frameRate: -1,
         });
     }
 }
