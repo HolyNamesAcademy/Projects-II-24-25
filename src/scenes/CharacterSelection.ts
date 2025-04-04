@@ -99,7 +99,7 @@ export class CharacterSelection extends Scene {
         });
 
         this.characters = [
-            [this.makeCharacter('addison')],
+            [this.makeCharacter('addison'), this.makeCharacter('addison', 13), this.makeCharacter('addison', 26), this.makeCharacter('addison', 39), this.makeCharacter('addison', 52)],
             [this.makeCharacter('allie')],
             [this.makeCharacter('clare')],
             [this.makeCharacter('finley'), this.makeCharacter('finley', 12), this.makeCharacter('finley', 24), this.makeCharacter('finley', 36)],
@@ -113,7 +113,7 @@ export class CharacterSelection extends Scene {
             'Lucy',
         ];
         this.characterKeys = [
-            ['addison'],
+            ['addison', 'pinkAddison', 'darkRedAddison', 'cottonCandyAddison', 'wigAddison'],
             ['allie'],
             ['clare'],
             ['finley', 'beanieFinley', 'capFinley', 'baldFinley'],

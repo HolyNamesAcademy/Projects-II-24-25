@@ -177,6 +177,170 @@ export class Preloader extends Scene {
         });
     }
 
+    makePinkAddisonAnimations() {
+        this.anims.create({
+            key: 'pinkAddison-left',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [15, 25] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'pinkAddison-forward',
+            frames: [{ key: 'addison', frame: 13 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'pinkAddison-right',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [14, 24] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'pinkAddison-jump',
+            frames: [{ key: 'addison', frame: 20 }],
+            frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'pinkAddison-crouch',
+            frames: [{ key: 'addison', frame: 19 }],
+            frameRate: 30,
+        });
+
+        this.anims.create({
+            key: 'pinkAddison-climb',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [22, 23] }),
+            frameRate: 4,
+            repeat: -1,
+        });
+    }
+
+    makeDarkRedAddisonAnimations() {
+        this.anims.create({
+            key: 'darkRedAddison-left',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [28, 38] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'darkRedAddison-forward',
+            frames: [{ key: 'addison', frame: 26 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'darkRedAddison-right',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [27, 37] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'darkRedAddison-jump',
+            frames: [{ key: 'addison', frame: 33 }],
+            frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'darkRedAddison-crouch',
+            frames: [{ key: 'addison', frame: 32 }],
+            frameRate: 30,
+        });
+
+        this.anims.create({
+            key: 'darkRedAddison-climb',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [35, 36] }),
+            frameRate: 4,
+            repeat: -1,
+        });
+    }
+
+    makeCottonCandyAddisonAnimations() {
+        this.anims.create({
+            key: 'CottonCandyAddison-left',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [41, 51] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'CottonCandyAddison-forward',
+            frames: [{ key: 'addison', frame: 39 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'CottonCandyAddison-right',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [40, 50] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'CottonCandyAddison-jump',
+            frames: [{ key: 'addison', frame: 46 }],
+            frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'CottonCandyAddison-crouch',
+            frames: [{ key: 'addison', frame: 45 }],
+            frameRate: 30,
+        });
+
+        this.anims.create({
+            key: 'CottonCandyAddison-climb',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [48, 49] }),
+            frameRate: 4,
+            repeat: -1,
+        });
+    }
+
+    makeWigAddisonAnimations() {
+        this.anims.create({
+            key: 'WigAddison-left',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [54, 64] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'WigAddison-forward',
+            frames: [{ key: 'addison', frame: 52 }],
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: 'WigAddison-right',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [53, 63] }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'WigAddison-jump',
+            frames: [{ key: 'addison', frame: 59 }],
+            frameRate: 5,
+        });
+
+        this.anims.create({
+            key: 'WigAddison-crouch',
+            frames: [{ key: 'addison', frame: 58 }],
+            frameRate: 30,
+        });
+
+        this.anims.create({
+            key: 'WigAddison-climb',
+            frames: this.anims.generateFrameNumbers('addison', { frames: [61, 52] }),
+            frameRate: 4,
+            repeat: -1,
+        });
+    }
+
     makeAllieAnimations() {
         this.anims.create({
             key: 'allie-left',
