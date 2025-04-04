@@ -96,6 +96,8 @@ export class MainLevel extends SharedGameCode {
             this.gameProgress.inventory.finalKey = true;
             this.possessesKey = true;
         });
+
+        console.log('MainLevel created');
     }
 
     createWindow(x: number, y: number, width: number, height: number, id: string) {
@@ -162,11 +164,11 @@ export class MainLevel extends SharedGameCode {
         key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody,
         x: number,
         y: number) {
-        if (!key) {
+        if (!key || !key.active) {
             return;
         };
-        key.setPosition(this.player.x + x, this.player.y + y);
 
+        key.setPosition(this.player.x + x, this.player.y + y);
         key.refreshBody();
     }
 }
