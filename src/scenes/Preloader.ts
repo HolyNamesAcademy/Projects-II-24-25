@@ -129,6 +129,11 @@ export class Preloader extends Scene {
 
         // Make all the character animations
         this.makeAddisonAnimations();
+        this.makePinkAddisonAnimations();
+        this.makeDarkRedAddisonAnimations();
+        this.makeCottonCandyAddisonAnimations();
+        this.makeWigAddisonAnimations();
+        this.makeAllieAnimations();
         this.makeFinleyAnimations();
         this.makeBlockFinleyAnimations();
         this.makeBeanieFinleyAnimations();
@@ -349,7 +354,6 @@ export class Preloader extends Scene {
             repeat: -1,
         });
     }
-
 
     makeAllieAnimations() {
         this.createAddisonStyleAnimations('allie', 'allie', 0);
