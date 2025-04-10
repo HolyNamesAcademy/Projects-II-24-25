@@ -136,6 +136,12 @@ export class Preloader extends Scene {
         this.makeBaldFinleyAnimations();
         this.makeClareAnimations();
         this.makeAllieAnimations();
+        this.makePinkAddisonAnimations();
+        this.makeAddisonAnimations();
+        this.makePinkAddisonAnimations();
+        this.makeDarkRedAddisonAnimations();
+        this.makeCottonCandyAddisonAnimations();
+        this.makeWigAddisonAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
