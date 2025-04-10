@@ -12,20 +12,28 @@ export interface GameProgress {
         door2Key: boolean;
         trapdoor1Key: boolean;
     };
+    doorLocks: Record<string, boolean>;
     inventory: {
         finalKey: boolean;
     };
 }
 
-export interface LayoutObject {
+export enum Key {
+    WIN_KEY = 'winKey',
+    DOOR2_KEY = 'door2Key',
+    TRAPDOOR1_KEY = 'trapdoor1Key',
+}
+
+export type LayoutObject = {
     type: string;
     x: number;
     y: number;
     scale?: number;
     verticalOffset?: number;
     next?: TransitionObject;
-    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
-}
+    key?: Key;
+    name?: string;
+};
 
 export interface Layout {
     objects: LayoutObject [];
@@ -33,12 +41,12 @@ export interface Layout {
 
 export interface LockableObject {
     next?: TransitionObject;
-    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
+    key?: Key;
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }
 
 export interface PuzzleObject {
-    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
+    key?: Key;
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }
 

@@ -25,6 +25,7 @@ export class MainMenu extends Scene {
             door2Key: false,
             trapdoor1Key: false,
         },
+        doorLocks: {},
     };
 
     constructor() {

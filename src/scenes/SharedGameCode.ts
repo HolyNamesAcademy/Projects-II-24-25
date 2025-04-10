@@ -27,6 +27,8 @@ export class SharedGameCode extends Scene {
 
     init(data: GameProgress) {
         this.gameProgress = data;
+        console.log(this.gameProgress);
+        this.currentDoorAnim = '';
     }
 
     create() {
@@ -95,17 +97,28 @@ export class SharedGameCode extends Scene {
             key,
             object: door,
         }) => {
+            if (this.gameProgress.doorLocks[door.name] == null) {
+                this.gameProgress.doorLocks[door.name] = true;
+            }
+
             this.physics.add.overlap(this.player, door, async () => {
-                if (this.currentDoorAnim == key) {
-                    return;
-                }
+                // Check if they have the key for this door.
                 if (key && this.gameProgress.keys[key]) {
-                    this.currentDoorAnim = key;
+                    // Unlock the door.
+                    this.gameProgress.doorLocks[door.name] = false;
+                    // The key is now used.
+                    this.gameProgress.keys[key] = false;
+                }
+
+                const locked = this.gameProgress.doorLocks[door.name];
+                // Check that the door is unlocked, and we are not already going though the door.
+                if (!locked && this.currentDoorAnim != door.name) {
+                    this.currentDoorAnim = door.name;
                     door.anims.play('openDoor', true);
                     await timer(500);
                     this.player.setVisible(false);
                     door.anims.play('closeDoor', true);
-                    console.log('next', next);
+
                     if (next) {
                         await timer(500);
                         this.cameras.main.fadeOut(1000, 0, 0, 0);
@@ -113,7 +126,7 @@ export class SharedGameCode extends Scene {
                             this.gameProgress.coordinates = next.coordinates;
                             this.gameProgress.scrollPosition = next.scrollPosition;
                             this.gameProgress.scene = next.scene;
-                            // this.gameProgress.keys[key] = false;
+
                             localStorage.setItem('gameProgress', JSON.stringify(this.gameProgress));
 
                             this.player.setX(next.coordinates.x);
