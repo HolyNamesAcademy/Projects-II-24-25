@@ -127,10 +127,10 @@ export class MainLevel extends SharedGameCode {
         if (onVine) {
             // They can press left or right to move, but still show the climbing animation.
             if (this.cursors?.left.isDown) {
-                this.updateKeyPosition(this.basicKey, 0, 150);
+                this.updateKeyPosition(this.basicKey, 125, 25);
             }
             else if (this.cursors?.right.isDown) {
-                this.updateKeyPosition(this.basicKey, 0, 150);
+                this.updateKeyPosition(this.basicKey, -125, 25);
             }
             else {
                 this.updateKeyPosition(this.basicKey, 0, 150);
