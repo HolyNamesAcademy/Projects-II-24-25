@@ -137,8 +137,6 @@ export class Preloader extends Scene {
         this.makeClareAnimations();
         this.makeAllieAnimations();
         this.makePinkAddisonAnimations();
-        this.makeAddisonAnimations();
-        this.makePinkAddisonAnimations();
         this.makeDarkRedAddisonAnimations();
         this.makeCottonCandyAddisonAnimations();
         this.makeWigAddisonAnimations();
