@@ -129,19 +129,17 @@ export class Preloader extends Scene {
 
         // Make all the character animations
         this.makeAddisonAnimations();
+        this.makePinkAddisonAnimations();
+        this.makeDarkRedAddisonAnimations();
+        this.makeCottonCandyAddisonAnimations();
+        this.makeWigAddisonAnimations();
+        this.makeAllieAnimations();
         this.makeFinleyAnimations();
         this.makeBlockFinleyAnimations();
         this.makeBeanieFinleyAnimations();
         this.makeCapFinleyAnimations();
         this.makeBaldFinleyAnimations();
         this.makeClareAnimations();
-        this.makeAllieAnimations();
-        this.makePinkAddisonAnimations();
-        this.makeAddisonAnimations();
-        this.makePinkAddisonAnimations();
-        this.makeDarkRedAddisonAnimations();
-        this.makeCottonCandyAddisonAnimations();
-        this.makeWigAddisonAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
@@ -351,7 +349,6 @@ export class Preloader extends Scene {
             repeat: -1,
         });
     }
-
 
     makeAllieAnimations() {
         this.createAddisonStyleAnimations('allie', 'allie', 0);
