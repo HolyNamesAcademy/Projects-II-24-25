@@ -62,6 +62,10 @@ export class Preloader extends Scene {
             'allie2.png',
             { frameWidth: 32, frameHeight: 32 },
         );
+        this.load.spritesheet('lucy',
+            'lucy3.png',
+            { frameWidth: 32, frameHeight: 32 },
+        );
     }
 
     create() {
@@ -134,6 +138,7 @@ export class Preloader extends Scene {
         this.makeCottonCandyAddisonAnimations();
         this.makeWigAddisonAnimations();
         this.makeAllieAnimations();
+        this.makeLucyAnimations();
         this.makeFinleyAnimations();
         this.makeBlockFinleyAnimations();
         this.makeBeanieFinleyAnimations();
@@ -352,6 +357,10 @@ export class Preloader extends Scene {
 
     makeAllieAnimations() {
         this.createAddisonStyleAnimations('allie', 'allie', 0);
+    }
+
+    makeLucyAnimations() {
+        this.createAddisonStyleAnimations('lucy', 'lucy', 0);
     }
 
     makeFinleyAnimations() {
