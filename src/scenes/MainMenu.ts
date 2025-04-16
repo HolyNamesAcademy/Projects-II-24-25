@@ -1,6 +1,7 @@
 import { Scene, GameObjects } from 'phaser';
 import makeButton from '../utils/makeButton';
 import { GameProgress } from '../types';
+import clone from '../utils/clone';
 
 export class MainMenu extends Scene {
     background: Phaser.GameObjects.TileSprite;
@@ -13,6 +14,7 @@ export class MainMenu extends Scene {
     authors: GameObjects.Text;
 
     defaultGameProgress: GameProgress = {
+        scene: 'MainLevel',
         coordinates: { x: 500, y: 100 },
         scrollPosition: 384,
         skills: { doubleJump: false, climb: false },
@@ -23,6 +25,7 @@ export class MainMenu extends Scene {
             door2Key: false,
             trapdoor1Key: false,
         },
+        doorLocks: {},
     };
 
     constructor() {
@@ -66,10 +69,11 @@ export class MainMenu extends Scene {
         this.cameras.main.fadeOut(1000, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             if (progress === null) {
-                this.scene.start('CharacterSelection', this.defaultGameProgress);
+                const defaultGameProgress = clone<GameProgress>(this.defaultGameProgress);
+                this.scene.start('CharacterSelection', defaultGameProgress);
             }
             else {
-                this.scene.start('MainLevel', progress);
+                this.scene.start(progress.scene, progress);
             }
         });
     }

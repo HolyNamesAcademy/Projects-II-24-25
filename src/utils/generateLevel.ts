@@ -1,4 +1,4 @@
-import { Layout, LayoutObject, LockableObject, puzzleObject } from '../types';
+import { Layout, LayoutObject, LockableObject, PuzzleObject } from '../types';
 import { Scene } from 'phaser';
 
 export default function generateLevel(
@@ -8,11 +8,11 @@ export default function generateLevel(
 ) {
     const vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
     const doors: LockableObject[] = [];
-    const pedestals: puzzleObject[] = [];
+    const pedestals: PuzzleObject[] = [];
     const spikes: Phaser.Types.Physics.Arcade.SpriteWithStaticBody [] = [];
     let currentY = 0;
     layout.objects.forEach((object: LayoutObject) => {
-        const { x, y, type, verticalOffset, key, nextScene } = object;
+        const { x, y, type, verticalOffset, key, next, name } = object;
         currentY += y;
         if (type === 'platform') {
             platforms.create(x, currentY, 'platform', 0)
@@ -39,8 +39,12 @@ export default function generateLevel(
                 .refreshBody()
                 .setInteractive();
             door.body?.setSize(110, 200, false);
+            if (!name) {
+                throw new Error(`Door name is required: ${JSON.stringify(object)}`);
+            }
+            door.setName(name);
             doors.push({
-                nextScene: nextScene,
+                next: next,
                 key: key,
                 object: door,
             });
@@ -48,6 +52,10 @@ export default function generateLevel(
         else if (type === 'trapdoor') {
             const trapdoor = game.physics.add.staticSprite(x, currentY, 'trapdoor', 0)
                 .setOrigin(0.5, 1);
+            if (!name) {
+                throw new Error(`Trapdoor name is required: ${JSON.stringify(object)}`);
+            }
+            trapdoor.setName(name);
             doors.push({
                 key: key,
                 object: trapdoor,

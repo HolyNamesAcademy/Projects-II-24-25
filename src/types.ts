@@ -1,4 +1,5 @@
 export interface GameProgress {
+    scene: 'MainLevel' | 'StageTwo' | 'VideoIntro' | 'WinScene' | 'DeathScreen';
     coordinates: { x: number; y: number };
     scrollPosition: number;
     skills: {
@@ -11,32 +12,46 @@ export interface GameProgress {
         door2Key: boolean;
         trapdoor1Key: boolean;
     };
+    doorLocks: Record<string, boolean>;
     inventory: {
         finalKey: boolean;
     };
 }
 
-export interface LayoutObject {
+export enum Key {
+    WIN_KEY = 'winKey',
+    DOOR2_KEY = 'door2Key',
+    TRAPDOOR1_KEY = 'trapdoor1Key',
+}
+
+export type LayoutObject = {
     type: string;
     x: number;
     y: number;
     scale?: number;
     verticalOffset?: number;
-    nextScene?: 'StageTwo' | 'VideoIntro' | 'WinScene';
-    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
-}
+    next?: TransitionObject;
+    key?: Key;
+    name?: string;
+};
 
 export interface Layout {
     objects: LayoutObject [];
 }
 
 export interface LockableObject {
-    nextScene?: 'StageTwo' | 'VideoIntro' | 'WinScene';
-    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
+    next?: TransitionObject;
+    key?: Key;
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }
 
-export interface puzzleObject {
-    key?: 'winKey' | 'door2Key' | 'trapdoor1Key';
+export interface PuzzleObject {
+    key?: Key;
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+}
+
+export interface TransitionObject {
+    scene: 'StageTwo' | 'VideoIntro' | 'WinScene' | 'MainLevel';
+    coordinates: { x: number; y: number };
+    scrollPosition: number;
 }

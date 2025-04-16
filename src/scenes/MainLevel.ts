@@ -1,6 +1,6 @@
 import { SharedGameCode } from './SharedGameCode';
 import makeButton from '../utils/makeButton';
-import { Layout } from '../types';
+import { Layout, Key } from '../types';
 import { Puzzle } from './Puzzle';
 
 const layout: Layout = {
@@ -8,7 +8,7 @@ const layout: Layout = {
         { type: 'platform', x: 200, y: 300 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 1150, y: 0 },
-        { type: 'door', x: 200, y: 0, key: 'winKey', nextScene: 'WinScene' },
+        { type: 'door', x: 200, y: 0, key: Key.WIN_KEY, name: 'FinalDoor', next: { scene: 'WinScene', coordinates: { x: 10, y: 30 }, scrollPosition: 10 } },
         { type: 'vine', x: 700, y: 0 },
         { type: 'vine', x: 700, y: 0, verticalOffset: 24 },
 
@@ -24,20 +24,19 @@ const layout: Layout = {
         { type: 'platform', x: 550, y: 400 },
         { type: 'platform', x: 200, y: 0 },
         { type: 'platform', x: 700, y: 0 },
-        { type: 'door', x: 150, y: 0, key: 'door2Key', nextScene: 'StageTwo' },
-        { type: 'keyPedestal', x: 600, y: 0, key: 'door2Key' },
+        { type: 'door', x: 150, y: 0, key: Key.DOOR2_KEY, name: 'StageTwoDoor', next: { scene: 'StageTwo', coordinates: { x: 275, y: 368 }, scrollPosition: 260 } },
+        { type: 'keyPedestal', x: 600, y: 0, key: Key.DOOR2_KEY },
     ],
 };
 
+const keyToScale = {
+    [Key.WIN_KEY]: 5,
+    [Key.DOOR2_KEY]: 4,
+    [Key.TRAPDOOR1_KEY]: 4,
+};
+
 export class MainLevel extends SharedGameCode {
-    basicKey: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
-
-    puzzle1: boolean = false;
-    winState: boolean = false;
-    possessesKey: boolean = false;
-
-    scrollSpeed: number = 4;
-    doubleJump: boolean = false;
+    key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 
     constructor() {
         super('MainLevel');
@@ -69,19 +68,9 @@ export class MainLevel extends SharedGameCode {
                 if (this.scene.get('puzzle1') == null) {
                     this.createWindow(512, 300, 600, 400, 'puzzle1');
                     this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
-                        this.winState = value;
-                        if (this.winState && key == 'winKey') {
-                            this.gameProgress.keys.winKey = true;
-                        }
-                        else if (this.winState && key == 'door2Key') {
-                            this.gameProgress.keys.door2Key = true;
-                        }
-                        else if (this.winState && key == 'trapdoor1Key') {
-                            this.gameProgress.keys.trapdoor1Key = true;
-                        }
-                        console.log(this.gameProgress.keys);
-                        if (this.winState) {
-                            this.generateBasicKey();
+                        if (value && key) {
+                            this.gameProgress.keys[key] = true;
+                            this.generateKey(key);
                         }
                     });
                 }
@@ -91,11 +80,15 @@ export class MainLevel extends SharedGameCode {
             });
         });
 
-        this.physics.add.overlap(this.player, this.basicKey, () => {
-            this.basicKey.play('key-left');
-            this.gameProgress.inventory.finalKey = true;
-            this.possessesKey = true;
-        });
+        // Generate the keys that this level uses.
+        if (this.gameProgress.keys[Key.WIN_KEY]) {
+            this.generateKey(Key.WIN_KEY);
+        }
+        if (this.gameProgress.keys[Key.DOOR2_KEY]) {
+            this.generateKey(Key.DOOR2_KEY);
+        }
+
+        console.log('MainLevel created');
     }
 
     createWindow(x: number, y: number, width: number, height: number, id: string) {
@@ -107,14 +100,15 @@ export class MainLevel extends SharedGameCode {
         this.scene.add(uniqueIdentifier, scene, true);
     }
 
-    generateBasicKey() {
-        this.basicKey = this.physics.add.staticSprite(512, 100, 'basicKey', 0)
-            .setScale(5)
+    generateKey(key: Key) {
+        const scale = keyToScale[key] || 1;
+        this.key = this.physics.add.staticSprite(512, 100, 'basicKey', 0)
+            .setScale(scale)
             .setPosition(this.player.x + 100, this.player.y + 25)
             .refreshBody();
 
-        this.basicKey.play('key-left');
-        this.nonCollisionItems.add(this.basicKey);
+        this.key.play('key-left');
+        this.nonCollisionItems.add(this.key);
     }
 
     update() {
@@ -125,13 +119,13 @@ export class MainLevel extends SharedGameCode {
         if (onVine) {
             // They can press left or right to move, but still show the climbing animation.
             if (this.cursors?.left.isDown) {
-                this.updateKeyPosition(this.basicKey, 125, 25);
+                this.updateKeyPosition(this.key, 125, 25);
             }
             else if (this.cursors?.right.isDown) {
-                this.updateKeyPosition(this.basicKey, -125, 25);
+                this.updateKeyPosition(this.key, -125, 25);
             }
             else {
-                this.updateKeyPosition(this.basicKey, 0, 150);
+                this.updateKeyPosition(this.key, 0, 150);
             }
         }
     }
@@ -139,22 +133,22 @@ export class MainLevel extends SharedGameCode {
     moveLeft() {
         super.moveLeft();
 
-        if (this.winState) {
-            if (this.basicKey.anims.currentAnim?.key != 'key-left') {
-                this.basicKey.play('key-left');
+        if (this.key && this.key.active) {
+            if (this.key.anims.currentAnim?.key != 'key-left') {
+                this.key.play('key-left');
             }
-            this.updateKeyPosition(this.basicKey, 125, 25);
+            this.updateKeyPosition(this.key, 125, 25);
         }
     }
 
     moveRight() {
         super.moveRight();
 
-        if (this.winState) {
-            if (this.basicKey.anims.currentAnim?.key != 'key-right') {
-                this.basicKey.play('key-right');
+        if (this.key && this.key.active) {
+            if (this.key.anims.currentAnim?.key != 'key-right') {
+                this.key.play('key-right');
             }
-            this.updateKeyPosition(this.basicKey, -125, 25);
+            this.updateKeyPosition(this.key, -125, 25);
         }
     }
 
@@ -162,11 +156,11 @@ export class MainLevel extends SharedGameCode {
         key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody,
         x: number,
         y: number) {
-        if (!key) {
+        if (!key || !key.active) {
             return;
         };
-        key.setPosition(this.player.x + x, this.player.y + y);
 
+        key.setPosition(this.player.x + x, this.player.y + y);
         key.refreshBody();
     }
 }
