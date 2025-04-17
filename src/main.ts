@@ -29,6 +29,9 @@ const config: Types.Core.GameConfig = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
+    input: {
+        activePointers: 3, // Enable multitouch support
+    },
     physics: {
         default: 'arcade',
         arcade: {
