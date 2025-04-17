@@ -58,6 +58,7 @@ export class DeathScreen extends Scene {
 
     create() {
         this.camera = this.cameras.main;
+        this.camera.setBackgroundColor(0x1a1a1a);
 
         //  We loaded this image in our Boot Scene, so we can display it here
         this.add.image(512, 384, 'deathBackground').scale = 2;

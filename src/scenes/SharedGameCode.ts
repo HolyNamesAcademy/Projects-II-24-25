@@ -46,6 +46,7 @@ export class SharedGameCode extends Scene {
 
     create() {
         this.camera = this.cameras.main;
+        this.camera.setBackgroundColor(0x1a1a1a);
 
         this.background = this.add.tileSprite(512, 384, 512, 384, 'background');
         this.background.scale = 2;
@@ -166,14 +167,16 @@ export class SharedGameCode extends Scene {
         // Calculate button positions
         const gameHeight = this.game.config.height as number;
         const gameWidth = this.game.config.width as number;
-        const buttonY = gameHeight - 100; // 100 pixels from bottom
-        const buttonRadius = 32; // Size of the buttons
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isSmallScreen = window.innerWidth < 1024;
+        const buttonY = (isMobile || isSmallScreen) ? gameHeight - 384 : gameHeight - 100; // Center in the extra space
+        const buttonRadius = (isMobile || isSmallScreen) ? 128 : 32; // Much larger buttons on mobile/small screens
 
         // Create mobile controls
         this.mobileControls = {
-            up: this.createCircleButton(100, buttonY, buttonRadius, '↑'),
-            left: this.createCircleButton(gameWidth - 100 - buttonRadius * 3, buttonY, buttonRadius, '←'),
-            right: this.createCircleButton(gameWidth - 100, buttonY, buttonRadius, '→'),
+            up: this.createCircleButton(64, buttonY, buttonRadius, '↑'),
+            left: this.createCircleButton(gameWidth - buttonRadius * 2 - 64 - buttonRadius * 2 - 32, buttonY, buttonRadius, '←'),
+            right: this.createCircleButton(gameWidth - buttonRadius * 2 - 64, buttonY, buttonRadius, '→'),
         };
 
         // Add touch events for each button
@@ -204,17 +207,17 @@ export class SharedGameCode extends Scene {
         // Create the circle
         const circle = this.add.graphics();
         circle.fillStyle(0x000000, 0.5); // Semi-transparent black
-        circle.lineStyle(2, 0xFFFFFF, 0.8); // White border
+        circle.lineStyle(4, 0xFFFFFF, 0.8); // Thicker white border
         circle.beginPath();
         circle.arc(radius, radius, radius, 0, Math.PI * 2);
         circle.closePath();
         circle.fill();
         circle.stroke();
 
-        // Add the arrow symbol
+        // Add the arrow symbol with larger font
         const text = this.add.text(radius, radius, symbol, {
             color: '#FFFFFF',
-            fontSize: '32px',
+            fontSize: `${radius * 1.5}px`, // Scale font size with button size
             fontStyle: 'bold',
         }).setOrigin(0.5);
 

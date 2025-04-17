@@ -14,10 +14,14 @@ import { Game, Types } from 'phaser';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isSmallScreen = window.innerWidth < 1024; // Consider screens smaller than game width as small
+const extraHeight = (isMobile || isSmallScreen) ? 768 : 0; // Add 150px extra height for controls on mobile or small screens
+
 const config: Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: 1024,
-    height: 768,
+    height: 768 + extraHeight,
     parent: 'game-container',
     backgroundColor: '#028af8',
     pixelArt: true,
