@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 
-const framesPerRow = 15;
+const framesPerRowAddison = 15;
+const framesPerRowFinley = 13;
 export class Preloader extends Scene {
     constructor() {
         super('Preloader');
@@ -60,6 +61,10 @@ export class Preloader extends Scene {
         );
         this.load.spritesheet('allie',
             'allie2.png',
+            { frameWidth: 32, frameHeight: 32 },
+        );
+        this.load.spritesheet('lucy',
+            'lucy3.png',
             { frameWidth: 32, frameHeight: 32 },
         );
     }
@@ -134,6 +139,7 @@ export class Preloader extends Scene {
         this.makeCottonCandyAddisonAnimations();
         this.makeWigAddisonAnimations();
         this.makeAllieAnimations();
+        this.makeLucyAnimations();
         this.makeFinleyAnimations();
         this.makeBlockFinleyAnimations();
         this.makeBeanieFinleyAnimations();
@@ -146,212 +152,31 @@ export class Preloader extends Scene {
     }
 
     makeAddisonAnimations() {
-        this.anims.create({
-            key: 'addison-left',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [2, 12] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'addison-forward',
-            frames: [{ key: 'addison', frame: 0 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'addison-right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [1, 11] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'addison-jump',
-            frames: [{ key: 'addison', frame: 7 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'addison-crouch',
-            frames: [{ key: 'addison', frame: 6 }],
-            frameRate: 30,
-        });
-
-        this.anims.create({
-            key: 'addison-climb',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [9, 10] }),
-            frameRate: 4,
-            repeat: -1,
-        });
+        this.createFinleyStyleAnimations('addison', 'addison', framesPerRowFinley * 0);
     }
 
     makePinkAddisonAnimations() {
-        this.anims.create({
-            key: 'pinkAddison-left',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [15, 25] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'pinkAddison-forward',
-            frames: [{ key: 'addison', frame: 13 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'pinkAddison-right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [14, 24] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'pinkAddison-jump',
-            frames: [{ key: 'addison', frame: 20 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'pinkAddison-crouch',
-            frames: [{ key: 'addison', frame: 19 }],
-            frameRate: 30,
-        });
-
-        this.anims.create({
-            key: 'pinkAddison-climb',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [22, 23] }),
-            frameRate: 4,
-            repeat: -1,
-        });
+        this.createFinleyStyleAnimations('pinkAddison', 'addison', framesPerRowFinley * 1);
     }
 
     makeDarkRedAddisonAnimations() {
-        this.anims.create({
-            key: 'darkRedAddison-left',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [28, 38] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'darkRedAddison-forward',
-            frames: [{ key: 'addison', frame: 26 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'darkRedAddison-right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [27, 37] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'darkRedAddison-jump',
-            frames: [{ key: 'addison', frame: 33 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'darkRedAddison-crouch',
-            frames: [{ key: 'addison', frame: 32 }],
-            frameRate: 30,
-        });
-
-        this.anims.create({
-            key: 'darkRedAddison-climb',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [35, 36] }),
-            frameRate: 4,
-            repeat: -1,
-        });
+        this.createFinleyStyleAnimations('darkRedAddison', 'addison', framesPerRowFinley * 2);
     }
 
     makeCottonCandyAddisonAnimations() {
-        this.anims.create({
-            key: 'CottonCandyAddison-left',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [41, 51] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'CottonCandyAddison-forward',
-            frames: [{ key: 'addison', frame: 39 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'CottonCandyAddison-right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [40, 50] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'CottonCandyAddison-jump',
-            frames: [{ key: 'addison', frame: 46 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'CottonCandyAddison-crouch',
-            frames: [{ key: 'addison', frame: 45 }],
-            frameRate: 30,
-        });
-
-        this.anims.create({
-            key: 'CottonCandyAddison-climb',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [48, 49] }),
-            frameRate: 4,
-            repeat: -1,
-        });
+        this.createFinleyStyleAnimations('cottonCandyAddison', 'addison', framesPerRowFinley * 3);
     }
 
     makeWigAddisonAnimations() {
-        this.anims.create({
-            key: 'WigAddison-left',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [54, 64] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'WigAddison-forward',
-            frames: [{ key: 'addison', frame: 52 }],
-            frameRate: 20,
-        });
-
-        this.anims.create({
-            key: 'WigAddison-right',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [53, 63] }),
-            frameRate: 5,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'WigAddison-jump',
-            frames: [{ key: 'addison', frame: 59 }],
-            frameRate: 5,
-        });
-
-        this.anims.create({
-            key: 'WigAddison-crouch',
-            frames: [{ key: 'addison', frame: 58 }],
-            frameRate: 30,
-        });
-
-        this.anims.create({
-            key: 'WigAddison-climb',
-            frames: this.anims.generateFrameNumbers('addison', { frames: [61, 52] }),
-            frameRate: 4,
-            repeat: -1,
-        });
+        this.createFinleyStyleAnimations('wigAddison', 'addison', framesPerRowFinley * 4);
     }
 
     makeAllieAnimations() {
         this.createAddisonStyleAnimations('allie', 'allie', 0);
+    }
+
+    makeLucyAnimations() {
+        this.createAddisonStyleAnimations('lucy', 'lucy', 0);
     }
 
     makeFinleyAnimations() {
@@ -359,19 +184,19 @@ export class Preloader extends Scene {
     }
 
     makeBlockFinleyAnimations() {
-        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRow);
+        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRowAddison);
     }
 
     makeBeanieFinleyAnimations() {
-        this.createAddisonStyleAnimations('beanieFinley', 'finley', framesPerRow * 2);
+        this.createAddisonStyleAnimations('beanieFinley', 'finley', framesPerRowAddison * 2);
     }
 
     makeCapFinleyAnimations() {
-        this.createAddisonStyleAnimations('capFinley', 'finley', framesPerRow * 3);
+        this.createAddisonStyleAnimations('capFinley', 'finley', framesPerRowAddison * 3);
     }
 
     makeBaldFinleyAnimations() {
-        this.createAddisonStyleAnimations('baldFinley', 'finley', framesPerRow * 4);
+        this.createAddisonStyleAnimations('baldFinley', 'finley', framesPerRowAddison * 4);
     }
 
     makeClareAnimations() {
@@ -387,6 +212,63 @@ export class Preloader extends Scene {
             crouch: [2 + offset],
             climb: [4 + offset, 5 + offset],
             death: [14 + offset],
+        };
+
+        this.anims.create({
+            key: `${key}-left`,
+            frames: this.anims.generateFrameNumbers(sprite, { frames: frames.left }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-forward`,
+            frames: frames.forward.map(frame => ({ key: sprite, frame })),
+            frameRate: 20,
+        });
+
+        this.anims.create({
+            key: `${key}-right`,
+            frames: this.anims.generateFrameNumbers(sprite, { frames: frames.right }),
+            frameRate: 5,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-jump`,
+            frames: frames.jump.map(frame => ({ key: sprite, frame })),
+            frameRate: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-crouch`,
+            frames: frames.crouch.map(frame => ({ key: sprite, frame })),
+            frameRate: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-climb`,
+            frames: frames.climb.map(frame => ({ key: sprite, frame })),
+            frameRate: 4,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: `${key}-death`,
+            frames: frames.death.map(frame => ({ key: sprite, frame })),
+            frameRate: -1,
+        });
+    }
+
+    private createFinleyStyleAnimations(key: string, sprite: string, offset: number) {
+        const frames = {
+            left: [3 + offset, 13 + offset],
+            forward: [1 + offset],
+            right: [2 + offset, 12 + offset],
+            jump: [8 + offset],
+            crouch: [7 + offset],
+            climb: [10 + offset, 11 + offset],
+            death: [6 + offset],
         };
 
         this.anims.create({
