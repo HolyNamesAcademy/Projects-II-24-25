@@ -32,6 +32,7 @@ export class CharacterSelection extends Scene {
 
     create() {
         this.camera = this.cameras.main;
+        this.camera.setBackgroundColor(0x1a1a1a);
 
         // Loads the dungeon background
         this.background = this.add.image(512, 384, 'titleBackground');

@@ -18,6 +18,15 @@ export class SharedGameCode extends Scene {
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
 
+    // Add keyboard controls data structure
+    private keyboardControls: {
+        space: Phaser.Input.Keyboard.Key | undefined;
+        w: Phaser.Input.Keyboard.Key | undefined;
+        a: Phaser.Input.Keyboard.Key | undefined;
+        s: Phaser.Input.Keyboard.Key | undefined;
+        d: Phaser.Input.Keyboard.Key | undefined;
+    };
+
     crouching: boolean = false;
     currentDoorAnim: string;
 
@@ -88,6 +97,15 @@ export class SharedGameCode extends Scene {
         });
 
         this.cursors = this.input?.keyboard?.createCursorKeys();
+
+        // Initialize keyboard controls
+        this.keyboardControls = {
+            space: this.input.keyboard?.addKey('SPACE'),
+            w: this.input.keyboard?.addKey('W'),
+            a: this.input.keyboard?.addKey('A'),
+            s: this.input.keyboard?.addKey('S'),
+            d: this.input.keyboard?.addKey('D'),
+        };
 
         pedestals.forEach(({
             object: pedestal,
@@ -172,12 +190,29 @@ export class SharedGameCode extends Scene {
         const buttonY = (isMobile || isSmallScreen) ? gameHeight - 384 : gameHeight - 100; // Center in the extra space
         const buttonRadius = (isMobile || isSmallScreen) ? 128 : 32; // Much larger buttons on mobile/small screens
 
+        // Create a solid background for mobile controls area on mobile/small screens
+        if (isMobile || isSmallScreen) {
+            const maskHeight = gameHeight / 2; // Half screen height
+            const maskWidth = gameWidth; // Full width of the game
+            const maskY = gameHeight / 2; // Start from middle
+            const mask = this.add.graphics();
+            mask.fillStyle(0x1a1a1a); // Same color as background (0x1a1a1a)
+            mask.fillRect(0, maskY, maskWidth, maskHeight);
+            mask.setScrollFactor(0); // Make it fixed to camera
+            mask.setDepth(0); // Ensure it's behind the controls
+        }
+
         // Create mobile controls
         this.mobileControls = {
             up: this.createCircleButton(64, buttonY, buttonRadius, '↑'),
             left: this.createCircleButton(gameWidth - buttonRadius * 2 - 64 - buttonRadius * 2 - 32, buttonY, buttonRadius, '←'),
             right: this.createCircleButton(gameWidth - buttonRadius * 2 - 64, buttonY, buttonRadius, '→'),
         };
+
+        // Set depth for all controls to ensure they're above the background
+        Object.values(this.mobileControls).forEach((control) => {
+            control.setDepth(1);
+        });
 
         // Add touch events for each button
         Object.entries(this.mobileControls).forEach(([key, container]) => {
@@ -238,21 +273,21 @@ export class SharedGameCode extends Scene {
         const touchingPlatform = this.getTouchingPlatform();
 
         // Update button appearances based on keyboard input
-        if (this.cursors?.left.isDown) {
+        if (this.isLeftPressed()) {
             this.mobileControls.left.setAlpha(1);
         }
         else if (!this.isMobileButtonPressed.left) {
             this.mobileControls.left.setAlpha(0.7);
         }
 
-        if (this.cursors?.right.isDown) {
+        if (this.isRightPressed()) {
             this.mobileControls.right.setAlpha(1);
         }
         else if (!this.isMobileButtonPressed.right) {
             this.mobileControls.right.setAlpha(0.7);
         }
 
-        if (this.cursors?.up.isDown) {
+        if (this.isUpPressed()) {
             this.mobileControls.up.setAlpha(1);
         }
         else if (!this.isMobileButtonPressed.up) {
@@ -264,10 +299,10 @@ export class SharedGameCode extends Scene {
         if (onVine) {
             // On a vine, either show forward when touching the platform
             if (touchingPlatform) {
-                if (this.cursors?.left.isDown || this.isMobileButtonPressed.left) {
+                if (this.isLeftPressed()) {
                     this.moveLeft();
                 }
-                else if (this.cursors?.right.isDown || this.isMobileButtonPressed.right) {
+                else if (this.isRightPressed()) {
                     this.moveRight();
                 }
                 else {
@@ -280,7 +315,7 @@ export class SharedGameCode extends Scene {
             }
 
             // If they are pressing up, move up and allow moving though platform.
-            if (this.cursors?.up.isDown || this.isMobileButtonPressed.up) {
+            if (this.isUpPressed()) {
                 this.player.setVelocityY(-200);
                 this.platformCollisions.active = false;
             }
@@ -289,10 +324,10 @@ export class SharedGameCode extends Scene {
             }
 
             // They can press left or right to move, but still show the climbing animation.
-            if (this.cursors?.left.isDown || this.isMobileButtonPressed.left) {
+            if (this.isLeftPressed()) {
                 this.player.setVelocityX(-160);
             }
-            else if (this.cursors?.right.isDown || this.isMobileButtonPressed.right) {
+            else if (this.isRightPressed()) {
                 this.player.setVelocityX(160);
             }
             else {
@@ -302,23 +337,23 @@ export class SharedGameCode extends Scene {
         else {
             this.platformCollisions.active = true;
 
-            if (this.cursors?.left.isDown || this.isMobileButtonPressed.left) {
+            if (this.isLeftPressed()) {
                 this.moveLeft();
                 this.jumpWithoutAnimation();
             }
-            else if (this.cursors?.right.isDown || this.isMobileButtonPressed.right) {
+            else if (this.isRightPressed()) {
                 this.moveRight();
                 this.jumpWithoutAnimation();
             }
             else {
                 this.player.setVelocityX(0);
 
-                if ((this.cursors?.up.isDown || this.isMobileButtonPressed.up) && this.player.body.touching.down) {
+                if (this.isUpPressed() && this.player.body.touching.down) {
                     this.player.anims.play(`${this.gameProgress.character}-crouch`);
                     this.crouching = true;
                 }
 
-                else if (this.cursors?.up.isUp && this.crouching) {
+                else if (!this.isUpPressed() && this.crouching) {
                     this.player.anims.play(`${this.gameProgress.character}-jump`);
                     this.player.setVelocityY(-430);
                     this.crouching = false;
@@ -366,12 +401,59 @@ export class SharedGameCode extends Scene {
         }
     }
 
-    getOnVine() {
+    private isUpPressed(): boolean {
+        return (this.cursors?.up.isDown ?? false)
+            || (this.keyboardControls.space?.isDown ?? false)
+            || (this.keyboardControls.w?.isDown ?? false)
+            || this.isMobileButtonPressed.up;
+    }
+
+    private isLeftPressed(): boolean {
+        return (this.cursors?.left.isDown ?? false)
+            || (this.keyboardControls.a?.isDown ?? false)
+            || this.isMobileButtonPressed.left;
+    }
+
+    private isRightPressed(): boolean {
+        return (this.cursors?.right.isDown ?? false)
+            || (this.keyboardControls.d?.isDown ?? false)
+            || this.isMobileButtonPressed.right;
+    }
+
+    protected moveLeft() {
+        this.player.setVelocityX(-160);
+        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-left`) {
+            this.player.anims.play(`${this.gameProgress.character}-left`, true);
+        }
+    }
+
+    protected moveRight() {
+        this.player.setVelocityX(160);
+        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-right`) {
+            this.player.anims.play(`${this.gameProgress.character}-right`, true);
+        }
+    }
+
+    private jumpWithoutAnimation() {
+        if (this.isUpPressed() && this.player.body.touching.down) {
+            this.crouching = true;
+        }
+        else if (!this.isUpPressed() && this.crouching) {
+            this.player.setVelocityY(-430);
+            this.crouching = false;
+        }
+    }
+
+    protected getOnVine() {
         return this.physics.overlap(this.vines, this.player);
     }
 
-    getTouchingPlatform() {
+    private getTouchingPlatform() {
         return this.player.body.velocity.y < 5 && this.player.body.velocity.y > -5;
+    }
+
+    private killPlayer() {
+        this.scene.start('DeathScreen', this.gameProgress);
     }
 
     /**
@@ -411,34 +493,5 @@ export class SharedGameCode extends Scene {
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
         this.nonCollisionItems.refresh();
-    }
-
-    moveLeft() {
-        this.player.setVelocityX(-160);
-        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-left`) {
-            this.player.anims.play(`${this.gameProgress.character}-left`, true);
-        }
-    }
-
-    moveRight() {
-        this.player.setVelocityX(160);
-        if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-right`) {
-            this.player.anims.play(`${this.gameProgress.character}-right`, true);
-        }
-    }
-
-    jumpWithoutAnimation() {
-        if (this.cursors?.up.isDown && this.player.body.touching.down) {
-            this.crouching = true;
-        }
-
-        else if (this.cursors?.up.isUp && this.crouching) {
-            this.player.setVelocityY(-430);
-            this.crouching = false;
-        }
-    }
-
-    killPlayer() {
-        this.scene.start('DeathScreen', this.gameProgress);
     }
 }
