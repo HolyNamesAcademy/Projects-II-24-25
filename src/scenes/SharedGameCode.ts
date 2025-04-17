@@ -57,6 +57,9 @@ export class SharedGameCode extends Scene {
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x1a1a1a);
 
+        // Add 3 extra pointers for multitouch support
+        this.input.addPointer(3);
+
         this.background = this.add.tileSprite(512, 384, 512, 384, 'background');
         this.background.scale = 2;
         this.backgroundAnimation = this.add.sprite(0, 0, 'background').setVisible(false).play('background');
