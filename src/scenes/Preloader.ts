@@ -33,6 +33,8 @@ export class Preloader extends Scene {
 
         this.load.image('platform', 'wood final allie pls.png');
 
+        this.load.image('deathBackground', 'Death Background.png');
+
         this.load.spritesheet('background', 'Game Wall (1).png', { frameWidth: 512, frameHeight: 384 });
 
         this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });

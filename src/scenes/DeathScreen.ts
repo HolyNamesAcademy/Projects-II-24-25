@@ -5,6 +5,10 @@ import { GameProgress } from '../types';
 // Map of character names to sprite names
 const characterToSpriteSheet: Record<string, string> = {
     addison: 'addison',
+    pinkAddison: 'addison',
+    darkRedAddison: 'addison',
+    cottonCandyAddison: 'addison',
+    wigAddison: 'addison',
     allie: 'allie',
     finley: 'finley',
     blockFinley: 'finley',
@@ -47,7 +51,9 @@ export class DeathScreen extends Scene {
 
     create() {
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor('#5B7C99');
+
+        //  We loaded this image in our Boot Scene, so we can display it here
+        this.add.image(512, 384, 'deathBackground').scale = 2;
 
         this.msg_text = this.add.text(512, 384, 'You Died!', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
