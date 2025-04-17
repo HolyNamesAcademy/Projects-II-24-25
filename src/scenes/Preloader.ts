@@ -151,23 +151,23 @@ export class Preloader extends Scene {
     }
 
     makeAddisonAnimations() {
-        this.createFinleyStyleAnimations('addison', 'addison', framesPerRow);
+        this.createFinleyStyleAnimations('addison', 'addison', framesPerRow * 0);
     }
 
     makePinkAddisonAnimations() {
-        this.createFinleyStyleAnimations('pinkAddison', 'addison', framesPerRow * 2);
+        this.createFinleyStyleAnimations('pinkAddison', 'addison', framesPerRow * 1);
     }
 
     makeDarkRedAddisonAnimations() {
-        this.createFinleyStyleAnimations('darkRedAddison', 'addison', framesPerRow * 3);
+        this.createFinleyStyleAnimations('darkRedAddison', 'addison', framesPerRow * 2);
     }
 
     makeCottonCandyAddisonAnimations() {
-        this.createFinleyStyleAnimations('cottonCandyAddison', 'addison', framesPerRow * 4);
+        this.createFinleyStyleAnimations('cottonCandyAddison', 'addison', framesPerRow * 3);
     }
 
     makeWigAddisonAnimations() {
-        this.createFinleyStyleAnimations('wigAddison', 'addison', framesPerRow * 5);
+        this.createFinleyStyleAnimations('wigAddison', 'addison', framesPerRow * 4);
     }
 
     makeAllieAnimations() {
@@ -204,13 +204,13 @@ export class Preloader extends Scene {
 
     private createAddisonStyleAnimations(key: string, sprite: string, offset: number) {
         const frames = {
-            left: [8 + offset, 9 + offset, 10 + offset, 9 + offset],
-            forward: [0 + offset],
-            right: [11 + offset, 12 + offset, 13 + offset, 12 + offset],
-            jump: [7 + offset],
-            crouch: [6 + offset],
-            climb: [9 + offset, 10 + offset],
-            death: [5 + offset],
+            left: [9 + offset, 10 + offset, 11 + offset, 10 + offset],
+            forward: [1 + offset],
+            right: [12 + offset, 13 + offset, 14 + offset, 13 + offset],
+            jump: [3 + offset],
+            crouch: [1 + offset],
+            climb: [5 + offset, 6 + offset],
+            death: [15 + offset],
         };
 
         this.anims.create({
@@ -261,13 +261,13 @@ export class Preloader extends Scene {
 
     private createFinleyStyleAnimations(key: string, sprite: string, offset: number) {
         const frames = {
-            left: [2 + offset, 12 + offset],
-            forward: [0 + offset],
-            right: [1 + offset, 11 + offset],
-            jump: [2 + offset],
-            crouch: [2 + offset],
-            climb: [4 + offset, 5 + offset],
-            death: [14 + offset],
+            left: [3 + offset, 13 + offset],
+            forward: [1 + offset],
+            right: [2 + offset, 12 + offset],
+            jump: [8 + offset],
+            crouch: [7 + offset],
+            climb: [10 + offset, 11 + offset],
+            death: [6 + offset],
         };
 
         this.anims.create({
