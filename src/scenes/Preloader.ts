@@ -205,7 +205,7 @@ export class Preloader extends Scene {
     private createAddisonStyleAnimations(key: string, sprite: string, offset: number) {
         const frames = {
             left: [8 + offset, 9 + offset, 10 + offset, 9 + offset],
-            forward: [0 + offset],
+            forward: [1 + offset],
             right: [11 + offset, 12 + offset, 13 + offset, 12 + offset],
             jump: [7 + offset],
             crouch: [6 + offset],

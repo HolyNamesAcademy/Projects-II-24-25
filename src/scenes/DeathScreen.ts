@@ -12,6 +12,7 @@ const characterToSpriteSheet: Record<string, string> = {
     capFinley: 'finley',
     baldFinley: 'finley',
     clare: 'clare',
+    lucy: 'lucy',
 };
 
 export class DeathScreen extends Scene {
