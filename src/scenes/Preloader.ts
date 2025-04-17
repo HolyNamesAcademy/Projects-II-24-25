@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 
-const framesPerRow = 15;
+const framesPerRowAddison = 15;
+const framesPerRowFinley = 13;
 export class Preloader extends Scene {
     constructor() {
         super('Preloader');
@@ -151,23 +152,23 @@ export class Preloader extends Scene {
     }
 
     makeAddisonAnimations() {
-        this.createFinleyStyleAnimations('addison', 'addison', framesPerRow);
+        this.createFinleyStyleAnimations('addison', 'addison', framesPerRowFinley * 0);
     }
 
     makePinkAddisonAnimations() {
-        this.createFinleyStyleAnimations('pinkAddison', 'addison', framesPerRow * 2);
+        this.createFinleyStyleAnimations('pinkAddison', 'addison', framesPerRowFinley * 1);
     }
 
     makeDarkRedAddisonAnimations() {
-        this.createFinleyStyleAnimations('darkRedAddison', 'addison', framesPerRow * 3);
+        this.createFinleyStyleAnimations('darkRedAddison', 'addison', framesPerRowFinley * 2);
     }
 
     makeCottonCandyAddisonAnimations() {
-        this.createFinleyStyleAnimations('cottonCandyAddison', 'addison', framesPerRow * 4);
+        this.createFinleyStyleAnimations('cottonCandyAddison', 'addison', framesPerRowFinley * 3);
     }
 
     makeWigAddisonAnimations() {
-        this.createFinleyStyleAnimations('wigAddison', 'addison', framesPerRow * 5);
+        this.createFinleyStyleAnimations('wigAddison', 'addison', framesPerRowFinley * 4);
     }
 
     makeAllieAnimations() {
@@ -183,19 +184,19 @@ export class Preloader extends Scene {
     }
 
     makeBlockFinleyAnimations() {
-        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRow);
+        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRowAddison);
     }
 
     makeBeanieFinleyAnimations() {
-        this.createAddisonStyleAnimations('beanieFinley', 'finley', framesPerRow * 2);
+        this.createAddisonStyleAnimations('beanieFinley', 'finley', framesPerRowAddison * 2);
     }
 
     makeCapFinleyAnimations() {
-        this.createAddisonStyleAnimations('capFinley', 'finley', framesPerRow * 3);
+        this.createAddisonStyleAnimations('capFinley', 'finley', framesPerRowAddison * 3);
     }
 
     makeBaldFinleyAnimations() {
-        this.createAddisonStyleAnimations('baldFinley', 'finley', framesPerRow * 4);
+        this.createAddisonStyleAnimations('baldFinley', 'finley', framesPerRowAddison * 4);
     }
 
     makeClareAnimations() {
@@ -205,12 +206,12 @@ export class Preloader extends Scene {
     private createAddisonStyleAnimations(key: string, sprite: string, offset: number) {
         const frames = {
             left: [8 + offset, 9 + offset, 10 + offset, 9 + offset],
-            forward: [1 + offset],
+            forward: [0 + offset],
             right: [11 + offset, 12 + offset, 13 + offset, 12 + offset],
-            jump: [7 + offset],
-            crouch: [6 + offset],
-            climb: [9 + offset, 10 + offset],
-            death: [5 + offset],
+            jump: [2 + offset],
+            crouch: [2 + offset],
+            climb: [4 + offset, 5 + offset],
+            death: [14 + offset],
         };
 
         this.anims.create({
