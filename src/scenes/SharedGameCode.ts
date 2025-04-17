@@ -25,6 +25,19 @@ export class SharedGameCode extends Scene {
     layout: Layout;
     scrollSpeed: number = 4;
 
+    // Add new properties for mobile controls
+    private mobileControls: {
+        up: Phaser.GameObjects.Container;
+        left: Phaser.GameObjects.Container;
+        right: Phaser.GameObjects.Container;
+    };
+
+    private isMobileButtonPressed: {
+        left: boolean;
+        right: boolean;
+        up: boolean;
+    };
+
     init(data: GameProgress) {
         this.gameProgress = data;
         console.log(this.gameProgress);
@@ -137,22 +150,121 @@ export class SharedGameCode extends Scene {
                 }
             });
         });
+
+        // Add mobile controls at the end of create()
+        this.createMobileControls();
+    }
+
+    private createMobileControls() {
+        // Initialize the pressed state
+        this.isMobileButtonPressed = {
+            left: false,
+            right: false,
+            up: false,
+        };
+
+        // Calculate button positions
+        const gameHeight = this.game.config.height as number;
+        const gameWidth = this.game.config.width as number;
+        const buttonY = gameHeight - 100; // 100 pixels from bottom
+        const buttonRadius = 32; // Size of the buttons
+
+        // Create mobile controls
+        this.mobileControls = {
+            up: this.createCircleButton(100, buttonY, buttonRadius, '↑'),
+            left: this.createCircleButton(gameWidth - 100 - buttonRadius * 3, buttonY, buttonRadius, '←'),
+            right: this.createCircleButton(gameWidth - 100, buttonY, buttonRadius, '→'),
+        };
+
+        // Add touch events for each button
+        Object.entries(this.mobileControls).forEach(([key, container]) => {
+            const buttonKey = key as keyof typeof this.isMobileButtonPressed;
+            container.setInteractive(new Phaser.Geom.Circle(buttonRadius, buttonRadius, buttonRadius), Phaser.Geom.Circle.Contains);
+
+            container.on('pointerdown', () => {
+                this.isMobileButtonPressed[buttonKey] = true;
+                container.setAlpha(1);
+            });
+
+            container.on('pointerup', () => {
+                this.isMobileButtonPressed[buttonKey] = false;
+                container.setAlpha(0.7);
+            });
+
+            container.on('pointerout', () => {
+                this.isMobileButtonPressed[buttonKey] = false;
+                container.setAlpha(0.7);
+            });
+        });
+    }
+
+    private createCircleButton(x: number, y: number, radius: number, symbol: string): Phaser.GameObjects.Container {
+        const container = this.add.container(x, y);
+
+        // Create the circle
+        const circle = this.add.graphics();
+        circle.fillStyle(0x000000, 0.5); // Semi-transparent black
+        circle.lineStyle(2, 0xFFFFFF, 0.8); // White border
+        circle.beginPath();
+        circle.arc(radius, radius, radius, 0, Math.PI * 2);
+        circle.closePath();
+        circle.fill();
+        circle.stroke();
+
+        // Add the arrow symbol
+        const text = this.add.text(radius, radius, symbol, {
+            color: '#FFFFFF',
+            fontSize: '32px',
+            fontStyle: 'bold',
+        }).setOrigin(0.5);
+
+        // Add both to the container
+        container.add([circle, text]);
+
+        // Set initial alpha
+        container.setAlpha(0.7);
+
+        // Make it fixed to camera
+        container.setScrollFactor(0);
+
+        return container;
     }
 
     update() {
         const onVine = this.getOnVine();
         const touchingPlatform = this.getTouchingPlatform();
 
+        // Update button appearances based on keyboard input
+        if (this.cursors?.left.isDown) {
+            this.mobileControls.left.setAlpha(1);
+        }
+        else if (!this.isMobileButtonPressed.left) {
+            this.mobileControls.left.setAlpha(0.7);
+        }
+
+        if (this.cursors?.right.isDown) {
+            this.mobileControls.right.setAlpha(1);
+        }
+        else if (!this.isMobileButtonPressed.right) {
+            this.mobileControls.right.setAlpha(0.7);
+        }
+
+        if (this.cursors?.up.isDown) {
+            this.mobileControls.up.setAlpha(1);
+        }
+        else if (!this.isMobileButtonPressed.up) {
+            this.mobileControls.up.setAlpha(0.7);
+        }
+
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
         if (onVine) {
             // On a vine, either show forward when touching the platform
             if (touchingPlatform) {
-                if (this.cursors?.left.isDown) {
+                if (this.cursors?.left.isDown || this.isMobileButtonPressed.left) {
                     this.moveLeft();
                 }
-
-                else if (this.cursors?.right.isDown) {
+                else if (this.cursors?.right.isDown || this.isMobileButtonPressed.right) {
                     this.moveRight();
                 }
                 else {
@@ -165,7 +277,7 @@ export class SharedGameCode extends Scene {
             }
 
             // If they are pressing up, move up and allow moving though platform.
-            if (this.cursors?.up.isDown) {
+            if (this.cursors?.up.isDown || this.isMobileButtonPressed.up) {
                 this.player.setVelocityY(-200);
                 this.platformCollisions.active = false;
             }
@@ -174,10 +286,10 @@ export class SharedGameCode extends Scene {
             }
 
             // They can press left or right to move, but still show the climbing animation.
-            if (this.cursors?.left.isDown) {
+            if (this.cursors?.left.isDown || this.isMobileButtonPressed.left) {
                 this.player.setVelocityX(-160);
             }
-            else if (this.cursors?.right.isDown) {
+            else if (this.cursors?.right.isDown || this.isMobileButtonPressed.right) {
                 this.player.setVelocityX(160);
             }
             else {
@@ -187,25 +299,24 @@ export class SharedGameCode extends Scene {
         else {
             this.platformCollisions.active = true;
 
-            if (this.cursors?.left.isDown) {
+            if (this.cursors?.left.isDown || this.isMobileButtonPressed.left) {
                 this.moveLeft();
                 this.jumpWithoutAnimation();
             }
-
-            else if (this.cursors?.right.isDown) {
+            else if (this.cursors?.right.isDown || this.isMobileButtonPressed.right) {
                 this.moveRight();
                 this.jumpWithoutAnimation();
             }
             else {
                 this.player.setVelocityX(0);
 
-                if (this.cursors?.up.isDown && this.player.body.touching.down) {
-                    this.player.anims.play(`${this.gameProgress.character}-crouch`);// find way to delay jump until crouch frame remains for 1 sec
+                if ((this.cursors?.up.isDown || this.isMobileButtonPressed.up) && this.player.body.touching.down) {
+                    this.player.anims.play(`${this.gameProgress.character}-crouch`);
                     this.crouching = true;
                 }
 
                 else if (this.cursors?.up.isUp && this.crouching) {
-                    this.player.anims.play(`${this.gameProgress.character}-jump`);// find way to stop if after bounce? //no bounce?
+                    this.player.anims.play(`${this.gameProgress.character}-jump`);
                     this.player.setVelocityY(-430);
                     this.crouching = false;
                 }
