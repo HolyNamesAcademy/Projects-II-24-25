@@ -35,6 +35,8 @@ export class Preloader extends Scene {
 
         this.load.image('wall', 'Brick Wall.png');
 
+        this.load.image('deathBackground', 'Death Background.png');
+
         this.load.spritesheet('background', 'Game Wall (1).png', { frameWidth: 512, frameHeight: 384 });
 
         this.load.spritesheet('door', 'door.png', { frameWidth: 38, frameHeight: 36 });
@@ -182,11 +184,11 @@ export class Preloader extends Scene {
     }
 
     makeFinleyAnimations() {
-        this.createAddisonStyleAnimations('finley', 'finley', 0);
+        this.createAddisonStyleAnimations('finley', 'finley', framesPerRowAddison * 0);
     }
 
     makeBlockFinleyAnimations() {
-        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRowAddison);
+        this.createAddisonStyleAnimations('blockFinley', 'finley', framesPerRowAddison * 1);
     }
 
     makeBeanieFinleyAnimations() {
@@ -264,13 +266,14 @@ export class Preloader extends Scene {
 
     private createFinleyStyleAnimations(key: string, sprite: string, offset: number) {
         const frames = {
-            left: [3 + offset, 13 + offset],
-            forward: [1 + offset],
-            right: [2 + offset, 12 + offset],
-            jump: [8 + offset],
-            crouch: [7 + offset],
-            climb: [10 + offset, 11 + offset],
-            death: [6 + offset],
+            left: [2 + offset, 12 + offset],
+            forward: [0 + offset],
+            right: [1 + offset, 11 + offset],
+            jump: [7 + offset],
+            crouch: [6 + offset],
+            climb: [9 + offset, 10 + offset],
+            death: [5 + offset],
+            fall: [8 + offset],
         };
 
         this.anims.create({

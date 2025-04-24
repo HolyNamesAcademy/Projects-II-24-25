@@ -5,6 +5,10 @@ import { GameProgress } from '../types';
 // Map of character names to sprite names
 const characterToSpriteSheet: Record<string, string> = {
     addison: 'addison',
+    pinkAddison: 'addison',
+    darkRedAddison: 'addison',
+    cottonCandyAddison: 'addison',
+    wigAddison: 'addison',
     allie: 'allie',
     finley: 'finley',
     blockFinley: 'finley',
@@ -35,8 +39,15 @@ export class DeathScreen extends Scene {
         console.log('Deaths:', this.deaths);
         console.log('Character:', data.character);
 
-        // Push the new death to the array
-        this.deaths.push(data.character);
+        // In case they get to this screen without a character
+        // (e.g. if they die in the main menu) (this should not happen)
+        if (data.character) {
+            // Push the new death to the array
+            this.deaths.push(data.character);
+        }
+
+        // Filter out any null or undefined values from the deaths array
+        this.deaths = this.deaths.filter(death => death !== null && death !== undefined);
 
         // Store the updated deaths in localStorage
         localStorage.setItem('deaths', JSON.stringify(this.deaths));
@@ -47,7 +58,10 @@ export class DeathScreen extends Scene {
 
     create() {
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor('#5B7C99');
+        this.camera.setBackgroundColor(0x1a1a1a);
+
+        //  We loaded this image in our Boot Scene, so we can display it here
+        this.add.image(512, 384, 'deathBackground').scale = 2;
 
         this.msg_text = this.add.text(512, 384, 'You Died!', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
@@ -89,7 +103,8 @@ export class DeathScreen extends Scene {
                 return;
             }
             let y = startY - countY * spacingY;
-            if (death === 'addison') {
+            if (death.toLowerCase().includes('addison')) {
+                console.log('Addison sprite detected', death);
                 y = y - 48; // Adjust for Addison's sprite being on the bottom;
             }
             const sprite = this.add.sprite(
