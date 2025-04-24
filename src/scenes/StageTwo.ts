@@ -33,7 +33,10 @@ const layout: Layout = {
         { type: 'vine', x: 990, y: 0, verticalOffset: 144 },
         { type: 'vine', x: 990, y: 0, verticalOffset: 168 },
 
-        { type: 'platform', x: 290, y: 800 },
+        { type: 'wall', x: 780, y: 300 },
+        { type: 'wall', x: 780, y: 0, verticalOffset: 100 },
+
+        { type: 'platform', x: 290, y: 500 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 730, y: 0 },
         // { type: 'spikes', x: 50, y: 0 },

@@ -28,7 +28,7 @@ export default function generateLevel(
             }
             walls.create(x, wallY, 'wall', 0)
                 .setOrigin(0.5, 0)
-                .setScale(1)
+                .setScale(2.5)
                 .refreshBody();
         }
         else if (type === 'vine') {

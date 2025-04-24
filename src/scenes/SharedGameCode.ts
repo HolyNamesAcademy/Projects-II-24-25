@@ -275,6 +275,7 @@ export class SharedGameCode extends Scene {
 
         // Move all platforms and the player in the same direction.
         this.platforms.incY(y);
+        this.walls.incY(y);
         this.nonCollisionItems.incY(y);
         this.player.y += y;
 
