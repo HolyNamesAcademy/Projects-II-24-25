@@ -10,6 +10,8 @@ export class SharedGameCode extends Scene {
     backgroundAnimation: Phaser.GameObjects.Sprite;
 
     platforms: Phaser.Physics.Arcade.StaticGroup;
+    walls: Phaser.Physics.Arcade.StaticGroup;
+    wallCollisions: Phaser.Physics.Arcade.Collider;
     platformCollisions: Phaser.Physics.Arcade.Collider;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
     pedestals: PuzzleObject[];
@@ -41,7 +43,8 @@ export class SharedGameCode extends Scene {
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-        const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, this.layout);
+        this.walls = this.physics.add.staticGroup();
+        const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, this.walls, this.layout);
         this.nonCollisionItems.addMultiple(doors.map(d => d.object));
         this.nonCollisionItems.addMultiple(pedestals.map(p => p.object));
         this.nonCollisionItems.addMultiple(vines);
@@ -65,6 +68,7 @@ export class SharedGameCode extends Scene {
 
         this.player.anims.play(`${this.gameProgress.character}-forward`);
 
+        this.wallCollisions = this.physics.add.collider(this.player, this.walls);
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
             if (this.getOnVine()) {
