@@ -137,10 +137,17 @@ export class SharedGameCode extends Scene {
             // Make the pedestal interactive for pointer events
             pedestal.setInteractive();
 
+            // Handle pointer events for puzzle interaction
+            pedestal.on('pointerover', () => {
+                pedestal.anims.play('pedestalFlash', true);
+            });
+
+            pedestal.on('pointerout', () => {
+                pedestal.anims.play('keyPedestal', true);
+            });
+
             pedestal.on('pointerdown', () => {
-                if (this.physics.overlap(this.player, pedestal)) {
-                    this.createPuzzleWindow(name, key);
-                }
+                this.createPuzzleWindow(name, key);
             });
 
             // Add space key handler for puzzle windows
@@ -394,13 +401,6 @@ export class SharedGameCode extends Scene {
             this.mobileControls.up.setAlpha(0.7);
         }
 
-        if (this.isInteractPressed()) {
-            this.mobileControls.interact.setAlpha(1);
-        }
-        else if (!this.isMobileButtonPressed.interact) {
-            this.mobileControls.interact.setAlpha(0.7);
-        }
-
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
         // Update pedestal animations based on player overlap
@@ -526,9 +526,6 @@ export class SharedGameCode extends Scene {
         if (playerY > 750) {
             this.player.setCollideWorldBounds(false);
         }
-        else {
-            this.player.setCollideWorldBounds(true);
-        }
 
         if (playerY > 550) {
             this.scroll(-1 * this.scrollSpeed);
@@ -641,7 +638,7 @@ export class SharedGameCode extends Scene {
         this.nonCollisionItems.refresh();
     }
 
-    private createWindow(x: number, y: number, width: number, height: number, id: string) {
+    public createWindow(x: number, y: number, width: number, height: number, id: string) {
         console.log('creating window');
         const uniqueIdentifier = id;
 
@@ -650,7 +647,7 @@ export class SharedGameCode extends Scene {
         this.scene.add(uniqueIdentifier, scene, true);
     }
 
-    private createPuzzleWindow(name: string, key: Key | undefined) {
+    public createPuzzleWindow(name: string, key: Key | undefined) {
         console.log('creating puzzle window', name, key, this.scene.get(name));
         if (this.scene.get(name) == null) {
             this.createWindow(512, 300, 600, 400, name);
