@@ -14,7 +14,7 @@ export class WinScene extends Scene {
     create() {
         window.localStorage.setItem('stage', '1');
         this.camera = this.cameras.main;
-        // this.camera.setBackgroundColor(0x00ff00);
+        this.camera.setBackgroundColor(0x1a1a1a);
 
         // this.background = this.add.image(512, 384, 'background');
 

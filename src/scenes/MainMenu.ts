@@ -4,6 +4,8 @@ import { GameProgress } from '../types';
 import clone from '../utils/clone';
 
 export class MainMenu extends Scene {
+    camera: Phaser.Cameras.Scene2D.Camera;
+
     background: Phaser.GameObjects.TileSprite;
     backgroundAnimation: Phaser.GameObjects.Sprite;
     gameTitle: GameObjects.Text;
@@ -33,6 +35,9 @@ export class MainMenu extends Scene {
     }
 
     create() {
+        this.camera = this.cameras.main;
+        this.camera.setBackgroundColor(0x1a1a1a);
+
         // Loads the dungeon background
         this.background = this.add.tileSprite(512, 384, 512, 384, 'titleBackground');
         this.background.scale = 2;
@@ -66,8 +71,8 @@ export class MainMenu extends Scene {
     }
 
     startGame(progress: GameProgress | null = null) {
-        this.cameras.main.fadeOut(1000, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+        this.camera.fadeOut(1000, 0, 0, 0);
+        this.camera.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             if (progress === null) {
                 const defaultGameProgress = clone<GameProgress>(this.defaultGameProgress);
                 this.scene.start('CharacterSelection', defaultGameProgress);
