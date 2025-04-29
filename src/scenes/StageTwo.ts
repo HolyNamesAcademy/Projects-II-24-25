@@ -5,7 +5,14 @@ import { Puzzle } from './Puzzle';
 
 const layout: Layout = {
     objects: [
-        { type: 'platform', x: 200, y: 200 },
+        { type: 'platform', x: 150, y: 100 },
+        { type: 'platform', x: 1000, y: 0 },
+        { type: 'platform', x: 700, y: 0 },
+        { type: 'vine', x: 850, y: 0, verticalOffset: 0 },
+        { type: 'vine', x: 850, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 850, y: 0, verticalOffset: 48 },
+
+        { type: 'platform', x: 200, y: 500 },
         { type: 'platform', x: 1000, y: 0 },
         { type: 'door', x: 200, y: 0, name: 'StageTwoDoor', next: { scene: 'MainLevel', coordinates: { x: 219, y: 468 }, scrollPosition: 660 } },
         { type: 'vine', x: 50, y: 0 },
@@ -50,8 +57,15 @@ const layout: Layout = {
         { type: 'spikes', x: 850, y: 0 },
         // { type: 'spikes', x: 950, y: 0 },
         { type: 'vine', x: 170, y: 0 },
-        { type: 'vine', x: 250, y: 0 },
-        { type: 'vine', x: 450, y: 0 },
+        { type: 'vine', x: 170, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 370, y: 0 },
+        { type: 'vine', x: 370, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 370, y: 0, verticalOffset: 48 },
+        { type: 'vine', x: 570, y: 0 },
+        { type: 'vine', x: 570, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 570, y: 0, verticalOffset: 48 },
+        { type: 'vine', x: 770, y: 0 },
+        { type: 'vine', x: 770, y: 0, verticalOffset: 24 },
 
         { type: 'platform', x: -10, y: 400 },
     ],
@@ -79,24 +93,26 @@ export class StageTwo extends SharedGameCode {
             this.generateKey(Key.WIN_KEY);
         }
 
-        this.pedestals.forEach(({
-            key: key,
-            object: pedestal,
-        }) => {
-            pedestal.on('pointerdown', () => {
-                if (this.scene.get('puzzle1') == null) {
-                    this.createWindow(512, 300, 600, 400, 'puzzle1');
-                    this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
-                        if (value && key) {
-                            this.gameProgress.keys[key] = true;
-                            this.generateKey(key);
-                        }
-                    });
-                }
-                else {
-                    this.scene.remove('puzzle1');
-                }
-            });
+        this.physics.add.overlap(this.player, this.pedestals, aync () => {
+            this.pedestals.forEach(({
+                key: key,
+                object: pedestal,
+            }) => {
+                pedestal.on('pointerdown', () => {
+                    if (this.scene.get('puzzle1') == null) {
+                        this.createWindow(512, 300, 600, 400, 'puzzle1');
+                        this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
+                            if (value && key) {
+                                this.gameProgress.keys[key] = true;
+                                this.generateKey(key);
+                            }
+                        });
+                    }
+                    else {
+                        this.scene.remove('puzzle1');
+                    }
+                });
+            }),
         });
     }
 
