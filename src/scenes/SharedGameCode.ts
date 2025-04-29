@@ -533,6 +533,9 @@ export class SharedGameCode extends Scene {
         if (playerY > 750) {
             this.player.setCollideWorldBounds(false);
         }
+        else {
+            this.player.setCollideWorldBounds(true);
+        }
 
         if (playerY > 550) {
             this.scroll(-1 * this.scrollSpeed);
