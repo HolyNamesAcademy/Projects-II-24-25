@@ -49,7 +49,7 @@ export class SharedGameCode extends Scene {
         left: boolean;
         right: boolean;
         up: boolean;
-        door: boolean;
+        space: boolean;
     };
 
     // Add key-related properties
@@ -142,21 +142,18 @@ export class SharedGameCode extends Scene {
                 pedestal.anims.play('keyPedestal', true);
             });
 
-            // overlap with player is handled in the update function.
             pedestal.on('pointerdown', () => {
-                if (this.scene.get(name) == null) {
-                    this.createWindow(512, 300, 600, 400, name);
-                    this.scene.get(name).events.once('passBoolean', (value: boolean) => {
-                        if (value && key) {
-                            this.gameProgress.keys[key] = true;
-                            this.generateKey(key);
-                        }
-                    });
-                }
-                else {
-                    this.scene.remove(name);
-                }
+                this.createPuzzleWindow(name, key);
             });
+
+            // Add space key handler for puzzle windows
+            if (this.input.keyboard) {
+                this.input.keyboard.on('keydown-SPACE', () => {
+                    if (this.physics.overlap(this.player, pedestal)) {
+                        this.createPuzzleWindow(name, key);
+                    }
+                });
+            }
         });
 
         this.physics.add.collider(this.player, spikes, () => {
@@ -192,13 +189,13 @@ export class SharedGameCode extends Scene {
                         padding: { x: 5, y: 5 },
                     }).setOrigin(0.5, 1).setPosition(coordinates.x, coordinates.y);
 
-                    this.time.delayedCall(1000, () => {
+                    this.time.delayedCall(5000, () => {
                         doorText?.destroy();
                     });
                 }
 
                 const locked = this.gameProgress.doorLocks[door.name];
-                const openDoorKey = this.keyboardControls.space?.isDown ?? false;
+                const openDoorKey = this.isSpacePressed();
 
                 // Check that the door is unlocked, and we are not already going though the door.
                 if (!locked && this.currentDoorAnim != door.name && openDoorKey) {
@@ -260,7 +257,7 @@ export class SharedGameCode extends Scene {
             left: false,
             right: false,
             up: false,
-            door: false,
+            space: false,
         };
 
         // Calculate button positions
@@ -528,6 +525,11 @@ export class SharedGameCode extends Scene {
             || this.isMobileButtonPressed.right;
     }
 
+    private isSpacePressed(): boolean {
+        return (this.keyboardControls.space?.isDown ?? false)
+            || this.isMobileButtonPressed.space;
+    }
+
     protected moveLeft() {
         this.player.setVelocityX(-160);
         if (this.player.anims.currentAnim?.key != `${this.gameProgress.character}-left`) {
@@ -607,13 +609,30 @@ export class SharedGameCode extends Scene {
         this.nonCollisionItems.refresh();
     }
 
-    createWindow(x: number, y: number, width: number, height: number, id: string) {
+    private createWindow(x: number, y: number, width: number, height: number, id: string) {
         console.log('creating window');
         const uniqueIdentifier = id;
 
         const zone = this.add.zone(x, y, width, height).setInteractive();
         const scene = new Puzzle(uniqueIdentifier, zone, width, height);
         this.scene.add(uniqueIdentifier, scene, true);
+    }
+
+    private createPuzzleWindow(name: string, key: Key | undefined) {
+        console.log('creating puzzle window', name, key, this.scene.get(name));
+        if (this.scene.get(name) == null) {
+            this.createWindow(512, 300, 600, 400, name);
+
+            this.scene.get(name).events.once('passBoolean', (value: boolean) => {
+                if (value && key) {
+                    this.gameProgress.keys[key] = true;
+                    this.generateKey(key);
+                }
+            });
+        }
+        else {
+            this.scene.remove(name);
+        }
     }
 
     generateKey(key: Key) {
