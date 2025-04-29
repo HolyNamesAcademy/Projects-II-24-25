@@ -401,6 +401,13 @@ export class SharedGameCode extends Scene {
             this.mobileControls.up.setAlpha(0.7);
         }
 
+        if (this.isInteractPressed()) {
+            this.mobileControls.interact.setAlpha(1);
+        }
+        else if (!this.isMobileButtonPressed.interact) {
+            this.mobileControls.interact.setAlpha(0.7);
+        }
+
         this.background.setFrame(this.backgroundAnimation.frame.name);
 
         // Update pedestal animations based on player overlap
