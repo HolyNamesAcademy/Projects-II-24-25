@@ -5,6 +5,7 @@ import { GameProgress } from '../types';
 export class CharacterSelection extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
+    backgroundAnimation: Phaser.GameObjects.Sprite;
     msg_text: Phaser.GameObjects.Text;
     characterName: Phaser.GameObjects.Text;
     backButton: Phaser.GameObjects.Text;
@@ -37,6 +38,7 @@ export class CharacterSelection extends Scene {
         // Loads the dungeon background
         this.background = this.add.image(512, 384, 'titleBackground');
         this.background.scale = 2;
+        this.backgroundAnimation = this.add.sprite(0, 0, 'titleBackground').setVisible(false).play('titleBackground');
 
         this.msg_text = this.add.text(512, 160, 'Choose Your\nCharacter', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
@@ -151,5 +153,9 @@ export class CharacterSelection extends Scene {
             this.upButton.setVisible(false);
             this.downButton.setVisible(false);
         }
+    }
+
+    update() {
+        this.background.setFrame(this.backgroundAnimation.frame.name);
     }
 }
