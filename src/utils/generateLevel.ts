@@ -81,6 +81,7 @@ export default function generateLevel(
             pedestal.anims.play('keyPedestal');
             pedestals.push({
                 key: key,
+                name: name ?? '',
                 object: pedestal,
             });
         }

@@ -126,6 +126,8 @@ export class SharedGameCode extends Scene {
         };
 
         pedestals.forEach(({
+            key: key,
+            name: name,
             object: pedestal,
         }) => {
             pedestal.on('pointerover', () => {
@@ -135,6 +137,20 @@ export class SharedGameCode extends Scene {
             pedestal.on('pointerout', () => {
                 pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
+            });
+            pedestal.on('pointerdown', () => {
+                if (this.scene.get(name) == null) {
+                    this.createWindow(512, 300, 600, 400, name);
+                    this.scene.get(name).events.once('passBoolean', (value: boolean) => {
+                        if (value && key) {
+                            this.gameProgress.keys[key] = true;
+                            this.generateKey(key);
+                        }
+                    });
+                }
+                else {
+                    this.scene.remove(name);
+                }
             });
         });
 
@@ -159,6 +175,10 @@ export class SharedGameCode extends Scene {
                     // The key is now used.
                     this.gameProgress.keys[key] = false;
 
+                    // Remove the key from the scene.
+                    this.key.destroy();
+
+                    // Show the door unlocked text.
                     const coordinates = getDoorCenterTop(door);
                     const doorText = this.add.text(coordinates.x, coordinates.y, 'Door unlocked!\n(space to enter)', {
                         font: '16px Arial', fontSize: 70,
@@ -203,7 +223,7 @@ export class SharedGameCode extends Scene {
                 if (locked) {
                     const coordinates = getDoorCenterTop(door);
 
-                    // If the door is locked, play the locked animation.
+                    // If the door is locked, let
                     const doorText = this.add.text(coordinates.x, coordinates.y, 'This door is locked', {
                         font: '16px Arial', fontSize: 70,
                         color: '#ff0000',
@@ -220,27 +240,6 @@ export class SharedGameCode extends Scene {
 
         // Add mobile controls at the end of create()
         this.createMobileControls();
-
-        // Add key pedestal interaction
-        this.pedestals.forEach(({
-            key: key,
-            object: pedestal,
-        }) => {
-            pedestal.on('pointerdown', () => {
-                if (this.scene.get('puzzle1') == null) {
-                    this.createWindow(512, 300, 600, 400, 'puzzle1');
-                    this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
-                        if (value && key) {
-                            this.gameProgress.keys[key] = true;
-                            this.generateKey(key);
-                        }
-                    });
-                }
-                else {
-                    this.scene.remove('puzzle1');
-                }
-            });
-        });
 
         // Generate any existing keys
         Object.entries(this.gameProgress.keys).forEach(([key, hasKey]) => {

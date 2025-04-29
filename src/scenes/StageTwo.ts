@@ -26,7 +26,7 @@ const layout: Layout = {
         { type: 'vine', x: 250, y: 0, verticalOffset: 48 + 24 + 24 },
         { type: 'vine', x: 250, y: 0, verticalOffset: 48 + 24 + 24 + 24 },
 
-        { type: 'keyPedestal', x: 950, y: 0, key: Key.WIN_KEY },
+        { type: 'keyPedestal', x: 950, y: 0, key: Key.WIN_KEY, name: 'puzzle1' },
         { type: 'vine', x: 840, y: 0 },
         { type: 'vine', x: 840, y: 0, verticalOffset: 24 },
         { type: 'vine', x: 990, y: 0 },

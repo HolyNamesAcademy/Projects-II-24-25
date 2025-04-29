@@ -47,6 +47,7 @@ export interface LockableObject {
 
 export interface PuzzleObject {
     key?: Key;
+    name: string;
     object: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
 }
 
