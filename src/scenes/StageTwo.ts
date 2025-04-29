@@ -66,6 +66,7 @@ const layout: Layout = {
         { type: 'vine', x: 570, y: 0, verticalOffset: 48 },
         { type: 'vine', x: 770, y: 0 },
         { type: 'vine', x: 770, y: 0, verticalOffset: 24 },
+        { type: 'vine', x: 770, y: 0, verticalOffset: 48 },
 
         { type: 'platform', x: -10, y: 400 },
     ],
@@ -93,11 +94,11 @@ export class StageTwo extends SharedGameCode {
             this.generateKey(Key.WIN_KEY);
         }
 
-        this.physics.add.overlap(this.player, this.pedestals, aync () => {
-            this.pedestals.forEach(({
-                key: key,
-                object: pedestal,
-            }) => {
+        this.pedestals.forEach(({
+            key: key,
+            object: pedestal,
+        }) => {
+            this.physics.add.overlap(this.player, pedestal, () => {
                 pedestal.on('pointerdown', () => {
                     if (this.scene.get('puzzle1') == null) {
                         this.createWindow(512, 300, 600, 400, 'puzzle1');
@@ -112,7 +113,7 @@ export class StageTwo extends SharedGameCode {
                         this.scene.remove('puzzle1');
                     }
                 });
-            }),
+            });
         });
     }
 
