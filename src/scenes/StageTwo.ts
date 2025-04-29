@@ -36,7 +36,7 @@ const layout: Layout = {
         { type: 'wall', x: 780, y: 100 },
         { type: 'wall', x: 780, y: 0, verticalOffset: 100 },
 
-        { type: 'platform', x: 290, y: 500 },
+        { type: 'platform', x: 290, y: 700 },
         { type: 'platform', x: 600, y: 0 },
         { type: 'platform', x: 730, y: 0 },
         // { type: 'spikes', x: 50, y: 0 },

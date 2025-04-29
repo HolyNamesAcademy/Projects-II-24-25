@@ -11,8 +11,8 @@ export class SharedGameCode extends Scene {
 
     platforms: Phaser.Physics.Arcade.StaticGroup;
     walls: Phaser.Physics.Arcade.StaticGroup;
-    wallCollisions: Phaser.Physics.Arcade.Collider;
     platformCollisions: Phaser.Physics.Arcade.Collider;
+    wallCollisions: Phaser.Physics.Arcade.Collider;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
     pedestals: PuzzleObject[];
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
@@ -480,6 +480,7 @@ export class SharedGameCode extends Scene {
 
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
+        this.walls.refresh();
         this.nonCollisionItems.refresh();
     }
 
