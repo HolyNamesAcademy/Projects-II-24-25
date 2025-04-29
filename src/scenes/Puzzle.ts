@@ -69,11 +69,6 @@ export class Puzzle extends Scene {
             this.createPuzzle();
             this.renderPuzzle();
         }).setVisible(false);
-
-        this.win = makeButton(this, 'Key', 40, 500, 350, () => {
-            this.events.emit('passBoolean', true);
-            this.scene.remove();
-        }).setVisible(false);
     }
 
     createPuzzle() {
@@ -160,8 +155,8 @@ export class Puzzle extends Scene {
 
     wonPuzzle() {
         this.gameState = GameState.Won;
-        this.clock.setText('You won!');
-        this.win.setVisible(true);
+        this.events.emit('passBoolean', true);
+        this.scene.remove();
     }
 
     update() {

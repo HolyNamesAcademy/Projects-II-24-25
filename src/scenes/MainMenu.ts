@@ -9,7 +9,6 @@ export class MainMenu extends Scene {
     background: Phaser.GameObjects.TileSprite;
     backgroundAnimation: Phaser.GameObjects.Sprite;
     gameTitle: GameObjects.Text;
-    title: GameObjects.Text;
     restart: GameObjects.Text;
     continue: GameObjects.Text;
     characters: GameObjects.Text;
