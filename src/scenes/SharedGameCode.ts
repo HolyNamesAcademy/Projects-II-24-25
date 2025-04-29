@@ -174,6 +174,20 @@ export class SharedGameCode extends Scene {
                         });
                     }
                 }
+
+                if (locked) {
+                    // If the door is locked, play the locked animation.
+                    const doorText = this.add.text(door.x, door.y - 200, 'This door is locked', {
+                        font: '16px Arial', fontSize: 70,
+                        color: '#ff0000',
+                        backgroundColor: '#000000',
+                        padding: { x: 5, y: 5 },
+                    }).setOrigin(0.85, 1);
+
+                    this.time.delayedCall(1000, () => {
+                        doorText.destroy();
+                    });
+                }
             });
         });
 
