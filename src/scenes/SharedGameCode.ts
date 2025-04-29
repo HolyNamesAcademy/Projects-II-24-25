@@ -10,7 +10,9 @@ export class SharedGameCode extends Scene {
     backgroundAnimation: Phaser.GameObjects.Sprite;
 
     platforms: Phaser.Physics.Arcade.StaticGroup;
+    walls: Phaser.Physics.Arcade.StaticGroup;
     platformCollisions: Phaser.Physics.Arcade.Collider;
+    wallCollisions: Phaser.Physics.Arcade.Collider;
     nonCollisionItems: Phaser.Physics.Arcade.StaticGroup;
     pedestals: PuzzleObject[];
     vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[];
@@ -67,7 +69,8 @@ export class SharedGameCode extends Scene {
         this.nonCollisionItems = this.physics.add.staticGroup();
 
         this.platforms = this.physics.add.staticGroup();
-        const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, this.layout);
+        this.walls = this.physics.add.staticGroup();
+        const { doors, vines, pedestals, spikes } = generateLevel(this, this.platforms, this.walls, this.layout);
         this.nonCollisionItems.addMultiple(doors.map(d => d.object));
         this.nonCollisionItems.addMultiple(pedestals.map(p => p.object));
         this.nonCollisionItems.addMultiple(vines);
@@ -91,6 +94,7 @@ export class SharedGameCode extends Scene {
 
         this.player.anims.play(`${this.gameProgress.character}-forward`);
 
+        this.wallCollisions = this.physics.add.collider(this.player, this.walls);
         this.platformCollisions = this.physics.add.collider(this.player, this.platforms);
         this.physics.add.overlap(this.player, this.platforms, () => {
             if (this.getOnVine()) {
@@ -470,11 +474,13 @@ export class SharedGameCode extends Scene {
 
         // Move all platforms and the player in the same direction.
         this.platforms.incY(y);
+        this.walls.incY(y);
         this.nonCollisionItems.incY(y);
         this.player.y += y;
 
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
+        this.walls.refresh();
         this.nonCollisionItems.refresh();
     }
 
@@ -491,6 +497,7 @@ export class SharedGameCode extends Scene {
         // Multiply by -1 to move the objects in the positive Y (down) direction.
         // Multiply by 2 to move the objects twice the distance as the background.
         this.platforms.incY((scrollPosition - 384) * -1 * 2);
+        this.walls.incY((scrollPosition - 384) * -1 * 2);
         this.nonCollisionItems.incY((scrollPosition - 384) * -1 * 2);
 
         // Refresh the physics bodies to reflect the changes.

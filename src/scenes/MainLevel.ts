@@ -23,7 +23,7 @@ const layout: Layout = {
         { type: 'platform', x: 550, y: 400 },
         { type: 'platform', x: 200, y: 0 },
         { type: 'platform', x: 700, y: 0 },
-        { type: 'door', x: 150, y: 0, key: Key.DOOR2_KEY, name: 'StageTwoDoor', next: { scene: 'StageTwo', coordinates: { x: 275, y: 368 }, scrollPosition: 260 } },
+        { type: 'door', x: 150, y: 0, key: Key.DOOR2_KEY, name: 'StageTwoDoor', next: { scene: 'StageTwo', coordinates: { x: 264, y: 468 }, scrollPosition: 410 } },
         { type: 'keyPedestal', x: 600, y: 0, key: Key.DOOR2_KEY },
     ],
 };

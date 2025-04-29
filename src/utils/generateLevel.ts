@@ -4,6 +4,7 @@ import { Scene } from 'phaser';
 export default function generateLevel(
     game: Scene,
     platforms: Phaser.Physics.Arcade.StaticGroup,
+    walls: Phaser.Physics.Arcade.StaticGroup,
     layout: Layout,
 ) {
     const vines: Phaser.Types.Physics.Arcade.SpriteWithStaticBody[] = [];
@@ -18,6 +19,16 @@ export default function generateLevel(
             platforms.create(x, currentY, 'platform', 0)
                 .setOrigin(0.5, 0)
                 .setScale(4)
+                .refreshBody();
+        }
+        else if (type === 'wall') {
+            let wallY = currentY;
+            if (verticalOffset != null) {
+                wallY += verticalOffset;
+            }
+            walls.create(x, wallY, 'wall', 0)
+                .setOrigin(0.5, 0)
+                .setScale(2.5)
                 .refreshBody();
         }
         else if (type === 'vine') {
