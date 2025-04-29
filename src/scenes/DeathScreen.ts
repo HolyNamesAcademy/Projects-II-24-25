@@ -82,12 +82,12 @@ export class DeathScreen extends Scene {
 
     makeBodies() {
         const startY = 750;
-        const startX = 80;
+        const startX = 100;
 
-        const spacingY = 64;
-        const spacingX = 136;
+        const spacingY = 96;
+        const spacingX = 204;
 
-        const maxTall = 12;
+        const maxTall = 8;
         let countX = -1;
         let countY = 0;
 
@@ -105,7 +105,7 @@ export class DeathScreen extends Scene {
             let y = startY - countY * spacingY;
             if (death.toLowerCase().includes('addison')) {
                 console.log('Addison sprite detected', death);
-                y = y - 48; // Adjust for Addison's sprite being on the bottom;
+                y = y - 72; // Adjust for Addison's sprite being on the bottom;
             }
             const sprite = this.add.sprite(
                 startX + countX * spacingX,
@@ -113,7 +113,7 @@ export class DeathScreen extends Scene {
                 spriteName,
             );
             sprite.anims.play(`${death}-death`);
-            sprite.setScale(4); // Adjust scale as needed
+            sprite.setScale(6); // Adjust scale as needed
 
             countY++;
         });
