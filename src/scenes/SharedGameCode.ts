@@ -1,8 +1,9 @@
 import { Scene } from 'phaser';
-import { GameProgress, Layout, PuzzleObject } from '../types';
+import { GameProgress, Layout, PuzzleObject, Key } from '../types';
 import generateLevel from '../utils/generateLevel';
 import timer from '../utils/timer';
 import getDoorCenterTop from '../utils/getDoorCenterTop';
+import { Puzzle } from './Puzzle';
 
 export class SharedGameCode extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -49,6 +50,14 @@ export class SharedGameCode extends Scene {
         right: boolean;
         up: boolean;
         door: boolean;
+    };
+
+    // Add key-related properties
+    key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+    private keyToScale = {
+        [Key.WIN_KEY]: 5,
+        [Key.DOOR2_KEY]: 4,
+        [Key.TRAPDOOR1_KEY]: 4,
     };
 
     init(data: GameProgress) {
@@ -211,6 +220,34 @@ export class SharedGameCode extends Scene {
 
         // Add mobile controls at the end of create()
         this.createMobileControls();
+
+        // Add key pedestal interaction
+        this.pedestals.forEach(({
+            key: key,
+            object: pedestal,
+        }) => {
+            pedestal.on('pointerdown', () => {
+                if (this.scene.get('puzzle1') == null) {
+                    this.createWindow(512, 300, 600, 400, 'puzzle1');
+                    this.scene.get('puzzle1').events.once('passBoolean', (value: boolean) => {
+                        if (value && key) {
+                            this.gameProgress.keys[key] = true;
+                            this.generateKey(key);
+                        }
+                    });
+                }
+                else {
+                    this.scene.remove('puzzle1');
+                }
+            });
+        });
+
+        // Generate any existing keys
+        Object.entries(this.gameProgress.keys).forEach(([key, hasKey]) => {
+            if (hasKey) {
+                this.generateKey(key as Key);
+            }
+        });
     }
 
     private createMobileControls() {
@@ -335,6 +372,19 @@ export class SharedGameCode extends Scene {
         }
 
         this.background.setFrame(this.backgroundAnimation.frame.name);
+
+        // Update key position regardless of vine state
+        if (this.key && this.key.active) {
+            if (this.isLeftPressed()) {
+                this.updateKeyPosition(this.key, 125, 25);
+            }
+            else if (this.isRightPressed()) {
+                this.updateKeyPosition(this.key, -125, 25);
+            }
+            else if (onVine && !touchingPlatform && this.isUpPressed()) {
+                this.updateKeyPosition(this.key, 0, 150);
+            }
+        }
 
         if (onVine) {
             // On a vine, either show forward when touching the platform
@@ -537,5 +587,37 @@ export class SharedGameCode extends Scene {
         this.platforms.refresh();
         this.walls.refresh();
         this.nonCollisionItems.refresh();
+    }
+
+    createWindow(x: number, y: number, width: number, height: number, id: string) {
+        console.log('creating window');
+        const uniqueIdentifier = id;
+
+        const zone = this.add.zone(x, y, width, height).setInteractive();
+        const scene = new Puzzle(uniqueIdentifier, zone, width, height);
+        this.scene.add(uniqueIdentifier, scene, true);
+    }
+
+    generateKey(key: Key) {
+        const scale = this.keyToScale[key] || 1;
+        this.key = this.physics.add.staticSprite(512, 100, 'basicKey', 0)
+            .setScale(scale)
+            .setPosition(this.player.x + 100, this.player.y + 25)
+            .refreshBody();
+
+        this.key.play('key-left');
+        this.nonCollisionItems.add(this.key);
+    }
+
+    updateKeyPosition(
+        key: Phaser.Types.Physics.Arcade.SpriteWithStaticBody,
+        x: number,
+        y: number) {
+        if (!key || !key.active) {
+            return;
+        }
+
+        key.setPosition(this.player.x + x, this.player.y + y);
+        key.refreshBody();
     }
 }
