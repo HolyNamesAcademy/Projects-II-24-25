@@ -137,17 +137,10 @@ export class SharedGameCode extends Scene {
             // Make the pedestal interactive for pointer events
             pedestal.setInteractive();
 
-            // Handle pointer events for puzzle interaction
-            pedestal.on('pointerover', () => {
-                pedestal.anims.play('pedestalFlash', true);
-            });
-
-            pedestal.on('pointerout', () => {
-                pedestal.anims.play('keyPedestal', true);
-            });
-
             pedestal.on('pointerdown', () => {
-                this.createPuzzleWindow(name, key);
+                if (this.physics.overlap(this.player, pedestal)) {
+                    this.createPuzzleWindow(name, key);
+                }
             });
 
             // Add space key handler for puzzle windows
