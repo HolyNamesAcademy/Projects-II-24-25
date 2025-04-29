@@ -130,14 +130,19 @@ export class SharedGameCode extends Scene {
             name: name,
             object: pedestal,
         }) => {
+            // Make the pedestal interactive for pointer events
+            pedestal.setInteractive();
+
+            // Handle pointer events for puzzle interaction
             pedestal.on('pointerover', () => {
-                pedestal.anims.play('keyPedestal', false);
                 pedestal.anims.play('pedestalFlash', true);
             });
+
             pedestal.on('pointerout', () => {
-                pedestal.anims.play('pedestalFlash', false);
                 pedestal.anims.play('keyPedestal', true);
             });
+
+            // overlap with player is handled in the update function.
             pedestal.on('pointerdown', () => {
                 if (this.scene.get(name) == null) {
                     this.createWindow(512, 300, 600, 400, name);
@@ -371,6 +376,20 @@ export class SharedGameCode extends Scene {
         }
 
         this.background.setFrame(this.backgroundAnimation.frame.name);
+
+        // Update pedestal animations based on player overlap
+        this.pedestals.forEach(({ object: pedestal }) => {
+            const overlapping = this.physics.overlap(this.player, pedestal);
+
+            if (overlapping) {
+                if (pedestal.anims.currentAnim?.key !== 'pedestalFlash') {
+                    pedestal.anims.play('pedestalFlash', true);
+                }
+            }
+            else if (pedestal.anims.currentAnim?.key === 'pedestalFlash') {
+                pedestal.anims.play('keyPedestal', true);
+            }
+        });
 
         // Update key position regardless of vine state
         if (this.key && this.key.active) {
