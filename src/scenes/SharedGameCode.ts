@@ -43,13 +43,14 @@ export class SharedGameCode extends Scene {
         up: Phaser.GameObjects.Container;
         left: Phaser.GameObjects.Container;
         right: Phaser.GameObjects.Container;
+        interact: Phaser.GameObjects.Container;
     };
 
     private isMobileButtonPressed: {
         left: boolean;
         right: boolean;
         up: boolean;
-        space: boolean;
+        interact: boolean;
     };
 
     // Add key-related properties
@@ -125,6 +126,9 @@ export class SharedGameCode extends Scene {
             d: this.input.keyboard?.addKey('D'),
         };
 
+        // Add mobile controls after creating layout.
+        this.createMobileControls();
+
         pedestals.forEach(({
             key: key,
             name: name,
@@ -154,6 +158,10 @@ export class SharedGameCode extends Scene {
                     }
                 });
             }
+
+            this.mobileControls.interact.on('pointerdown', () => {
+                this.createPuzzleWindow(name, key);
+            });
         });
 
         this.physics.add.collider(this.player, spikes, () => {
@@ -195,7 +203,7 @@ export class SharedGameCode extends Scene {
                 }
 
                 const locked = this.gameProgress.doorLocks[door.name];
-                const openDoorKey = this.isSpacePressed();
+                const openDoorKey = this.isInteractPressed();
 
                 // Check that the door is unlocked, and we are not already going though the door.
                 if (!locked && this.currentDoorAnim != door.name && openDoorKey) {
@@ -240,9 +248,6 @@ export class SharedGameCode extends Scene {
             });
         });
 
-        // Add mobile controls at the end of create()
-        this.createMobileControls();
-
         // Generate any existing keys
         Object.entries(this.gameProgress.keys).forEach(([key, hasKey]) => {
             if (hasKey) {
@@ -257,7 +262,7 @@ export class SharedGameCode extends Scene {
             left: false,
             right: false,
             up: false,
-            space: false,
+            interact: false,
         };
 
         // Calculate button positions
@@ -265,11 +270,13 @@ export class SharedGameCode extends Scene {
         const gameWidth = this.game.config.width as number;
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isSmallScreen = window.innerWidth < 1024;
-        const buttonY = (isMobile || isSmallScreen) ? gameHeight - 384 : gameHeight - 100; // Center in the extra space
-        const buttonRadius = (isMobile || isSmallScreen) ? 128 : 32; // Much larger buttons on mobile/small screens
+        const isPhone = isMobile || isSmallScreen;
+
+        const buttonY = isPhone ? gameHeight - 416 : gameHeight - 100; // Center in the extra space
+        const buttonRadius = isPhone ? 128 : 32; // Much larger buttons on mobile/small screens
 
         // Create a solid background for mobile controls area on mobile/small screens
-        if (isMobile || isSmallScreen) {
+        if (isPhone) {
             const maskHeight = gameHeight / 2; // Half screen height
             const maskWidth = gameWidth; // Full width of the game
             const maskY = gameHeight / 2; // Start from middle
@@ -281,11 +288,33 @@ export class SharedGameCode extends Scene {
         }
 
         // Create mobile controls
-        this.mobileControls = {
-            up: this.createCircleButton(64, buttonY, buttonRadius, '↑'),
-            left: this.createCircleButton(gameWidth - buttonRadius * 2 - 64 - buttonRadius * 2 - 32, buttonY, buttonRadius, '←'),
-            right: this.createCircleButton(gameWidth - buttonRadius * 2 - 64, buttonY, buttonRadius, '→'),
-        };
+        if (isPhone) {
+            this.mobileControls = {
+                up: this.createCircleButton(64, buttonY - buttonRadius * 1.25, buttonRadius, '↑'),
+                left: this.createCircleButton(gameWidth - buttonRadius * 2 - 64 - buttonRadius * 2 - 32, buttonY, buttonRadius, '←'),
+                right: this.createCircleButton(gameWidth - buttonRadius * 2 - 64, buttonY, buttonRadius, '→'),
+                interact: this.createCircleButton(
+                    64, // Mobile: below jump button
+                    buttonY + buttonRadius * 1.25, // Mobile: below jump button
+                    buttonRadius,
+                    '⏎',
+                ),
+
+            };
+        }
+        else {
+            this.mobileControls = {
+                up: this.createCircleButton(64, buttonY, buttonRadius, '↑'),
+                left: this.createCircleButton(gameWidth - buttonRadius * 2 - 64 - buttonRadius * 2 - 32, buttonY, buttonRadius, '←'),
+                right: this.createCircleButton(gameWidth - buttonRadius * 2 - 64, buttonY, buttonRadius, '→'),
+                interact: this.createCircleButton(
+                    64 + buttonRadius * 2 + 32, // Desktop: next to up button
+                    buttonY, // Desktop: same level as up button
+                    buttonRadius,
+                    '⏎',
+                ),
+            };
+        }
 
         // Set depth for all controls to ensure they're above the background
         Object.values(this.mobileControls).forEach((control) => {
@@ -525,9 +554,9 @@ export class SharedGameCode extends Scene {
             || this.isMobileButtonPressed.right;
     }
 
-    private isSpacePressed(): boolean {
+    private isInteractPressed(): boolean {
         return (this.keyboardControls.space?.isDown ?? false)
-            || this.isMobileButtonPressed.space;
+            || this.isMobileButtonPressed.interact;
     }
 
     protected moveLeft() {
