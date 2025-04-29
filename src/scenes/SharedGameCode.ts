@@ -297,6 +297,7 @@ export class SharedGameCode extends Scene {
         // Multiply by -1 to move the objects in the positive Y (down) direction.
         // Multiply by 2 to move the objects twice the distance as the background.
         this.platforms.incY((scrollPosition - 384) * -1 * 2);
+        this.walls.incY((scrollPosition - 384) * -1 * 2);
         this.nonCollisionItems.incY((scrollPosition - 384) * -1 * 2);
 
         // Refresh the physics bodies to reflect the changes.

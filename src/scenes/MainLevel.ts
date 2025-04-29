@@ -1,5 +1,5 @@
 import { SharedGameCode } from './SharedGameCode';
-import makeButton from '../utils/makeButton';
+// import makeButton from '../utils/makeButton';
 import { Layout, Key } from '../types';
 import { Puzzle } from './Puzzle';
 
@@ -46,19 +46,19 @@ export class MainLevel extends SharedGameCode {
     create() {
         super.create();
 
-        makeButton(this, 'Win Addison', 35, 150, 650, () => {
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('WinScene');
-            });
-        });
+        // makeButton(this, 'Win Addison', 35, 150, 650, () => {
+        //     this.cameras.main.fadeOut(1000, 0, 0, 0);
+        //     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+        //         this.scene.start('WinScene');
+        //     });
+        // });
 
-        makeButton(this, 'Kill Addison', 35, 150, 700, () => {
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.killPlayer();
-            });
-        });
+        // makeButton(this, 'Kill Addison', 35, 150, 700, () => {
+        //     this.cameras.main.fadeOut(1000, 0, 0, 0);
+        //     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+        //         this.killPlayer();
+        //     });
+        // });
 
         this.pedestals.forEach(({
             key: key,
