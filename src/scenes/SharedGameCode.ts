@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { GameProgress, Layout, PuzzleObject } from '../types';
 import generateLevel from '../utils/generateLevel';
 import timer from '../utils/timer';
+import getDoorCenterTop from '../utils/getDoorCenterTop';
 
 export class SharedGameCode extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -47,6 +48,7 @@ export class SharedGameCode extends Scene {
         left: boolean;
         right: boolean;
         up: boolean;
+        door: boolean;
     };
 
     init(data: GameProgress) {
@@ -147,11 +149,25 @@ export class SharedGameCode extends Scene {
                     this.gameProgress.doorLocks[door.name] = false;
                     // The key is now used.
                     this.gameProgress.keys[key] = false;
+
+                    const coordinates = getDoorCenterTop(door);
+                    const doorText = this.add.text(coordinates.x, coordinates.y, 'Door unlocked!\n(space to enter)', {
+                        font: '16px Arial', fontSize: 70,
+                        color: '#00ff00',
+                        backgroundColor: '#000000',
+                        padding: { x: 5, y: 5 },
+                    }).setOrigin(0.5, 1).setPosition(coordinates.x, coordinates.y);
+
+                    this.time.delayedCall(1000, () => {
+                        doorText?.destroy();
+                    });
                 }
 
                 const locked = this.gameProgress.doorLocks[door.name];
+                const openDoorKey = this.keyboardControls.space?.isDown ?? false;
+
                 // Check that the door is unlocked, and we are not already going though the door.
-                if (!locked && this.currentDoorAnim != door.name) {
+                if (!locked && this.currentDoorAnim != door.name && openDoorKey) {
                     this.currentDoorAnim = door.name;
                     door.anims.play('openDoor', true);
                     await timer(500);
@@ -176,13 +192,15 @@ export class SharedGameCode extends Scene {
                 }
 
                 if (locked) {
+                    const coordinates = getDoorCenterTop(door);
+
                     // If the door is locked, play the locked animation.
-                    const doorText = this.add.text(door.x, door.y - 200, 'This door is locked', {
+                    const doorText = this.add.text(coordinates.x, coordinates.y, 'This door is locked', {
                         font: '16px Arial', fontSize: 70,
                         color: '#ff0000',
                         backgroundColor: '#000000',
                         padding: { x: 5, y: 5 },
-                    }).setOrigin(0.85, 1);
+                    }).setOrigin(0.5, 1);
 
                     this.time.delayedCall(1000, () => {
                         doorText.destroy();
@@ -201,6 +219,7 @@ export class SharedGameCode extends Scene {
             left: false,
             right: false,
             up: false,
+            door: false,
         };
 
         // Calculate button positions
@@ -424,7 +443,7 @@ export class SharedGameCode extends Scene {
 
     private isUpPressed(): boolean {
         return (this.cursors?.up.isDown ?? false)
-            || (this.keyboardControls.space?.isDown ?? false)
+            // || (this.keyboardControls.space?.isDown ?? false)
             || (this.keyboardControls.w?.isDown ?? false)
             || this.isMobileButtonPressed.up;
     }
@@ -516,6 +535,7 @@ export class SharedGameCode extends Scene {
 
         // Refresh the physics bodies to reflect the changes.
         this.platforms.refresh();
+        this.walls.refresh();
         this.nonCollisionItems.refresh();
     }
 }
