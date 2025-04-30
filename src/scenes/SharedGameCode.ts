@@ -527,7 +527,7 @@ export class SharedGameCode extends Scene {
             this.player.setCollideWorldBounds(false);
         }
         else {
-            this.player.setCollideWorldBounds(true);
+            // this.player.setCollideWorldBounds(true);
         }
 
         if (playerY > 550) {
